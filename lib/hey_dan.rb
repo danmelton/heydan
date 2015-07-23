@@ -7,16 +7,20 @@ class HeyDan
   attr_accessor :settings
   
   def initialize(opts={})
-    if opts[:settings]
-      @settings = opts[:settings]
-    else
-      raise "No settings.yml file found" if !File.exists?(File.join(Dir.pwd, 'settings.yml'))
-      yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
-      yml.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
-      @settings  = yml
-    end
+    yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
+    @settings  = yml[ENV['heydan_env'] || 'dev']
+    @settings.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
+  end
+
+  def self.settings
+    yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
+    @settings  = yml[ENV['heydan_env'] || 'dev']
+    @settings.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
+    @settings
   end
 
 end
 
 require File.join(Dir.pwd, 'lib', 'dataset')
+require File.join(Dir.pwd, 'lib', 'script')
+require File.join(Dir.pwd, 'lib', 'helpers')

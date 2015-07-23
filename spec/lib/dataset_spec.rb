@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HeyDan::Dataset do
   before do
-    @dataset = HeyDan::Dataset.new({settings: HEYDANSETTINGS, name: 'decennial_census_total_population'})
+    @dataset = HeyDan::Dataset.new({name: 'decennial_census_total_population'})
   end
 
   it 'sets the name' do

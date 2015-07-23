@@ -21,7 +21,14 @@ class HeyDanCLI < Thor
 
   desc "process NAMES", "Grab all datasets from original source process them and output into downloads folder."
   def process(*names)
-    puts "Processing #{names.join(', ')}"
+    if names.size > 0
+      puts "Processing all #{names.join(', ')}"
+      HeyDan::Script.process(names)
+    else
+      puts "Processing all files"
+      HeyDan::Script.process_all
+    end
+    
   end  
 
   desc "import NAMES", "Bulk updates elasticsearch from the jurisdictions folder"

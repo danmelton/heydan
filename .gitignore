@@ -1,2 +1,5 @@
 settings.yml
 spec/tmp*
+downloads/*.csv
+tmp/
+

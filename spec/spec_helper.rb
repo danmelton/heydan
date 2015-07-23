@@ -8,15 +8,6 @@ VCR.configure do |config|
   config.hook_into :webmock # or :fakeweb
 end
 
-HEYDANSETTINGS = {
-  elasticsearch: 'http://localhost:9200',
-  tmp_folder: File.join(Dir.pwd, 'spec', 'tmp', 'tmp'),
-  jurisdictions_folder: File.join(Dir.pwd, 'spec', 'tmp', 'jurisdictions'),
-  downloads_folder: File.join(Dir.pwd, 'spec', 'tmp', 'downloads'),
-  scripts_folder: File.join(Dir.pwd, 'spec', 'tmp', 'scripts'),
-  datasets_folder: File.join(Dir.pwd, 'spec', 'tmp', 'datasets'),
-}
-
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -32,12 +23,8 @@ RSpec.configure do |config|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
-  config.before(:each) do 
-    File.exists?(HEYDANSETTINGS[:tmp_folder]) ?  FileUtils.rm_rf(HEYDANSETTINGS[:tmp_folder] + '/*') :  FileUtils.mkdir_p(HEYDANSETTINGS[:tmp_folder])
-    File.exists?(HEYDANSETTINGS[:jurisdictions_folder]) ? FileUtils.rm_rf(HEYDANSETTINGS[:jurisdictions_folder] + '/*') : FileUtils.mkdir(HEYDANSETTINGS[:jurisdictions_folder]) if !File.exists?(HEYDANSETTINGS[:jurisdictions_folder])
-    File.exists?(HEYDANSETTINGS[:downloads_folder]) ? FileUtils.rm_rf(HEYDANSETTINGS[:downloads_folder] + '/*') : FileUtils.mkdir(HEYDANSETTINGS[:downloads_folder])
-    File.exists?(HEYDANSETTINGS[:scripts_folder]) ? FileUtils.rm_rf(HEYDANSETTINGS[:scripts_folder] + '/*') : FileUtils.mkdir(HEYDANSETTINGS[:scripts_folder])
-    File.exists?(HEYDANSETTINGS[:datasets_folder]) ? FileUtils.rm_rf(HEYDANSETTINGS[:datasets_folder] + '/*') : FileUtils.mkdir(HEYDANSETTINGS[:datasets_folder])
+  config.after(:suite) do
+    ENV['heydan_env'] = 'dev'
   end
 
   # rspec-mocks config goes here. You can use an alternate test double

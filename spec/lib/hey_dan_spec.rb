@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HeyDan do
   before do
-    @heydan = HeyDan.new(settings: HEYDANSETTINGS)
+    @heydan = HeyDan.new()
   end
 
   it 'requires files' do
@@ -10,17 +10,8 @@ describe HeyDan do
   end
 
   it 'loads settings' do
-    expect(@heydan.settings).to eq ({:elasticsearch=>"http://localhost:9200", :tmp_folder=>"/Users/danielmelton/projects/heydan/spec/tmp/tmp", :jurisdictions_folder=>"/Users/danielmelton/projects/heydan/spec/tmp/jurisdictions", :downloads_folder=>"/Users/danielmelton/projects/heydan/spec/tmp/downloads", :scripts_folder=>"/Users/danielmelton/projects/heydan/spec/tmp/scripts", :datasets_folder=>"/Users/danielmelton/projects/heydan/spec/tmp/datasets"}
-)
-    expect(HeyDan.new(settings: {url: 'love.com'}).settings).to eq ({url: 'love.com'})
+    expect(@heydan.settings).to eq ({"elasticsearch"=>"http://localhost:9200", "scripts_folder"=>"spec/tmp/scripts", "jurisdictions_folder"=>"spec/tmp/jurisdictions", "downloads_folder"=>"spec/tmp/downloads", "tmp_folder"=>"spec/tmp", "datasets_folder"=>"spec/tmp/datasets"})
   end
-
-  it 'changes settings' do
-    heydan = HeyDan.new(settings: {url: 'love.com'})
-    expect(heydan.settings).to eq ({url: 'love.com'})
-    heydan.settings[:url] = 'lover.com'
-    expect(heydan.settings).to eq ({url: 'lover.com'})
-  end
-
+  
 
 end

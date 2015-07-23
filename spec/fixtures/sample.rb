@@ -1,7 +1,8 @@
 require File.join(Dir.pwd, 'lib', 'hey_dan')
 
-class <%=@class_name%> < HeyDan::Script
+class Sample < HeyDan::Script
   def get_data
+    @csv_final_data = [['love'],[1]]
   #this method is used to connect to a source, like an api, ftp or download a csv, and then saves it into the tmp folder.
     super
   end
@@ -17,8 +18,4 @@ class <%=@class_name%> < HeyDan::Script
     super
   end
 
-  def process_data
-  #this method loops through each item and saves it to the jurisdictions/entity_id 
-    super
-  end
 end

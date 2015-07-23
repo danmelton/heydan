@@ -2,8 +2,8 @@ class HeyDan::Dataset < HeyDan
   attr_accessor :name
   
   def initialize(opts={})
-    @name = opts[:name].downcase
     super(opts)
+    @name = opts[:name].downcase
   end
 
   def create
@@ -32,7 +32,7 @@ class HeyDan::Dataset < HeyDan
   end
 
   def valid_json?
-    require ''
+    require 'json'
     begin
       json = File.read(File.join(@settings[:datasets_folder], "#{@name}.json"))
       JSON.parse(json)  
