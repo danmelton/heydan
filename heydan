@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'thor'
+ 
+class HeyDan < Thor
+  desc "sync", "Downloads all data sets from the CDN & imports them into elasticsearch."
+  def sync(*names)
+    puts "Syncing #{names.join(', ')}"
+  end
+
+  desc "server", "starts up the webserver for heydan"
+  def server()
+    puts "Serving up some HeyDan Realness"
+  end  
+
+  desc "download NAMES", "Downloads all datasets from the CDN"
+  def download(*names)
+    puts "Downloading  #{names.join(', ')}"
+  end  
+
+  desc "process NAMES", "Grab all datasets from original source process them and output into downloads folder."
+  def process(*names)
+    puts "Processing #{names.join(', ')}"
+  end  
+
+  desc "import NAMES", "Bulk updates elasticsearch from the jurisdictions folder"
+  def import(*names)
+    puts "Importing  #{names.join(', ')}"
+  end  
+
+  desc "upload NAMES", "uploads download folder to s3. If you have a heydan.yml file with keys, it will upload all the files to an s3 bucket "
+  def upload(*names)
+    puts "Uploading  #{names.join(', ')}"
+  end  
+
+  desc "new NAME", "generates new files to add a new dataset datasets/name.json, scripts/name.rb "
+  def new(name)
+    puts "Creating new #{name} in datasets/#{new_name.json} and scripts/#{new_name}.rb"
+  end  
+
+  desc "list", "lists available datasets to import"
+  def list()
+    puts "List of Dataset Names here"
+  end
+end
+ 
+HeyDan.start(ARGV)
