@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 require 'rubygems'
 require 'thor'
+require File.join(Dir.pwd, 'lib', 'hey_dan.rb')
  
-class HeyDan < Thor
+class HeyDanCLI < Thor
   desc "sync", "Downloads all data sets from the CDN & imports them into elasticsearch."
   def sync(*names)
     puts "Syncing #{names.join(', ')}"
@@ -35,7 +36,8 @@ class HeyDan < Thor
 
   desc "new NAME", "generates new files to add a new dataset datasets/name.json, scripts/name.rb "
   def new(name)
-    puts "Creating new #{name} in datasets/#{new_name.json} and scripts/#{new_name}.rb"
+    puts "Creating new #{name} in datasets/#{name}.json and scripts/#{name}.rb"
+    HeyDan::Dataset.new({name:name}).create
   end  
 
   desc "list", "lists available datasets to import"
@@ -44,4 +46,4 @@ class HeyDan < Thor
   end
 end
  
-HeyDan.start(ARGV)
+HeyDanCLI.start(ARGV)

@@ -2,7 +2,7 @@
 
 Why HeyDan? I wrote it to help answer questions. Every time you have a question about governments, I imagine you turning around and saying 'Hey Dan! how many governments have x or y?''
 
-The goal is to create an ultra fast http server backed by ElasticSearch with extreme filter capabilities and easily extendable with more data. 
+The goal is to create an ultra fast http server backed by ElasticSearch with extreme filter capabilities and data extendability. This is not a data catalogue. 
 
 ##Using heydan
 
@@ -11,7 +11,7 @@ After you install heydan, you can run:
       heydan sync 
       #Downloads all data sets from the CDN & imports them into elasticsearch. 
 
-      heydan start
+      heydan server
       #starts up the webserver for heydan
 
       heydan download

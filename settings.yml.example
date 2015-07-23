@@ -1,0 +1,6 @@
+elasticsearch: http://localhost:9200
+scripts_folder: scripts
+jurisdictions_folder: jurisdictions
+downloads_folder: downloads
+tmp_folder: tmp
+datasets_folder: datasets
