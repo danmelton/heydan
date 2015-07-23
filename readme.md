@@ -145,17 +145,14 @@ Routes to elastic search /_search
 Outputs all known data points by type and % penetration
 
 #Open Civic Identifiers
-
-##US
-Jurisdiction OCIDs
-Open Data Civic IDs sponsored by Google and Sunlight Foundation
-https://github.com/opencivicdata/ocd-division-ids/blob/master/identifiers/country-us.csv?raw=true
+The core of this project is the Open Data Civic IDs sponsored by Google and Sunlight Foundation
+https://github.com/opencivicdata/ocd-division-ids/blob/master/identifiers/country-us.csv?raw=true. The Open Data project creates a canonical id for every jurisdiction in the world. It leverages a combination of type and name spacing based upon political or jurisidction boundaries. I.e. country:us/state:ca, or type:id/type:id. This lends itself really well to nested ids AND restful web addresses.
 
 #Contributing
 
 I welcome contributions! If you'd like to add a new dataset or help improve the code, please do. 
 
-##Request a dataset
+##Request a Dataset
 
 Want a dataset in heydan? [You can add the request here](https://github.com/danmelton/heydan/labels/new%20dataset)
 
