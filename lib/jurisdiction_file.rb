@@ -52,17 +52,20 @@ class HeyDan::JurisdictionFile < HeyDan
   end
 
   def get_json
-    if !exists?
+    if !exists?  
       @json ||= initial_json 
+    else
+      file = File.read(file_path)
+      @json ||= initial_json if file == ""
     end
     return @json if @json
-    @json = JSON.parse(File.read(file_path))
+    @json = JSON.parse(file)
   end
 
   def save
-      File.open(file_path, 'w') do |f|
-        f.write(@json.to_json)
-      end
+    File.open(file_path, 'w') do |f|
+      f.write(@json.to_json)
+    end
   end
 
 end

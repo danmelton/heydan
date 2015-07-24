@@ -1,0 +1,7 @@
+{
+      "name": "American National Standards Institute Codes",
+      "id": "ansi_id",
+      "description": "Standardized numeric or alphabetic codes issued by the American National Standards Institute (ANSI) to ensure uniform identification of geographic entities through all federal government agencies",
+      "source": "American National Standards Institute",
+      "sourceUrl": "https://www.census.gov/geo/reference/ansi.html"
+}

@@ -10,7 +10,6 @@ class HeyDan::Identifier < HeyDan
 
   def process
     return if skip_process?
-    binding.pry
     get_data
     transform_data
     save_data
@@ -40,6 +39,7 @@ class HeyDan::Identifier < HeyDan
     @csv_final_data[1..-1].each do |row|
       jf = HeyDan::JurisdictionFile.new(name: row[0])
       id = header.index(identifier_column)
+      next if row[id].nil?
       jf.add_identifier(type, row[id])
       add_other_data(jf, header, row)
       puts 'saving ' + jf.file_name
@@ -47,7 +47,7 @@ class HeyDan::Identifier < HeyDan
     end 
   end
 
-  def add_other_data(jurisdiction_file, row)
+  def add_other_data(jurisdiction_file, header,row)
   end
 
   def save_data
@@ -83,7 +83,7 @@ class HeyDan::Identifier < HeyDan
   end
 
   def self.process_order
-    ['open_civic_identifiers']
+    ['open_civic_identifiers', 'ansi_identifiers']
   end
 
 end
