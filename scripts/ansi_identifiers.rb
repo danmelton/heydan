@@ -16,7 +16,14 @@ class AnsiIdentifiers < HeyDan::Identifier
   end
 
   def skip_process?
-    false
+    j = JurisdictionFile.new(name:"ocd-division/country:us/state:wy/place:yoder")
+    if j.exists? && !j.get_json['identifiers']['ansi_id'].nil? 
+      puts "skipping ANSI Identifiers, looks like they are already loaded"
+      return true
+    else
+      return false
+    end
+    
   end
 
   def transform_data
