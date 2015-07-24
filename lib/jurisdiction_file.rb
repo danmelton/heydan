@@ -4,12 +4,17 @@ class HeyDan::JurisdictionFile < HeyDan
   
   def initialize(opts={})
     @name = opts[:name]
+    convert_file_name if @name.include?('.json')
     raise "Name is required" if @name.nil?
     super
   end
 
   def type
     @name.split('/')[-1].split(':')[0]
+  end
+
+  def convert_file_name
+    @name = "ocd-division/#{@name.gsub('::','/').gsub('.json','')}"
   end
 
   def file_name
@@ -30,6 +35,11 @@ class HeyDan::JurisdictionFile < HeyDan
 
   def initial_json
     {'id' => @name, 'identifiers' => {}, 'datasets' => {}}
+  end
+
+  def get_identifier(key)
+    get_json
+    @json['identifiers'][key]
   end
 
   def add_identifier(key, value)

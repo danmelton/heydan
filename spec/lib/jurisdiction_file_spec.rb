@@ -16,6 +16,12 @@ describe HeyDan::JurisdictionFile do
     expect(@jf.file_name).to eq 'country:us.json'
   end
 
+  it 'convert_file_name' do
+    jf = HeyDan::JurisdictionFile.new({name: 'country:us::state:ca.json'})
+    expect(jf.name).to eq "ocd-division/country:us/state:ca"
+    expect(jf.file_name).to eq "country:us::state:ca.json"
+  end
+
   it 'folder_path' do
     expect(@jf.folder_path.include?('spec/tmp/jurisdictions')).to eq true
   end

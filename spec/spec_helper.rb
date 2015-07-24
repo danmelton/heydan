@@ -1,6 +1,7 @@
 require 'rspec'
 require 'vcr'
 require 'fileutils'
+ENV['heydan_env'] = 'test'
 require File.join(Dir.pwd, 'lib','hey_dan.rb')
 
 VCR.configure do |config|
@@ -21,10 +22,6 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
-  end
-
-config.before(:suite) do
-    ENV['heydan_env'] = 'test'
   end
 
   config.after(:suite) do

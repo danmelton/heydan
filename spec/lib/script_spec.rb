@@ -3,7 +3,6 @@ require 'fileutils'
 
 describe HeyDan::Script do
   before do
-    ENV['heydan_env'] = 'test'
     yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
     @settings  = yml[ENV['heydan_env'] || 'dev']
     @settings.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
@@ -22,11 +21,24 @@ describe HeyDan::Script do
   end
 
   it 'validate_process' do
+    FileUtils.rm(File.join(@script.settings[:downloads_folder], "#{@script.name}.csv")) if File.exists?(File.join(@script.settings[:downloads_folder], "#{@script.name}.csv"))
     expect{@script.validate_process}.to raise_error('File did not save')
     File.open(File.join(@script.settings[:downloads_folder], "#{@script.name}.csv"), 'w') do |f|
       f << ""
     end
     FileUtils.rm(File.join(@script.settings[:downloads_folder], "#{@script.name}.csv"))
+  end
+
+  it 'identifiers_hash' do
+    file = File.join(SETTINGS[:tmp_folder], "identifiers_file_ansi_id.json")
+    FileUtils.rm(file) if File.exists?(file)
+    jf = HeyDan::JurisdictionFile.new(name: 'ocd-division/country:us')
+    jf.add_identifier('ansi_id', '1')
+    jf.save
+    expect(File.exists?(file)).to eq false
+    expect(HeyDan::Script.identifiers_hash('ansi_id')).to eq ({"1"=>"country:us.json"})
+    expect(File.exists?(file)).to eq true
+    FileUtils.rm(file) if File.exists?(file)
   end
 
   it 'process' do

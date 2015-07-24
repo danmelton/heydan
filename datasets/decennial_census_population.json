@@ -1,0 +1,8 @@
+{
+      "name": "Total Population",
+      "description": "Total population counts from the Decennial US Census",
+      "source": "US Census Bureau",
+      "sourceUrl": "http://www.census.gov/data/developers/data-sets/decennial-census-data.html",
+      "period": "10 Years",
+      "dates": [2010, 2000, 1990]
+}

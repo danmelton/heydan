@@ -12,7 +12,7 @@ class OpenCivicIdentifiers < HeyDan::Identifier
   end
 
   def skip_process?
-    if JurisdictionFile.new(name:"ocd-division/country:us").exists?
+    if JurisdictionFile.new(name:"ocd-division/country:us/territory:vi").exists?
       puts "skipping OpenCivicIdentifiers, looks like they are already loaded"
       return true
     else
