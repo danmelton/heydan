@@ -11,6 +11,7 @@ gem 'sinatra-cross_origin', '~> 0.3.1'
 gem 'jbuilder'
 gem 'rubyzip'
 gem 'thor'
+gem 'pry'
 
 group :test, :develop do
   gem 'rspec'

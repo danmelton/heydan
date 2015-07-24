@@ -1,0 +1,7 @@
+{
+      "name": "Open Civic Identifiers",
+      "id": "open_civic_id",
+      "description": "Canonical IDs based upon political gepography by Sunlight Foundation and Google",
+      "source": "Open Civic Data",
+      "sourceUrl": "https://github.com/opencivicdata/ocd-division-ids"
+}

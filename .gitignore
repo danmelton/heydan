@@ -2,4 +2,5 @@ settings.yml
 spec/tmp*
 downloads/*.csv
 tmp/
+jurisdictions/*.json
 

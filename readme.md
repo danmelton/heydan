@@ -17,6 +17,9 @@ After you install heydan, you can run:
       heydan download
       #Downloads all datasets from the CDN
 
+      heydan setup
+      #Setups the identifier files in jurisdictions folder
+
       heydan process
       #Grab all datasets from original source process them and output into downloads folder. Mostly used to test original download.
 

@@ -7,9 +7,9 @@ describe HeyDan::Script do
     yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
     @settings  = yml[ENV['heydan_env'] || 'dev']
     @settings.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
-    FileUtils.cp(File.join(Dir.pwd, 'spec', 'fixtures', 'sample.rb'), File.join(@settings[:scripts_folder], "sample.rb"))
-    FileUtils.cp(File.join(Dir.pwd, 'spec', 'fixtures', 'sample.json'), File.join(@settings[:datasets_folder], "sample.json"))
-    @script = HeyDan::Script.new({name: 'sample'})    
+    FileUtils.cp(File.join(Dir.pwd, 'spec', 'fixtures', 'sample_dataset.rb'), File.join(@settings[:scripts_folder], "sample_dataset.rb"))
+    FileUtils.cp(File.join(Dir.pwd, 'spec', 'fixtures', 'sample_dataset.json'), File.join(@settings[:datasets_folder], "sample_dataset.json"))
+    @script = HeyDan::Script.new({name: 'sample_dataset'})    
   end
 
   
@@ -31,13 +31,13 @@ describe HeyDan::Script do
 
   it 'process' do
     expect(File.exists?(File.join(@script.settings[:downloads_folder], "#{@script.name}.csv"))).to eq false
-    HeyDan::Script.process(['sample'])
+    HeyDan::Script.process(['sample_dataset'])
     expect((File.exists?File.join(@script.settings[:downloads_folder], "#{@script.name}.csv"))).to eq true
     FileUtils.rm(File.join(@script.settings[:downloads_folder], "#{@script.name}.csv"))
   end
 
   after do
-    FileUtils.rm(File.join(@settings[:scripts_folder], "sample.rb"))
-    FileUtils.rm(File.join(@settings[:datasets_folder], "sample.json"))
+    FileUtils.rm(File.join(@settings[:scripts_folder], "sample_dataset.rb"))
+    FileUtils.rm(File.join(@settings[:datasets_folder], "sample_dataset.json"))
   end
 end

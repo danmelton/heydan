@@ -1,6 +1,6 @@
 require File.join(Dir.pwd, 'lib', 'hey_dan')
 
-class Sample < HeyDan::Script
+class SampleIdentifier < HeyDan::Identifier
   def get_data
     @csv_final_data = [['love'],[1]]
   #this method is used to connect to a source, like an api, ftp or download a csv, and then saves it into the tmp folder.
@@ -14,7 +14,7 @@ class Sample < HeyDan::Script
   end
 
   def save_data
-  #this method saves the file into downloads
+  #this method savxqes the file into downloads
     super
   end
 

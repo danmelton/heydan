@@ -23,6 +23,10 @@ RSpec.configure do |config|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
   end
 
+config.before(:suite) do
+    ENV['heydan_env'] = 'test'
+  end
+
   config.after(:suite) do
     ENV['heydan_env'] = 'dev'
   end

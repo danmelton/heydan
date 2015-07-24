@@ -10,7 +10,7 @@ describe HeyDan do
   end
 
   it 'loads settings' do
-    expect(@heydan.settings).to eq ({"elasticsearch"=>"http://localhost:9200", "scripts_folder"=>"spec/tmp/scripts", "jurisdictions_folder"=>"spec/tmp/jurisdictions", "downloads_folder"=>"spec/tmp/downloads", "tmp_folder"=>"spec/tmp", "datasets_folder"=>"spec/tmp/datasets"})
+    expect(@heydan.settings).to eq ({"elasticsearch"=>"http://localhost:9200", "scripts_folder"=>"spec/tmp/scripts", "jurisdictions_folder"=>"spec/tmp/jurisdictions", "downloads_folder"=>"spec/tmp/downloads", "tmp_folder"=>"spec/tmp", "datasets_folder"=>"spec/tmp/datasets", "identifiers_folder"=>"spec/tmp/identifiers"})
   end
   
 

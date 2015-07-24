@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'bundler'
 require 'yaml'
+require 'json'
+require 'csv'
 Bundler.setup(:default)
 
 class HeyDan
@@ -21,6 +23,8 @@ class HeyDan
 
 end
 
+require File.join(Dir.pwd, 'lib', 'helpers')
+require File.join(Dir.pwd, 'lib', 'jurisdiction_file')
 require File.join(Dir.pwd, 'lib', 'dataset')
 require File.join(Dir.pwd, 'lib', 'script')
-require File.join(Dir.pwd, 'lib', 'helpers')
+require File.join(Dir.pwd, 'lib', 'identifier')

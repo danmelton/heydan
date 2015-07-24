@@ -19,6 +19,23 @@ class HeyDanCLI < Thor
     puts "Downloading  #{names.join(', ')}"
   end  
 
+  desc "setup", "Setups all the jurisdictions from the identifiers folder"
+    def setup()
+      puts "Setting up identifiers"
+      HeyDan::Identifier.process()
+    end 
+
+  desc "parse NAMES", "Parses downloaded csv files into jurisdiction/*/*.json files"
+  def parse(*names)
+    if names.size > 0
+      puts "Processing all #{names.join(', ')}"
+      HeyDan::Parse.process(names)
+    else
+      puts "Processing all files"
+      HeyDan::Parse.process_all
+    end
+  end 
+
   desc "process NAMES", "Grab all datasets from original source process them and output into downloads folder."
   def process(*names)
     if names.size > 0
