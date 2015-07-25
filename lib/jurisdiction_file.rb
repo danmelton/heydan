@@ -33,8 +33,12 @@ class HeyDan::JurisdictionFile < HeyDan
     File.join(folder_path, file_name)
   end
 
+  def type
+    @name.split('/')[-1].split(':')[0]
+  end
+
   def initial_json
-    {'id' => @name, 'identifiers' => {}, 'datasets' => {}}
+    {'id' => @name, 'entityType' => type,'identifiers' => {}, 'datasets' => {}}
   end
 
   def get_identifier(key)

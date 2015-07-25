@@ -30,6 +30,10 @@ describe HeyDan::JurisdictionFile do
     expect(@jf.file_path.include?('spec/tmp/jurisdictions/country:us.json')).to eq true
   end
 
+  it 'type' do
+    expect(@jf.type).to eq 'country'
+  end
+
   it 'exists?' do
     expect(@jf.exists?).to eq false
     FileUtils.touch(@jf.file_path)

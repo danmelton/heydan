@@ -49,8 +49,8 @@ class HeyDanCLI < Thor
   end  
 
   desc "import NAMES", "Bulk updates elasticsearch from the jurisdictions folder"
-  def import(*names)
-    puts "Importing  #{names.join(', ')}"
+  def import()
+    HeyDan::ElasticSearch.new.import
   end  
 
   desc "upload NAMES", "uploads download folder to s3. If you have a heydan.yml file with keys, it will upload all the files to an s3 bucket "
