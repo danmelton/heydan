@@ -30,11 +30,12 @@ class HeyDan::ElasticSearch < HeyDan
     a=0
     b=1000
     while true do
+      puts "Batch #{a} - #{b}"
       @bulk = []
       b=( files.size - b < 1000 ? -1 : a + 1000)
       files[a..b].each do |file|
-        json = JSON.parse(File.read(file))
-        @bulk << { index:  { _index: 'jurisdictions', _type: json['entityType'] | 'entity', data: json } } 
+        jf = HeyDan::JurisdictionFile.new(name: file)
+        @bulk << { index:  { _index: 'jurisdictions', _type: jf.type, data: jf.get_json } } 
       end
       @client.bulk refresh: true, body: @bulk; nil    
       a = b + 1
