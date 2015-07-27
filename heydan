@@ -17,13 +17,14 @@ class HeyDanCLI < Thor
   desc "download NAMES", "Downloads all datasets from the CDN"
   def download(*names)
     puts "Downloading  #{names.join(', ')}"
+    HeyDan::CDN.new.download
   end  
 
   desc "setup", "Setups all the jurisdictions from the identifiers folder"
-    def setup()
-      puts "Setting up identifiers"
-      HeyDan::Identifier.process()
-    end 
+  def setup()
+    puts "Setting up identifiers"
+    HeyDan::Identifier.process()
+  end 
 
   desc "parse NAMES", "Parses downloaded csv files into jurisdiction/*/*.json files"
   def parse(*names)
@@ -55,6 +56,7 @@ class HeyDanCLI < Thor
 
   desc "upload NAMES", "uploads download folder to s3. If you have a heydan.yml file with keys, it will upload all the files to an s3 bucket "
   def upload(*names)
+    HeyDan::CDN.new.upload
     puts "Uploading  #{names.join(', ')}"
   end  
 

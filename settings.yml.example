@@ -1,6 +1,23 @@
-elasticsearch: http://localhost:9200
-scripts_folder: scripts
-jurisdictions_folder: jurisdictions
-downloads_folder: downloads
-tmp_folder: tmp
-datasets_folder: datasets
+dev:  
+  elasticsearch: http://localhost:9200
+  scripts_folder: scripts
+  jurisdictions_folder: jurisdictions
+  downloads_folder: downloads
+  tmp_folder: tmp
+  datasets_folder: datasets
+  identifiers_folder: identifiers
+  aws_access_id: yourkey
+  aws_secret_key: yourkey
+  cdn: https://heydan.s3-us-west-1.amazonaws.com
+
+test:  
+  elasticsearch: http://localhost:9200
+  scripts_folder: spec/tmp/scripts
+  jurisdictions_folder: spec/tmp/jurisdictions
+  downloads_folder: spec/tmp/downloads
+  tmp_folder: spec/tmp
+  datasets_folder: spec/tmp/datasets
+  identifiers_folder: spec/tmp/identifiers
+  aws_access_id: yourkey
+  aws_secret_key: yourkey
+  cdn: https://heydan.s3-us-west-1.amazonaws.com

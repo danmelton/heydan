@@ -11,12 +11,12 @@ gem 'sinatra-cross_origin', '~> 0.3.1'
 gem 'jbuilder'
 gem 'rubyzip'
 gem 'thor'
+gem 'fog'
 gem 'pry'
 
-group :test, :develop do
+group :test do
   gem 'rspec'
   gem 'rack-test'
-  gem 'pry'
   gem 'vcr'
   gem 'webmock'
   gem 'guard-rspec', require: false
