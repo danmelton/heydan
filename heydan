@@ -4,7 +4,7 @@ require 'thor'
 require File.join(Dir.pwd, 'lib', 'hey_dan.rb')
  
 class HeyDanCLI < Thor
-  desc "sync", "Downloads all data sets from the CDN & imports them into elasticsearch."
+  desc "sync", "Runs download, setup, update_files and import"
   def sync(*names)
     puts "Syncing #{names.join(', ')}"
     download(names)
@@ -16,6 +16,7 @@ class HeyDanCLI < Thor
   desc "server", "starts up the webserver for heydan"
   def server()
     puts "Serving up some HeyDan Realness"
+    HeyDan::Server.run!
   end  
 
   desc "download NAMES", "Downloads all datasets from the CDN"
@@ -64,7 +65,7 @@ class HeyDanCLI < Thor
     HeyDan::ElasticSearch.new.import
   end  
 
-  desc "upload NAMES", "uploads download folder to s3. If you have a heydan.yml file with keys, it will upload all the files to an s3 bucket "
+  desc "upload NAMES", "uploads download folder to s3. If you have a settings.yml file with keys, it will upload all the files to an s3 bucket "
   def upload(*names)
     HeyDan::CDN.new.upload
     puts "Uploading  #{names.join(', ')}"

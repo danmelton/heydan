@@ -5,6 +5,7 @@ class HeyDan::JurisdictionFile < HeyDan
   def initialize(opts={})
     @name = opts[:name]
     convert_file_name if @name.include?('.json')
+    @name = @name.gsub('jurisdictions/','').gsub('ocd-division/','')
     raise "Name is required" if @name.nil?
     super
   end
@@ -14,7 +15,7 @@ class HeyDan::JurisdictionFile < HeyDan
   end
 
   def convert_file_name
-    @name = "ocd-division/#{@name.gsub('::','/').gsub('.json','')}"
+    @name = "#{@name.gsub('::','/').gsub('.json','')}"
   end
 
   def file_name
