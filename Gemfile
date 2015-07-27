@@ -13,6 +13,8 @@ gem 'rubyzip'
 gem 'thor'
 gem 'fog'
 gem 'pry'
+gem 'parallel'
+gem 'ruby-progressbar'
 
 group :test do
   gem 'rspec'

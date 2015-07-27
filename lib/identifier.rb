@@ -39,13 +39,13 @@ class HeyDan::Identifier < HeyDan
       @csv_final_data = CSV.read(File.join(@settings[:downloads_folder], "#{@name}.csv"))
     end
     header = @csv_final_data[0]
-    @csv_final_data[1..-1].each do |row|
+    require 'parallel'
+    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} identifiers for #{type} ") do |row|
       jf = HeyDan::JurisdictionFile.new(name: row[0])
       id = header.index(identifier_column)
       next if row[id].nil?
       jf.add_identifier(type, row[id])
       add_other_data(jf, header, row)
-      puts 'saving ' + jf.file_name
       jf.save
     end 
   end

@@ -25,21 +25,25 @@ class HeyDan::ElasticSearch < HeyDan
   def import
     puts "Posting to Elasticsearch"
     total = Dir.glob("#{@settings[:jurisdictions_folder]}/*").size
-    puts "Processing #{total} in #{@settings[:jurisdictions_folder]}"
     files= Dir.glob("#{@settings[:jurisdictions_folder]}/*")
     a=0
-    b=1000
+    b=10000
+    progress = ProgressBar.create(:title => "Importing #{files.size} jurisdictions into Elastic Search", :starting_at => a, :total => files.size)
     while true do
-      puts "Batch #{a} - #{b}"
       @bulk = []
-      b=( files.size - b < 1000 ? -1 : a + 1000)
+      b=( files.size - b < 10000 ? -1 : a + 10000)
       files[a..b].each do |file|
         jf = HeyDan::JurisdictionFile.new(name: file)
         @bulk << { index:  { _index: 'jurisdictions', _type: jf.type, data: jf.get_json } } 
       end
       @client.bulk refresh: true, body: @bulk; nil    
       a = b + 1
-      break if b == -1
+      if b == -1
+        progress.finish
+        break 
+      else
+        progress.progress = a 
+      end
     end
   end
 
