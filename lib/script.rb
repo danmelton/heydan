@@ -48,6 +48,9 @@ class HeyDan::Script < HeyDan
   end
 
   def update_files
+    if @csv_final_data.nil?
+      @csv_final_data = CSV.read(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+    end
   end
 
   def save_data
@@ -66,6 +69,7 @@ class HeyDan::Script < HeyDan
 
   def self.process(names=[])
     names.each do |name|
+      name.gsub!('.json', '') if name.include?('.json')
       if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
         load File.join(settings[:scripts_folder], "#{name}.rb")
         Object.const_get(HeyDan::Helpers.classify(name)).new(name: name).process
@@ -77,7 +81,21 @@ class HeyDan::Script < HeyDan
   end
 
   def self.process_all
-    puts "not yet implemented"
+    process(datasets)
   end
+
+  def self.update_files
+    datasets.each do |name|
+      name.gsub!('.json', '') if name.include?('.json')
+      if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
+        load File.join(settings[:scripts_folder], "#{name}.rb")
+        Object.const_get(HeyDan::Helpers.classify(name)).new(name: name).update_files
+      else
+        puts "Files for #{name} do not exist"
+        next
+      end
+    end
+  end
+
 
 end

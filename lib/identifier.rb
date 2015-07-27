@@ -35,6 +35,9 @@ class HeyDan::Identifier < HeyDan
   end
 
   def update_files
+    if @csv_final_data.nil?
+      @csv_final_data = CSV.read(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+    end
     header = @csv_final_data[0]
     @csv_final_data[1..-1].each do |row|
       jf = HeyDan::JurisdictionFile.new(name: row[0])
@@ -70,7 +73,7 @@ class HeyDan::Identifier < HeyDan
     end  
   end
 
-  def self.process(names=[])
+  def self.process()
     self.process_order.each do |name|
       if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
         load File.join(settings[:scripts_folder], "#{name}.rb")

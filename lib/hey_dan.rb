@@ -33,6 +33,15 @@ class HeyDan
     Dir.glob("#{@settings[:datasets_folder]}/*.json").map { |f| f.gsub("#{@settings[:datasets_folder]}/", '')}
   end
 
+  def self.identifiers
+    Dir.glob("#{SETTINGS[:identifiers_folder]}/*.json").map { |f| f.gsub("#{SETTINGS[:identifiers_folder]}/", '')}
+  end
+
+  def self.datasets
+    Dir.glob("#{SETTINGS[:datasets_folder]}/*.json").map { |f| f.gsub("#{SETTINGS[:datasets_folder]}/", '')}
+  end
+
+
 end
 
 require File.join(Dir.pwd, 'lib', 'helpers')

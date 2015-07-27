@@ -7,6 +7,10 @@ class HeyDanCLI < Thor
   desc "sync", "Downloads all data sets from the CDN & imports them into elasticsearch."
   def sync(*names)
     puts "Syncing #{names.join(', ')}"
+    download(names)
+    setup()
+    update_files(names)
+    import(names)
   end
 
   desc "server", "starts up the webserver for heydan"
@@ -16,7 +20,7 @@ class HeyDanCLI < Thor
 
   desc "download NAMES", "Downloads all datasets from the CDN"
   def download(*names)
-    puts "Downloading  #{names.join(', ')}"
+    puts "Downloading  #{names.join(', ')} files"
     HeyDan::CDN.new.download
   end  
 
@@ -24,6 +28,12 @@ class HeyDanCLI < Thor
   def setup()
     puts "Setting up identifiers"
     HeyDan::Identifier.process()
+  end 
+
+  desc "update_files", "Processes download folder"
+  def update_files(*names)
+    puts "Processing download folder"
+    HeyDan::Script.update_files()
   end 
 
   desc "parse NAMES", "Parses downloaded csv files into jurisdiction/*/*.json files"
@@ -50,7 +60,7 @@ class HeyDanCLI < Thor
   end  
 
   desc "import NAMES", "Bulk updates elasticsearch from the jurisdictions folder"
-  def import()
+  def import(*names)
     HeyDan::ElasticSearch.new.import
   end  
 
@@ -68,7 +78,7 @@ class HeyDanCLI < Thor
 
   desc "list", "lists available datasets to import"
   def list()
-    puts "List of Dataset Names here"
+    puts HeyDan.new.datasets.map {|f| f.gsub('.json', '')}
   end
 end
  

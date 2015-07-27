@@ -30,13 +30,14 @@ class DecennialCensusPopulation < HeyDan::Script
   end
 
   def update_files
+    super
     @identifiers = HeyDan::Script.identifiers_hash('ansi_id')
     meta_data = JSON.parse(File.read(File.join(@settings[:datasets_folder], 'decennial_census_population.json')))
     @csv_final_data[1..-1].each do |row|
       filename = @identifiers[row[0]]
       next if filename.nil?
       jf = HeyDan::JurisdictionFile.new(name: filename)
-      data = {"name" => "Total Population", "dates" => [2010, 2000, 1990], "data" => row[1..-1]}
+      data = {"name" => "Total Population", "dates" => [2010, 2000, 1990], "data" => row[1..-1].map { |x| x.to_i}}
       jf.add_dataset('population', 'decennial_census_population', data)
       puts "saving Total population for #{filename}"
       jf.save
