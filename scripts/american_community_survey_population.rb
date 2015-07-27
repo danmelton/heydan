@@ -7,7 +7,6 @@ class AmericanCommunitySurveyPopulation < HeyDan::Script
     @transform_data = {}
     geos.each do |geo|
       ['2013', '2012', '2011', '2010'].each do |y|
-          puts "grabbing #{y} population from Census API for #{geo}"      
           data = JSON.parse(open("http://api.census.gov/data/#{y}/acs5?get=NAME,B01001_001E&for=#{geo}:*&key=#{api_key}").read)
           data[1..-1].each do |d|
             ansi_id = d[3].nil? ? d[2] : d[2]+d[3]
@@ -34,7 +33,7 @@ class AmericanCommunitySurveyPopulation < HeyDan::Script
     @identifiers = HeyDan::Script.identifiers_hash('ansi_id')
     meta_data = JSON.parse(File.read(File.join(@settings[:datasets_folder], 'decennial_census_population.json')))
     require 'parallel'
-    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for decennial_census_population") do |row|
+    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for american_community_survey_population") do |row|
       filename = @identifiers[row[0]]
       next if filename.nil?
       jf = HeyDan::JurisdictionFile.new(name: filename)

@@ -57,4 +57,5 @@ class HeyDan::Server < Sinatra::Base
       halt 404, '{"message": "Hrmm, something is fishy here. Are you do something weird?"}'
     end
   end
+
 end

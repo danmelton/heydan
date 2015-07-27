@@ -70,6 +70,7 @@ class HeyDan::Script < HeyDan
   def self.process(names=[])
     names.each do |name|
       name.gsub!('.json', '') if name.include?('.json')
+      puts "Getting Data for #{name}"
       if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
         load File.join(settings[:scripts_folder], "#{name}.rb")
         Object.const_get(HeyDan::Helpers.classify(name)).new(name: name).process

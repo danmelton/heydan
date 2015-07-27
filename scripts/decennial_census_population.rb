@@ -7,7 +7,6 @@ class DecennialCensusPopulation < HeyDan::Script
     @transform_data = {}
     geos.each do |geo|
       [['2010','P0010001'], ['2000','P001001'], ['1990','P0010001']].each do |y|
-          puts "grabbing #{y[0]} population from Census API for #{geo}"      
           data = JSON.parse(open("http://api.census.gov/data/#{y[0]}/sf1?key=#{api_key}&get=#{y[1]}&for=#{geo}:*").read)
           data[1..-1].each do |d|
             state = d[1].size==1 ? "0#{d[1]}" : d[1]
