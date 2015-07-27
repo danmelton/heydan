@@ -1,0 +1,8 @@
+{
+      "name": "Population",
+      "description": "The American Community Survey (ACS) is a national survey that uses continuous measurement methods. In this survey, a series of monthly samples produce annual estimates for the same small areas (census tracts and block groups) formerly surveyed via the decennial census long-form sample.",
+      "source": "American Community Survey",
+      "sourceUrl": "http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html#notes",
+      "period": "Yearly",
+      "dates": [2013, 2012, 2011, 2010]
+}

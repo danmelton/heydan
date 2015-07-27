@@ -1,19 +1,18 @@
 require File.join(Dir.pwd, 'lib', 'hey_dan')
 
-class DecennialCensusPopulation < HeyDan::Script
+class AmericanCommunitySurveyPopulation < HeyDan::Script
   def get_data
     api_key = 'c752f1c125b9e278df02dd84e54868ee767f67b0'
     geos = ['place', 'state', 'county']
     @transform_data = {}
     geos.each do |geo|
-      [['2010','P0010001'], ['2000','P001001'], ['1990','P0010001']].each do |y|
-          puts "grabbing #{y[0]} population from Census API for #{geo}"      
-          data = JSON.parse(open("http://api.census.gov/data/#{y[0]}/sf1?key=#{api_key}&get=#{y[1]}&for=#{geo}:*").read)
+      ['2013', '2012', '2011', '2010'].each do |y|
+          puts "grabbing #{y} population from Census API for #{geo}"      
+          data = JSON.parse(open("http://api.census.gov/data/#{y}/acs5?get=NAME,B01001_001E&for=#{geo}:*&key=#{api_key}").read)
           data[1..-1].each do |d|
-            state = d[1].size==1 ? "0#{d[1]}" : d[1]
-            ansi_id = d[2].nil? ? state : state+d[2]
+            ansi_id = d[3].nil? ? d[2] : d[2]+d[3]
             @transform_data[ansi_id] ||= []
-            @transform_data[ansi_id] << d[0].to_i
+            @transform_data[ansi_id] << d[1].to_i
           end
       end
     end
@@ -21,7 +20,7 @@ class DecennialCensusPopulation < HeyDan::Script
 
   def transform_data
     @csv_final_data = @transform_data.map { |c| c[1].unshift(c[0])}
-    @csv_final_data.unshift(['ansi_id', 2010, 2000, 1990])
+    @csv_final_data.unshift(['ansi_id', '2013', '2012', '2011', '2010'])
     super
   end
 
@@ -39,8 +38,8 @@ class DecennialCensusPopulation < HeyDan::Script
       filename = @identifiers[row[0]]
       next if filename.nil?
       jf = HeyDan::JurisdictionFile.new(name: filename)
-      data = {"name" => "Total Population", "dates" => [2010, 2000, 1990], "data" => row[1..-1].map { |x| x.to_i}}
-      jf.add_dataset('population', 'decennial_census_population', data)
+      data = {"name" => "Total Population", "dates" => ['2013', '2012', '2011', '2010'], "data" => row[1..-1].map { |x| x.to_i}}
+      jf.add_dataset('population', 'american_community_survey_population', data)
       jf.save
     end
   end
