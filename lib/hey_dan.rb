@@ -20,6 +20,11 @@ class HeyDan
     @settings = SETTINGS
   end
 
+  def download_file_present?
+    return false if @name.nil?
+    File.exists?(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+  end
+
   def self.settings
     yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
     @settings  = yml[ENV['heydan_env'] || 'dev']
@@ -42,6 +47,8 @@ class HeyDan
   def self.datasets
     Dir.glob("#{SETTINGS[:datasets_folder]}/*.json").map { |f| f.gsub("#{SETTINGS[:datasets_folder]}/", '')}
   end
+
+
 
 
 end

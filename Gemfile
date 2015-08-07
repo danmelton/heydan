@@ -15,7 +15,6 @@ gem 'fog'
 gem 'pry'
 gem 'parallel'
 gem 'ruby-progressbar'
-gem 'rubyzip'
 
 group :test do
   gem 'rspec'

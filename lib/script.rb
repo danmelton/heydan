@@ -18,10 +18,12 @@ class HeyDan::Script < HeyDan
   end
 
   def process
-    get_data
-    transform_data
-    save_data
-    validate_process
+    if !download_file_present?
+      get_data
+      transform_data
+      save_data
+      validate_process
+    end
     update_files
   end
 

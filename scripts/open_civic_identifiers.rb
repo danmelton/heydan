@@ -1,5 +1,3 @@
-require File.join(Dir.pwd, 'lib', 'hey_dan')
-
 class OpenCivicIdentifiers < HeyDan::Identifier
   def get_data
     file = HeyDan::Helpers::download('https://github.com/opencivicdata/ocd-division-ids/blob/master/identifiers/country-us.csv?raw=true', @name, 'csv')

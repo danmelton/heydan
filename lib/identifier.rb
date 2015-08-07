@@ -10,9 +10,11 @@ class HeyDan::Identifier < HeyDan
 
   def process
     return if skip_process?
-    get_data
-    transform_data
-    save_data
+    if !download_file_present?
+      get_data
+      transform_data
+      save_data
+    end
     update_files
   end
 

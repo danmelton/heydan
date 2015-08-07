@@ -41,9 +41,9 @@ On Mac or Linux, in Terminal.app or your favorite shell:
 
 Clone this repo:
 
-    git clone git@github.com/danmelton/heydan.git
+    git clone https://git@github.com/danmelton/heydan.git
 
-Install ElasticSearch:
+Install ElasticSearch (via homebrew):
 
       brew install elasticsearch #mac 1.6 or greater
 
@@ -63,13 +63,17 @@ Install the Ruby Gem dependencies:
 
 Add heydan to your path (update the path for your compter):
 
-      PATH= $PATH:$HOME/projects/heydan
+      PATH= $PATH:$HOME/projects/heydan1
+
+Copy over settings.yml.example to settings.yml
+
+      cp settings.yml.example settings.yml
 
 ##Adding new Datasets to heydan
 
 Adding a new dataset to hey dan is super simple. First, create two new files:
 
-      heydan new your_name
+      heydan new your_data_set_name
 
 This will create two new files, one in datasets/your_name.json and one in scripts/your_name.rb
 
@@ -83,6 +87,7 @@ Inside the datasets/your_name.json, updated the following fields:
       sourceUrl: a Link to a page where the data is hosted or explained
       period: Year, Quarter, Month, Day, 10 Years
       dates: [2010, 2011, 2013] - an array of dates for the available data
+      id: choose from ansi_id or open_civic_id (we're getting other identifiers in)
 
 Inside the scripts/your_name.rb, there are three main methods:
 
