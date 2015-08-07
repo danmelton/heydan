@@ -3,6 +3,8 @@ require 'bundler'
 require 'yaml'
 require 'json'
 require 'csv'
+require 'parallel'
+require 'ruby-progressbar'
 Bundler.setup(:default)
 
 yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))

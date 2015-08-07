@@ -4,5 +4,7 @@
       "source": "American Community Survey",
       "sourceUrl": "http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html#notes",
       "period": "Yearly",
-      "dates": [2013, 2012, 2011, 2010]
+      "dates": [2013, 2012, 2011, 2010],
+      "tag": "population",
+      "id":"ansi_id"
 }

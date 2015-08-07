@@ -1,5 +1,7 @@
 require 'csv'
 require 'open-uri'
+require 'pry'
+require 'parallel'
 
 class HeyDan::Script < HeyDan
   attr_accessor :name
@@ -51,6 +53,18 @@ class HeyDan::Script < HeyDan
     if @csv_final_data.nil?
       @csv_final_data = CSV.read(File.join(@settings[:downloads_folder], "#{@name}.csv"))
     end
+    id = @csv_final_data[0][0]
+    @identifiers = HeyDan::Script.identifiers_hash(id)
+    meta_data = JSON.parse(File.read(File.join(@settings[:datasets_folder], "#{@name}.json")))
+    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for #{@name}") do |row|
+      filename = @identifiers[row[0]]
+      next if filename.nil?
+      jf = HeyDan::JurisdictionFile.new(name: filename)
+      data = {"name" => meta_data["name"], "dates" => meta_data["dates"], "data" => row[1..-1].map { |x| x.to_i}}
+      jf.add_dataset(meta_data["tag"], @name, data)
+      jf.save
+    end
+
   end
 
   def save_data
@@ -79,6 +93,22 @@ class HeyDan::Script < HeyDan
         next
       end
     end
+  end
+
+  #for really big files, we need to split them for parrallel processing
+  #TODO, we'll need to make this command platform independent
+  def split_files(original_filepath, lines=100000)
+    system("split -l #{lines} #{original_filepath} #{original_filepath}_")
+    Dir.glob("#{original_filepath}_*")
+  end
+
+  #TODO, we'll need to make this command platform independent
+  def combine_files(filepath_glob, newfile_path)
+    system("cat #{filepath_blog} > #{newfile_path}")
+  end
+
+  def clean_up(files)
+    files.map { |x| File.delete(x)}
   end
 
   def self.process_all
