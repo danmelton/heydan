@@ -176,6 +176,20 @@ To get coverage for a specific data set, you can use ElasticSearch queries:
            }
       }'
 
+      curl -XPOST 'localhost:9200/jurisdictions/_search' -d '
+       {
+         "query": { 
+           "filtered": {
+             "query": {
+               "match": { "open_civic_id": "state:ca/school_district" } 
+               },
+               "filter": {
+                 "exists" : { "field" : "identifiers.cds_code_id" }
+               }
+             }
+           }
+      }'
+
 #Open Civic Identifiers
 The core of this project is the Open Data Civic IDs sponsored by Google and Sunlight Foundation
 https://github.com/opencivicdata/ocd-division-ids/blob/master/identifiers/country-us.csv?raw=true. The Open Data project creates a canonical id for every jurisdiction in the world. It leverages a combination of type and name spacing based upon political or jurisidction boundaries. I.e. country:us/state:ca, or type:id/type:id. This lends itself really well to nested ids AND restful web addresses.
