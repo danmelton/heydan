@@ -158,6 +158,24 @@ Routes to elastic search /_search
 /stats
 Outputs all known data points by type and % penetration
 
+#Coverage
+
+To get coverage for a specific data set, you can use ElasticSearch queries:
+
+      curl -XPOST 'localhost:9200/jurisdictions/_search?pretty' -d '
+       {
+         "query": { 
+           "filtered": {
+             "query": {
+               "match": { "open_civic_id": "state:ca/school_district" } 
+               },
+               "filter": {
+                 "exists" : { "field" : "website" }
+               }
+             }
+           }
+      }'
+
 #Open Civic Identifiers
 The core of this project is the Open Data Civic IDs sponsored by Google and Sunlight Foundation
 https://github.com/opencivicdata/ocd-division-ids/blob/master/identifiers/country-us.csv?raw=true. The Open Data project creates a canonical id for every jurisdiction in the world. It leverages a combination of type and name spacing based upon political or jurisidction boundaries. I.e. country:us/state:ca, or type:id/type:id. This lends itself really well to nested ids AND restful web addresses.
@@ -192,3 +210,4 @@ Start a new dataset in the develop branch:
 Then add your changes to git, and submit a pull request. Bous points for referencing the issue number in your message for the pull request: Fixes #1 
 
 You rock!
+
