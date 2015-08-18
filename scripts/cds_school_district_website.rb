@@ -1,6 +1,6 @@
 require File.join(Dir.pwd, 'lib', 'hey_dan')
 
-class CaliforniaDepatEducationSchoolWebsite < HeyDan::Script
+class CdsSchoolDistrictWebsite < HeyDan::Script
   def get_data
     file = HeyDan::Helpers::download('ftp://ftp.cde.ca.gov/demo/schlname/pubschls.txt', @name, 'csv')
     contents = File.read(file, :encoding => 'utf-8').encode("UTF-8", :invalid=>:replace, :replace=>"").gsub('"',"")
@@ -27,9 +27,7 @@ class CaliforniaDepatEducationSchoolWebsite < HeyDan::Script
     end
     id = @csv_final_data[0][0]
     @identifiers = HeyDan::Script.identifiers_hash(id)
-    meta_data = JSON.parse(File.read(File.join(@settings[:sources_folder], "#{@name}.json")))
-    # Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for #{@name}") do |row|
-      @csv_final_data[1..-1].each do |row|
+    @csv_final_data[1..-1].each do |row|
       filename = @identifiers[row[0]]
       next if filename.nil?
       if @jurisdiction_type
@@ -39,8 +37,5 @@ class CaliforniaDepatEducationSchoolWebsite < HeyDan::Script
       jf.add_property('website', row[1])
       jf.save
     end
-
-  #this method loops through each item and saves it to the jurisdictions/entity_id 
-    super
   end
 end

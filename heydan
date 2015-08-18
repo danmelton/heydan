@@ -35,8 +35,8 @@ class HeyDanCLI < Thor
 
   desc "update_files", "Processes download folder"
   def update_files(*names)
-    puts "Processing download folder"
-    HeyDan::Script.update_files({type: options[:type]})
+    puts "Processing datasets folder"
+    HeyDan::Script.update_files({names: names, type: options[:type]})
   end 
 
   desc "parse NAMES", "Parses downloaded csv files into jurisdiction/*/*.json files"

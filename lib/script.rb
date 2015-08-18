@@ -119,12 +119,18 @@ class HeyDan::Script < HeyDan
     files.map { |x| File.delete(x)}
   end
 
-  def self.process_all
-    process(datasets)
+  def self.process_all(opts={})
+    opts[:names] = datasets
+    process(opts)
   end
 
   def self.update_files(opts={})
-    datasets.each do |name|
+    if opts[:names].size > 0
+      @datasets = opts[:names]
+    else
+      @datasets = datasets
+    end
+    @datasets.each do |name|
       name.gsub!('.json', '') if name.include?('.json')
       if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
         load File.join(settings[:scripts_folder], "#{name}.rb")
