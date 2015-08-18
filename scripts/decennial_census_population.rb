@@ -24,24 +24,4 @@ class DecennialCensusPopulation < HeyDan::Script
     super
   end
 
-  def save_data
-  #this method saves the file into downloads
-    super
-  end
-
-  def update_files
-    super
-    @identifiers = HeyDan::Script.identifiers_hash('ansi_id')
-    meta_data = JSON.parse(File.read(File.join(@settings[:sources_folder], 'decennial_census_population.json')))
-    require 'parallel'
-    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for decennial_census_population") do |row|
-      filename = @identifiers[row[0]]
-      next if filename.nil?
-      jf = HeyDan::JurisdictionFile.new(name: filename)
-      data = {"name" => "Total Population", "dates" => [2010, 2000, 1990], "data" => row[1..-1].map { |x| x.to_i}}
-      jf.add_dataset('population', 'decennial_census_population', data)
-      jf.save
-    end
-  end
-
 end

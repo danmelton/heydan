@@ -9,10 +9,10 @@ class HeyDanCLI < Thor
   desc "sync", "Runs download, setup, update_files and import"
   def sync(*names)
     puts "Syncing #{names.join(', ')}"
-    download(names)
+    download()
     setup()
-    update_files(names)
-    import(names)
+    update_files()
+    import()
   end
 
   desc "server", "starts up the webserver for heydan"

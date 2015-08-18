@@ -60,7 +60,8 @@ class HeyDan::Script < HeyDan
     id = @csv_final_data[0][0]
     @identifiers = HeyDan::Script.identifiers_hash(id)
     meta_data = JSON.parse(File.read(File.join(@settings[:sources_folder], "#{@name}.json")))
-    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for #{@name}") do |row|
+    progress = ProgressBar.create(:title => "Updating Files with #{@name} for #{@csv_final_data[1..-1].size} jurisdictions", :starting_at => 0, :total => @csv_final_data[1..-1].size)
+    @csv_final_data[1..-1].each do |row|
       filename = @identifiers[row[0]]
       next if filename.nil?
       if @jurisdiction_type
@@ -70,8 +71,9 @@ class HeyDan::Script < HeyDan
       data = {"name" => meta_data["name"], "dates" => meta_data["dates"], "data" => row[1..-1].map { |x| x.to_i}}
       jf.add_dataset(meta_data["tag"], @name, data)
       jf.save
+      progress.increment
     end
-
+    progress.finish
   end
 
   def save_data

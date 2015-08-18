@@ -25,6 +25,7 @@ class CdsSchoolDistrictWebsite < HeyDan::Script
     if @csv_final_data.nil?
       @csv_final_data = CSV.read(File.join(@settings[:datasets_folder], "#{@name}.csv"))
     end
+  progress = ProgressBar.create(:title => "Updating Files with #{@name} for #{@csv_final_data[1..-1].size} jurisdictions", :starting_at => 0, :total => @csv_final_data[1..-1].size)
     id = @csv_final_data[0][0]
     @identifiers = HeyDan::Script.identifiers_hash(id)
     @csv_final_data[1..-1].each do |row|
@@ -36,6 +37,8 @@ class CdsSchoolDistrictWebsite < HeyDan::Script
       jf = HeyDan::JurisdictionFile.new(name: filename)
       jf.add_property('website', row[1])
       jf.save
+      progress.increment
     end
+    progress.finish
   end
 end
