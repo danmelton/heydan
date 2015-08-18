@@ -38,7 +38,7 @@ class HeyDan::Identifier < HeyDan
 
   def update_files
     if @csv_final_data.nil?
-      @csv_final_data = CSV.read(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+      @csv_final_data = CSV.read(File.join(@settings[:datasets_folder], "#{@name}.csv"))
     end
     header = @csv_final_data[0]
     Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} identifiers for #{type} ") do |row|
@@ -56,7 +56,7 @@ class HeyDan::Identifier < HeyDan
 
   def save_data
     require 'csv'
-    CSV.open(File.join(@settings[:downloads_folder], "#{@name}.csv"), 'w') do |csv|
+    CSV.open(File.join(@settings[:datasets_folder], "#{@name}.csv"), 'w') do |csv|
       @csv_final_data.each do |row|
         csv << row
       end

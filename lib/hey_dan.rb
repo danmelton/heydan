@@ -18,11 +18,17 @@ class HeyDan
   
   def initialize(opts={})
     @settings = SETTINGS
+    check_folders
+  end
+
+  def check_folders
+    FileUtils.mkdir(@settings[:downloads_folder]) if !Dir.exists?(@settings[:downloads_folder])
+    FileUtils.mkdir(@settings[:jurisdictions_folder]) if !Dir.exists?(@settings[:jurisdictions_folder])
   end
 
   def download_file_present?
     return false if @name.nil?
-    File.exists?(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+    File.exists?(File.join(@settings[:datasets_folder], "#{@name}.csv"))
   end
 
   def self.settings
@@ -37,7 +43,7 @@ class HeyDan
   end
 
   def datasets
-    Dir.glob("#{@settings[:datasets_folder]}/*.json").map { |f| f.gsub("#{@settings[:datasets_folder]}/", '')}
+    Dir.glob("#{@settings[:sources_folder]}/*.json").map { |f| f.gsub("#{@settings[:sources_folder]}/", '')}
   end
 
   def self.identifiers
@@ -45,7 +51,7 @@ class HeyDan
   end
 
   def self.datasets
-    Dir.glob("#{SETTINGS[:datasets_folder]}/*.json").map { |f| f.gsub("#{SETTINGS[:datasets_folder]}/", '')}
+    Dir.glob("#{SETTINGS[:sources_folder]}/*.json").map { |f| f.gsub("#{SETTINGS[:sources_folder]}/", '')}
   end
 
 
@@ -55,7 +61,7 @@ end
 
 require File.join(Dir.pwd, 'lib', 'helpers')
 require File.join(Dir.pwd, 'lib', 'jurisdiction_file')
-require File.join(Dir.pwd, 'lib', 'dataset')
+require File.join(Dir.pwd, 'lib', 'source')
 require File.join(Dir.pwd, 'lib', 'script')
 require File.join(Dir.pwd, 'lib', 'identifier')
 require File.join(Dir.pwd, 'lib', 'elastic_search')

@@ -74,7 +74,7 @@ class HeyDanCLI < Thor
   desc "new NAME", "generates new files to add a new dataset datasets/name.json, scripts/name.rb "
   def new(name)
     puts "Creating new #{name} in datasets/#{name}.json and scripts/#{name}.rb"
-    HeyDan::Dataset.new({name:name}).create
+    HeyDan::Source.new({name:name}).create
   end  
 
   desc "list", "lists available datasets to import"

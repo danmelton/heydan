@@ -4,11 +4,11 @@ class HeyDan::CDN < HeyDan
   def download
     identifiers.each do |f|
       file_name = f.gsub('.json', '.csv')
-      HeyDan::Helpers::download("#{@settings[:cdn]}/#{file_name}", file_name, 'csv', @settings[:downloads_folder])
+      HeyDan::Helpers::download("#{@settings[:cdn]}/#{file_name}", file_name, 'csv', @settings[:datasets_folder])
     end
     datasets.each do |f|
       file_name = f.gsub('.json', '.csv')
-      HeyDan::Helpers::download("#{@settings[:cdn]}/#{file_name}", file_name, 'csv', @settings[:downloads_folder])
+      HeyDan::Helpers::download("#{@settings[:cdn]}/#{file_name}", file_name, 'csv', @settings[:datasets_folder])
     end
   end
 
@@ -25,9 +25,9 @@ class HeyDan::CDN < HeyDan
     })
     @directory = @connection.directories.get(@settings[:aws_bucket])
 
-    files = Dir.glob("#{@settings[:downloads_folder]}/*.csv")
+    files = Dir.glob("#{@settings[:datasets_folder]}/*.csv")
     files.each do |f|
-      name = f.gsub("#{@settings[:downloads_folder]}/", '')
+      name = f.gsub("#{@settings[:datasets_folder]}/", '')
       puts "uploading #{name}"
       file = @directory.files.new({
         :key    => name,

@@ -31,7 +31,7 @@ class AmericanCommunitySurveyPopulation < HeyDan::Script
   def update_files
     super
     @identifiers = HeyDan::Script.identifiers_hash('ansi_id')
-    meta_data = JSON.parse(File.read(File.join(@settings[:datasets_folder], 'decennial_census_population.json')))
+    meta_data = JSON.parse(File.read(File.join(@settings[:sources_folder], 'decennial_census_population.json')))
     require 'parallel'
     Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for american_community_survey_population") do |row|
       filename = @identifiers[row[0]]

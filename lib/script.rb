@@ -13,7 +13,7 @@ class HeyDan::Script < HeyDan
   def initialize(opts={})
     super(opts)
     @name = opts[:name].downcase
-    @dataset = HeyDan::Dataset.new({settings: @settings, name: @name})
+    @dataset = HeyDan::Source.new({settings: @settings, name: @name})
     raise "#{@name} does not have a valid json file" if !@dataset.valid_json?
   end
 
@@ -28,7 +28,7 @@ class HeyDan::Script < HeyDan
   end
 
   def self.identifiers_hash(identifier)
-    identifier_file = File.join(SETTINGS[:tmp_folder], "identifiers_file_#{identifier}.json")
+    identifier_file = File.join(SETTINGS[:downloads_folder], "identifiers_file_#{identifier}.json")
     if File.exist?(identifier_file)
       @identifier_hash = JSON.parse(File.read(identifier_file))
       return @identifier_hash
@@ -53,11 +53,11 @@ class HeyDan::Script < HeyDan
 
   def update_files
     if @csv_final_data.nil?
-      @csv_final_data = CSV.read(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+      @csv_final_data = CSV.read(File.join(@settings[:datasets_folder], "#{@name}.csv"))
     end
     id = @csv_final_data[0][0]
     @identifiers = HeyDan::Script.identifiers_hash(id)
-    meta_data = JSON.parse(File.read(File.join(@settings[:datasets_folder], "#{@name}.json")))
+    meta_data = JSON.parse(File.read(File.join(@settings[:sources_folder], "#{@name}.json")))
     Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for #{@name}") do |row|
       filename = @identifiers[row[0]]
       next if filename.nil?
@@ -70,7 +70,7 @@ class HeyDan::Script < HeyDan
   end
 
   def save_data
-    CSV.open(File.join(@settings[:downloads_folder], "#{@name}.csv"), 'w') do |csv|
+    CSV.open(File.join(@settings[:datasets_folder], "#{@name}.csv"), 'w') do |csv|
       @csv_final_data.each do |row|
         csv << row
       end
@@ -78,7 +78,7 @@ class HeyDan::Script < HeyDan
   end
 
   def validate_process
-    raise "File did not save" if !File.exist?(File.join(@settings[:downloads_folder], "#{@name}.csv"))
+    raise "File did not save" if !File.exist?(File.join(@settings[:datasets_folder], "#{@name}.csv"))
     @csv = CSV.read(File.join(@settings[:downlads_folder], "#{@name}.csv")) rescue 'Could not open csv'
     raise 'CSV needs at least two rows' if @csv.size < 2 
   end

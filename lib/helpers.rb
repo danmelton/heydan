@@ -5,7 +5,7 @@ class HeyDan::Helpers
   end
 
   def self.download(url, name, ext, path=nil)
-    path ||= SETTINGS[:tmp_folder]
+    path ||= SETTINGS[:downloads_folder]
     file_name = name.include?(ext) ? name : "#{name}.#{ext}"
     new_file = File.join(path, file_name)
     return new_file if File.exist?(new_file)
@@ -19,7 +19,7 @@ class HeyDan::Helpers
   end
 
   def self.download_zip(url,path=nil)
-    path ||= SETTINGS[:tmp_folder]
+    path ||= SETTINGS[:downloads_folder]
     file_name = url.split('/')[-1]
     download_path = File.join(path, file_name)
     if !File.exist?(download_path)

@@ -1,4 +1,4 @@
-class HeyDan::Dataset < HeyDan
+class HeyDan::Source < HeyDan
   attr_accessor :name
   
   def initialize(opts={})
@@ -24,9 +24,9 @@ class HeyDan::Dataset < HeyDan
   end
 
   def create_json_file
-    json_template = File.read(File.join(Dir.pwd, 'datasets', 'template.json.erb'))
+    json_template = File.read(File.join(@settings[:sources_folder], 'template.json.erb'))
     new_file =  ERB.new(json_template).result binding
-    File.open(File.join(@settings[:datasets_folder], "#{@name}.json"), 'w') do |f|
+    File.open(File.join(@settings[:sources_folder], "#{@name}.json"), 'w') do |f|
       f << new_file
     end
   end
@@ -34,7 +34,7 @@ class HeyDan::Dataset < HeyDan
   def valid_json?
     require 'json'
     begin
-      json = File.read(File.join(@settings[:datasets_folder], "#{@name}.json"))
+      json = File.read(File.join(@settings[:sources_folder], "#{@name}.json"))
       JSON.parse(json)  
     return true  
     rescue JSON::ParserError  
@@ -48,6 +48,6 @@ class HeyDan::Dataset < HeyDan
   end
 
   def file_exist?
-    File.exists?(File.join(@settings[:scripts_folder], "#{@name}.rb")) || File.exists?(File.join(@settings[:datasets_folder], "#{@name}.json"))
+    File.exists?(File.join(@settings[:scripts_folder], "#{@name}.rb")) || File.exists?(File.join(@settings[:sources_folder], "#{@name}.json"))
   end
 end

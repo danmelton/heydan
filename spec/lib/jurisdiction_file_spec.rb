@@ -3,13 +3,13 @@ require 'fileutils'
 
 describe HeyDan::JurisdictionFile do
   before do
-    @jf = HeyDan::JurisdictionFile.new({name: 'ocd-division/country:us'})    
+    @jf = HeyDan::JurisdictionFile.new({name: 'country:us'})    
     FileUtils.rm(@jf.file_path) if File.exists?(@jf.file_path)
   end
 
   it 'type' do
-    expect(HeyDan::JurisdictionFile.new({name: 'ocd-division/country:us'}).type).to eq 'country'
-    expect(HeyDan::JurisdictionFile.new({name: 'ocd-division/country:us/state:ca'}).type).to eq 'state'
+    expect(HeyDan::JurisdictionFile.new({name: 'country:us'}).type).to eq 'country'
+    expect(HeyDan::JurisdictionFile.new({name: 'country:us/state:ca'}).type).to eq 'state'
   end
 
   it 'file_name' do
@@ -18,7 +18,7 @@ describe HeyDan::JurisdictionFile do
 
   it 'convert_file_name' do
     jf = HeyDan::JurisdictionFile.new({name: 'country:us::state:ca.json'})
-    expect(jf.name).to eq "ocd-division/country:us/state:ca"
+    expect(jf.name).to eq "country:us/state:ca"
     expect(jf.file_name).to eq "country:us::state:ca.json"
   end
 
@@ -41,8 +41,8 @@ describe HeyDan::JurisdictionFile do
   end
 
   it 'get_json' do
-    expect(@jf.get_json).to eq ({"id"=>"ocd-division/country:us", "identifiers"=>{}, "datasets"=>{}})
-    expect(@jf.json).to eq ({"id"=>"ocd-division/country:us", "identifiers"=>{}, "datasets"=>{}})
+    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "identifiers"=>{}, "datasets"=>{}})
+    expect(@jf.json).to eq ({"id"=>"country:us", "entityType"=>"country", "identifiers"=>{}, "datasets"=>{}})
   end
 
   it "add_property" do
@@ -51,8 +51,8 @@ describe HeyDan::JurisdictionFile do
   end
 
   it "add_identifier" do
-    @jf.add_identifier('open_civic_identifier', 'ocd-division/country:us')
-    expect(@jf.json['identifiers']['open_civic_identifier']).to eq 'ocd-division/country:us'
+    @jf.add_identifier('open_civic_identifier', 'country:us')
+    expect(@jf.json['identifiers']['open_civic_identifier']).to eq 'country:us'
   end
 
   it "add_dataset" do
@@ -62,7 +62,7 @@ describe HeyDan::JurisdictionFile do
 
   it 'save' do
     @jf.add_property('name', 'love')
-    expect(@jf.get_json).to eq ({"id"=>"ocd-division/country:us", "identifiers"=>{}, "datasets"=>{}, "name" => "love"})
+    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "identifiers"=>{}, "datasets"=>{}, "name"=>"love"})
   end
 
 

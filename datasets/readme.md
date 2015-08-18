@@ -1,3 +1,2 @@
-#Datasets
-
-Datasets can be added by running heydan new [name] which will cp the template.json.erb file to name.json
+#Downloads
+This folder contains the downloads from the datasets hosted on a cdn. If you want to process from the source, you can run heydan process which will run all the scripts and create csv files here. This folder is also used to upload items to the cdn.

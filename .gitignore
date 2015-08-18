@@ -1,6 +1,6 @@
 settings.yml
-spec/tmp*
-downloads/*.csv
-tmp/
+spec/tmp/*
+datasets/*.csv
+downloads/
 jurisdictions/*.json
 
