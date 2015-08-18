@@ -162,7 +162,7 @@ Outputs all known data points by type and % penetration
 
 To get coverage for a specific data set, you can use ElasticSearch queries:
 
-      curl -XPOST 'localhost:9200/jurisdictions/_search?pretty' -d '
+      curl -XPOST 'localhost:9200/jurisdictions/_count?pretty' -d '
        {
          "query": { 
            "filtered": {
@@ -176,7 +176,7 @@ To get coverage for a specific data set, you can use ElasticSearch queries:
            }
       }'
 
-      curl -XPOST 'localhost:9200/jurisdictions/_search' -d '
+      curl -XPOST 'localhost:9200/jurisdictions/_count' -d '
        {
          "query": { 
            "filtered": {
