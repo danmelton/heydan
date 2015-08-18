@@ -69,7 +69,7 @@ class HeyDanCLI < Thor
 
   desc "upload NAMES", "uploads download folder to s3. If you have a settings.yml file with keys, it will upload all the files to an s3 bucket "
   def upload(*names)
-    HeyDan::CDN.new.upload
+    HeyDan::CDN.new.upload(names)
     puts "Uploading  #{names.join(', ')}"
   end  
 

@@ -14,8 +14,7 @@ class HeyDan::CDN < HeyDan
 
 
   #Upload files from the Downloads folder
-  def upload
-
+  def upload(names=[])
     require 'fog'
     @connection = Fog::Storage.new({
       provider: 'AWS',
@@ -24,8 +23,11 @@ class HeyDan::CDN < HeyDan
       aws_secret_access_key: @settings[:aws_secret_key]
     })
     @directory = @connection.directories.get(@settings[:aws_bucket])
-
-    files = Dir.glob("#{@settings[:datasets_folder]}/*.csv")
+    if names.size == 0
+      files = Dir.glob("#{@settings[:datasets_folder]}/*.csv")
+    else
+      files = names.map { |f| File.join(@settings[:datasets_folder], "#{f}.csv")}
+    end
     files.each do |f|
       name = f.gsub("#{@settings[:datasets_folder]}/", '')
       puts "uploading #{name}"
