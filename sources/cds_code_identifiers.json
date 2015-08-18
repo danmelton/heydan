@@ -1,0 +1,7 @@
+{
+      "name": "California Department of School Identifiers",
+      "id": "cds_code_id",
+      "description": "California assigned school ids",
+      "source": "California Department of School",
+      "sourceUrl": "http://www.cde.ca.gov/ds/dd/"
+}

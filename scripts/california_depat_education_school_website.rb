@@ -1,6 +1,6 @@
 require File.join(Dir.pwd, 'lib', 'hey_dan')
 
-class CaliforniaDepatEducationSchoolMetadata < HeyDan::Script
+class CaliforniaDepatEducationSchoolWebsite < HeyDan::Script
   def get_data
     file = HeyDan::Helpers::download('ftp://ftp.cde.ca.gov/demo/schlname/pubschls.txt', @name, 'csv')
     contents = File.read(file, :encoding => 'utf-8').encode("UTF-8", :invalid=>:replace, :replace=>"").gsub('"',"")
