@@ -2,22 +2,20 @@ require 'sinatra'
 require 'json'
 require 'sinatra/cross_origin'
 require 'elasticsearch'
+yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
+@settings  = yml[ENV['heydan_env'] || 'dev']
+@settings.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
+JURISDICTIONS_FOLDER = @settings[:jurisdictions_folder]
 
 class HeyDan::Server < Sinatra::Base
 
-
-
   configure do
-    #  yml = YAML.load(File.read(File.join(Dir.pwd, 'settings.yml')))
-    # @settings  = yml[ENV['heydan_env'] || 'dev']
-    # @settings.default_proc = proc{|h, k| h.key?(k.to_s) ? h[k.to_s] : nil}
     enable :cross_origin
-    # set :settings, @settings
   end
 
   get '/entities/types' do
     content_type 'application/json'
-    file = File.join(@settings[:jurisdictions_folder], '*')
+    file = File.join(JURISDICTIONS_FOLDER, '*')
     types = Dir[file].map { |x| x.split('/')[-1]}
     {types: types}.to_json
   end
@@ -25,10 +23,10 @@ class HeyDan::Server < Sinatra::Base
   get '/entities/*.json' do
     content_type 'application/json'
     begin
-    file = File.join(@settings[:jurisdictions_folder], "#{params[:splat][0].gsub('/','::')}.json")
-    File.read(file)
+      file = File.join(JURISDICTIONS_FOLDER, "#{params[:splat][0].gsub('/','::')}.json")
+      File.read(file)
     rescue
-      halt 404, "{\"message\": \"I couldn\'t find #{params[:splat][0]}. Is the ID right?\"}"
+       halt 404, "{\"message\": \"I couldn\'t find #{params[:splat][0]}. Is the ID right?\"}"
     end
   end
 
