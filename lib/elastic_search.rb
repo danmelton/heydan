@@ -34,7 +34,7 @@ class HeyDan::ElasticSearch < HeyDan
       b=( files.size - b < 10000 ? -1 : a + 10000)
       files[a..b].each do |file|
         jf = HeyDan::JurisdictionFile.new(name: file)
-        @bulk << { index:  { _index: 'jurisdictions', _type: jf.type, data: jf.get_json } } 
+        @bulk << { index:  { _index: 'jurisdictions', _type: jf.type, _id: jf.hash_id, data: jf.get_json } } 
       end
       @client.bulk refresh: true, body: @bulk; nil    
       a = b + 1

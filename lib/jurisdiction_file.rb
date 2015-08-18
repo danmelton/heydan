@@ -5,7 +5,7 @@ class HeyDan::JurisdictionFile < HeyDan
   def initialize(opts={})
     @name = opts[:name]
     convert_file_name if @name.include?('.json')
-    @name = @name.gsub('jurisdictions/','').gsub('ocd-division/','')
+    @name = @name.gsub('jurisdictions/','').gsub('ocd-division/','').gsub(/\.\.\//,'')
     raise "Name is required" if @name.nil?
     super
   end
@@ -20,6 +20,10 @@ class HeyDan::JurisdictionFile < HeyDan
 
   def file_name
     "#{@name.gsub(/\//, '::').gsub('ocd-division::', '')}.json"
+  end
+
+  def hash_id
+    Digest::MD5.hexdigest(@name.gsub(/\.\.\//,''))
   end
 
   def exists?

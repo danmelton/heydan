@@ -51,7 +51,7 @@ class HeyDan::Identifier < HeyDan
     end
 
     header = @csv_final_data[0]
-    Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} identifiers for #{type} ") do |row|
+    Parallel.map(@csv_final_data[1..-1], :progress => "Processing #{@csv_final_data[1..-1].size} identifiers for #{type} ") do |row|
       jf = HeyDan::JurisdictionFile.new(name: row[0])
       next if skip_file?(jf)
       id = header.index(identifier_column)

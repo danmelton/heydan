@@ -24,6 +24,7 @@ class HeyDan
   def check_folders
     FileUtils.mkdir(@settings[:downloads_folder]) if !Dir.exists?(@settings[:downloads_folder])
     FileUtils.mkdir(@settings[:jurisdictions_folder]) if !Dir.exists?(@settings[:jurisdictions_folder])
+    FileUtils.mkdir(@settings[:datasets_folder]) if !Dir.exists?(@settings[:datasets_folder])
   end
 
   def download_file_present?
