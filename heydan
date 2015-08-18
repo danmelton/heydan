@@ -4,6 +4,8 @@ require 'thor'
 require File.join(Dir.pwd, 'lib', 'hey_dan.rb')
  
 class HeyDanCLI < Thor
+  class_option 'type'
+
   desc "sync", "Runs download, setup, update_files and import"
   def sync(*names)
     puts "Syncing #{names.join(', ')}"
@@ -28,23 +30,23 @@ class HeyDanCLI < Thor
   desc "setup", "Setups all the jurisdictions from the identifiers folder"
   def setup()
     puts "Setting up identifiers"
-    HeyDan::Identifier.process()
+    HeyDan::Identifier.process({type: options[:type]})
   end 
 
   desc "update_files", "Processes download folder"
   def update_files(*names)
     puts "Processing download folder"
-    HeyDan::Script.update_files()
+    HeyDan::Script.update_files({type: options[:type]})
   end 
 
   desc "parse NAMES", "Parses downloaded csv files into jurisdiction/*/*.json files"
   def parse(*names)
     if names.size > 0
       puts "Processing all #{names.join(', ')}"
-      HeyDan::Parse.process(names)
+      HeyDan::Parse.process({names: names, type: options[:type]})
     else
       puts "Processing all files"
-      HeyDan::Parse.process_all
+      HeyDan::Parse.process_all({type: options[:type]})
     end
   end 
 
@@ -52,10 +54,10 @@ class HeyDanCLI < Thor
   def process(*names)
     if names.size > 0
       puts "Processing all #{names.join(', ')}"
-      HeyDan::Script.process(names)
+      HeyDan::Script.process({names: names, type: options[:type]})
     else
       puts "Processing all files"
-      HeyDan::Script.process_all
+      HeyDan::Script.process_all({type: options[:type]})
     end
     
   end  

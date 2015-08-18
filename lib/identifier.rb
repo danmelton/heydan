@@ -1,10 +1,12 @@
 class HeyDan::Identifier < HeyDan
   attr_accessor :name
+  attr_accessor :jurisdiction_type
   attr_accessor :csv_final_data
   
   def initialize(opts={})
     super(opts)
     @name = opts[:name].downcase
+    @jurisdiction_type = opts[:type]
     raise "#{@name} does not have a valid json file" if !valid_json?
   end
 
@@ -24,6 +26,10 @@ class HeyDan::Identifier < HeyDan
   def transform_data
   end
 
+  def skip_file?(jf=nil)
+    false
+  end
+
   def skip_process?
     false
   end
@@ -40,9 +46,14 @@ class HeyDan::Identifier < HeyDan
     if @csv_final_data.nil?
       @csv_final_data = CSV.read(File.join(@settings[:datasets_folder], "#{@name}.csv"))
     end
+    if @jurisdiction_type
+      @csv_final_data = [@csv_final_data[0]] + @csv_final_data.select { |x| x[0].include?(@jurisdiction_type)}
+    end
+
     header = @csv_final_data[0]
     Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} identifiers for #{type} ") do |row|
       jf = HeyDan::JurisdictionFile.new(name: row[0])
+      next if skip_file?(jf)
       id = header.index(identifier_column)
       next if row[id].nil?
       jf.add_identifier(type, row[id])
@@ -74,11 +85,11 @@ class HeyDan::Identifier < HeyDan
     end  
   end
 
-  def self.process()
+  def self.process(opts={})
     self.process_order.each do |name|
       if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
         load File.join(settings[:scripts_folder], "#{name}.rb")
-        Object.const_get(HeyDan::Helpers.classify(name)).new(name: name).process
+        Object.const_get(HeyDan::Helpers.classify(name)).new({name: name, type: opts[:type]}).process
       else
         puts "Files for #{name} do not exist"
         next

@@ -2,14 +2,14 @@
 
 Why HeyDan? I wrote it to help answer questions. Every time you have a question about governments, I imagine you turning around and saying 'Hey Dan! how many governments have x or y?''
 
-The goal is to create an ultra fast http server backed by ElasticSearch with extreme filter capabilities and data extendability. This is not a data catalogue. 
+The goal is to create an ultra fast http server backed by ElasticSearch with extreme filter capabilities and data extendability. This is not a data catalogue, its middleware to pull data from data catalogues and process it. 
 
 ##Using heydan
 
 After you install heydan, you can run:
 
-      heydan sync 
-      #Downloads all data sets from the CDN & imports them into elasticsearch. 
+      heydan sync --type school_district
+      #Downloads all data sets from the CDN & imports them into elasticsearch. Optional type command. You can add a type to any command below.
 
       heydan server
       #starts up the webserver for heydan
@@ -118,14 +118,20 @@ Inside the scripts/your_name.rb, there are three main methods:
 
 ##Folder Layout
 
-###/datasets
-A set of json
+###/sources
+A set of json files describing the sources used for the hosted data.
 
 ###/scripts
 Contains the code to process datasets
 
 ###/jurisdictions
 Contains the json files for jurisdictions, split out by folders for type. This will be populated when you run heydan sync
+
+###/downloads
+Tmp download folder to place items downloaded during the script get_data methods.
+
+###/datasets
+Folder for the datasets.csv that get processed into the jurisdiction json files.
 
 ###server.rb
 A light weight sinatra server that wraps routes to data

@@ -9,10 +9,12 @@ class HeyDan::Script < HeyDan
   attr_accessor :download_file_path
   attr_accessor :transform_data
   attr_accessor :csv_final_data
-  
+  attr_accessor :jurisdiction_type
+
   def initialize(opts={})
     super(opts)
     @name = opts[:name].downcase
+    @jurisdiction_type = opts[:type]
     @dataset = HeyDan::Source.new({settings: @settings, name: @name})
     raise "#{@name} does not have a valid json file" if !@dataset.valid_json?
   end
@@ -61,6 +63,9 @@ class HeyDan::Script < HeyDan
     Parallel.map(@csv_final_data[1..-1], :in_processes=>3, :progress => "Processing #{@csv_final_data[1..-1].size} rows for #{@name}") do |row|
       filename = @identifiers[row[0]]
       next if filename.nil?
+      if @jurisdiction_type
+        next if !filename.include?(@jurisdiction_type)
+      end
       jf = HeyDan::JurisdictionFile.new(name: filename)
       data = {"name" => meta_data["name"], "dates" => meta_data["dates"], "data" => row[1..-1].map { |x| x.to_i}}
       jf.add_dataset(meta_data["tag"], @name, data)
@@ -117,12 +122,12 @@ class HeyDan::Script < HeyDan
     process(datasets)
   end
 
-  def self.update_files
+  def self.update_files(opts={})
     datasets.each do |name|
       name.gsub!('.json', '') if name.include?('.json')
       if File.exist? File.join(settings[:scripts_folder], "#{name}.rb")
         load File.join(settings[:scripts_folder], "#{name}.rb")
-        Object.const_get(HeyDan::Helpers.classify(name)).new(name: name).update_files
+        Object.const_get(HeyDan::Helpers.classify(name)).new({name: name, type: opts[:type]}).update_files
       else
         puts "Files for #{name} do not exist"
         next

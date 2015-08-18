@@ -9,25 +9,19 @@ class OpenCivicIdentifiers < HeyDan::Identifier
     'open_civic_id'
   end
 
-  def skip_process?
-    if JurisdictionFile.new(name:"ocd-division/country:us/territory:vi").exists?
-      puts "skipping OpenCivicIdentifiers, looks like they are already loaded"
-      return true
-    else
-      return false
-    end
-  end
-
   def transform_data
     @csv_final_data = @csv_final_data[1..-1].map { |c| [c[0], c[1]]}
     @csv_final_data = @csv_final_data.unshift(['id', 'name'])
     super
   end
 
+  def skip_file?(jf)
+    jf.exists?
+  end
+
   def add_other_data(jurisdiction_file, header, row)
     name = header.index('name')
     jurisdiction_file.add_property('name', row[name])
   end
-
 
 end
