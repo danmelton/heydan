@@ -11,6 +11,17 @@ class HeyDan::HelpText
           Next, run `heydan build` to setup your files.
       )
   end
+
+  def build(opts={})
+    type = opts[:type] || all
+    %Q(
+      Woot, building files for type #{type} jurisdictions/. You will see a progress bar below. If you didn't specify a type, it might take a while. 
+
+      heydan uses the Open Civic Identifiers format to structure file names and main identification for jurisdictions. This helps create a unique nonchanging identification code for every jurisdiction, based on the sponsoring parent. So, the State of Kansas, would be country:us/state:kansas. heydan creates a flat json file for each jurisdiction, which you can then import into your own application or elasticsearch.
+
+      Next, run heydan sources sync
+      )
+  end
 end
 
 end

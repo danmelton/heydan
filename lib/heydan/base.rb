@@ -4,6 +4,7 @@ class HeyDan::Base
   class << self
     def setup(dir=nil)
       setup_dir(dir) if dir
+      dir ||= Dir.pwd
       load_or_create_settings dir
       create_folders
     end
@@ -17,8 +18,8 @@ class HeyDan::Base
 
     def load_or_create_settings(dir)
       settings_file = File.join(dir, 'heydan_settings.yml')
-      return load_settings(settings_file) if File.exist?(settings_file)
-      create_settings(dir)
+      return load_settings_file(settings_file) if File.exist?(settings_file)
+      create_settings_file(dir)
     end
 
     def load_settings_file(dir)

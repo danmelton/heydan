@@ -8,4 +8,4 @@ end
 
 require 'heydan'
 
-HeyDanCLI.start(ARGV)
+HeyDan::Cli.start(ARGV)
