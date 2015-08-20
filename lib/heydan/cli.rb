@@ -10,8 +10,8 @@ class HeyDan::Cli < Thor
   end
 
   desc "build", "Builds jurisdiction files"
-  def build(dir=nil)
+  def build()
     HeyDan::helper_text('build')
-    HeyDan::Base.build
+    HeyDan::OpenCivicIdentifiers.build(options)
   end
 end
