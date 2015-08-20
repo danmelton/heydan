@@ -80,6 +80,22 @@ describe HeyDan do
 
   end
 
+  context 'zip' do
+
+    it 'unzip' do
+      expect(HeyDan::Helper.unzip(zip_example)).to eq ["spec/tmp/downloads/example.csv"]
+    end
+
+    it 'get_data_from_url' do
+      VCR.use_cassette('example.zip') do
+        expect(
+          HeyDan::Helper.get_data_from_url('https://s3-us-west-1.amazonaws.com/heydan/spec/example.zip')
+          ).to eq [["this is a csv", " with", " three columns"], ["1", " 2", " 3"], ["4", " 5", " 6"]]
+      end
+    end
+
+  end
+
   after do
     FileUtils.rm Dir.glob('spec/tmp/downloads/*')
   end

@@ -12,7 +12,7 @@ class HeyDan::Helper
     end
 
     def download(url)
-      path ||= HeyDan.folders[:downloads]
+      path = HeyDan.folders[:downloads]
       new_file = File.join(path, md5_name(url))
       return new_file if File.exist?(new_file)
       download_file(url, new_file)
@@ -26,6 +26,12 @@ class HeyDan::Helper
         when 'csv'
           get_csv_data(file)        
         when 'zip'
+          files = unzip(file)
+          if files.size == 1
+            get_csv_data(files[0]) if is_csv?(files[0])
+          else
+            files.map { |f| get_csv_data(f) if is_csv?(f)} 
+          end
         when 'txt'
           get_csv_data(file) if is_csv?(file)
         when ''
@@ -66,6 +72,7 @@ class HeyDan::Helper
     end
 
     def unzip(file)
+      path = HeyDan.folders[:downloads]
       require 'zip'
       files = []
       Zip::File.open(file) do |zip_file|
