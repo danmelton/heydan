@@ -4,6 +4,10 @@ class HeyDan::HelpText
       %Q(
           Hi! Adding a jurisdictions, datasets, downloads and sources directory and a settings.yml file. If you want to move these directories to other places, just update their locations in the settings file. 
 
+          If you want to run heydan from a different folder than the settings.yml, create an environment variable:
+
+          export HEYDAN_SETTINGS = full/path/to/settings.yml
+
           To turn off this help, run 'heydan help off' or set the help in settings to false.
 
           heydan grabs datasets and information about jurisdictions. If you want to focus on just one type of jurisdiction, update the settings 'jurisdiction_type'. Or you can pass --type school_district to any heydan command.

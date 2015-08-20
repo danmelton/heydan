@@ -29,7 +29,7 @@ describe HeyDan::Base do
     expect(File.exist?(settings_file)).to be false
     HeyDan::Base.create_settings_file(dir)
     expect(File.exist?(settings_file)).to be true
-    expect(YAML.load(File.read(settings_file))).to eq ({folders:{:jurisdictions=>"#{dir}/jurisdictions", :sources=>"#{dir}/sources", :downloads=>"#{dir}/downloads"}})
+    expect(YAML.load(File.read(settings_file))).to eq ({:help=>true, :folders=>{:jurisdictions=>"spec/tmp/jurisdictions", :sources=>"spec/tmp/sources", :downloads=>"spec/tmp/downloads"}})
     FileUtils.rm settings_file
   end
 
