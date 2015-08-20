@@ -7,3 +7,30 @@ VCR.configure do |config|
   config.cassette_library_dir = "spec/vcr_cassettes"
   config.hook_into :webmock
 end
+
+def clean_tmp_folder
+  FileUtils.rm Dir.glob('spec/tmp/downloads/*')
+  FileUtils.rm Dir.glob('spec/tmp/datasets/*')
+  FileUtils.rm Dir.glob('spec/tmp/jurisdictions/*')
+end
+
+RSpec.configure do |config|
+  config.after(:each) do
+    HeyDan.folders = {
+      jurisdictions: 'jurisdictions',
+      sources: 'sources',
+      downloads: 'downloads',
+      datasets: 'datasets'
+    }
+    clean_tmp_folder
+  end
+  config.before(:each) do
+    HeyDan.folders = {
+      jurisdictions: 'spec/tmp/jurisdictions',
+      sources: 'spec/tmp/sources',
+      downloads: 'spec/tmp/downloads',
+      datasets: 'spec/tmp/datasets'
+    }
+    clean_tmp_folder
+  end
+end

@@ -19,6 +19,18 @@ class HeyDan::Helper
       new_file
     end
 
+    def save_data(name, data)
+      CSV.open(File.join(HeyDan.folders[:datasets], "#{name}.csv"), 'w') do |csv|
+        data.each do |row|
+          csv << row
+        end
+      end
+    end
+
+    def dataset_exists?(name)
+      File.exist?(File.join(HeyDan.folders[:datasets], "#{name}.csv"))
+    end
+
     def get_data_from_url(url)
       ext = get_file_type_from_url(url)
       file = download(url)

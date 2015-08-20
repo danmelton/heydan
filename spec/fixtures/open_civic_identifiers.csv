@@ -1,0 +1,5 @@
+id,name,sameAs,sameAsNote,validThrough,census_geoid,census_geoid_12,census_geoid_14,openstates_district,placeholder_id,sch_dist_stateid,state_id
+ocd-division/country:us,United States,,,,,,,,,,
+ocd-division/country:us/district:dc/anc:8e/council_district:7,Washington DC Advisory Neighborhood Commission 8E - District 7,,,,,,,,,,
+ocd-division/country:us/district:dc/school_district:school_for_arts_in_learning_pcs_sail,school for arts in learning pcs (sail),,,,1100021,,,,,141,
+ocd-division/country:us/state:ak/borough:aleutians_east,Aleutians East Borough,,,,place-02013,,,,,,
