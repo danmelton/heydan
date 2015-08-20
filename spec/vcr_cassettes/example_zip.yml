@@ -1,0 +1,49 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://s3-us-west-1.amazonaws.com/heydan/spec/example.zip
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - wyAugUWCjs3pF6sBf8r195EZQhaY8E+qq3vkBr/qlMjAmMIFuVrBLKGn54cnj4RCIWqQFYKGiB4=
+      X-Amz-Request-Id:
+      - 2957420720A89F93
+      Date:
+      - Thu, 20 Aug 2015 19:29:05 GMT
+      Last-Modified:
+      - Thu, 20 Aug 2015 19:23:28 GMT
+      Etag:
+      - '"0824d0059b20ddb8b0be27e6215c86c4"'
+      Accept-Ranges:
+      - bytes
+      Content-Type:
+      - application/zip
+      Content-Length:
+      - '214'
+      Server:
+      - AmazonS3
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        UEsDBBQACAAIAOZhFEcAAAAAAAAAAAAAAAALABAAZXhhbXBsZS5jc3ZVWAwA
+        ZifWVT8n1lX1ARQAK8nILFYAokSF5OIyHYXyzJIMHYWSjKLUVIXk/JzS3Lxi
+        LkMdBSMdBWMuEx0FUx0FMwBQSwcIxVKm1zIAAAAyAAAAUEsBAhUDFAAIAAgA
+        5mEUR8VSptcyAAAAMgAAAAsADAAAAAAAAAAAQKSBAAAAAGV4YW1wbGUuY3N2
+        VVgIAGYn1lU/J9ZVUEsFBgAAAAABAAEARQAAAHsAAAAAAA==
+    http_version: 
+  recorded_at: Thu, 20 Aug 2015 19:29:06 GMT
+recorded_with: VCR 2.9.3

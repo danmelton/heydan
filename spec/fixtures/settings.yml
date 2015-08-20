@@ -1,0 +1,6 @@
+---
+:help: false
+:folders:
+  :jurisdictions: "spec/tmp/jurisdictions"
+  :sources: "spec/tmp/sources"
+  :downloads: "spec/tmp/downloads"

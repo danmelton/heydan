@@ -16,7 +16,8 @@ class HeyDan::Base
       end
     end
 
-    def load_or_create_settings(dir)
+    def load_or_create_settings(dir=nil)
+      dir ||= Dir.pwd
       settings_file = if ENV['HEYDAN_SETTINGS']
         ENV['HEYDAN_SETTINGS']
       else
@@ -26,8 +27,7 @@ class HeyDan::Base
       create_settings_file(dir)
     end
 
-    def load_settings_file(dir)
-      settings_file = File.join(dir, 'heydan_settings.yml')
+    def load_settings_file(settings_file)
       settings = YAML.load(File.read(settings_file))
       settings.keys.each do |key|
         method = key.to_s + '='

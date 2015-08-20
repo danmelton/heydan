@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://s3-us-west-1.amazonaws.com/heydan/spec/example.txt
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Amz-Id-2:
+      - IAOgImWu/HEbeUd6UWegJoD38QXKAyu8mOyP9GTYYUtavgAq9bL+xIUa4vIDit2JK6Ghrbdob7A=
+      X-Amz-Request-Id:
+      - 8C045B9BF4C23DD2
+      Date:
+      - Thu, 20 Aug 2015 19:26:50 GMT
+      Last-Modified:
+      - Thu, 20 Aug 2015 19:23:27 GMT
+      Etag:
+      - '"b3eb8b39d1b5534acc4f01bc2c1d54b9"'
+      Accept-Ranges:
+      - bytes
+      Content-Type:
+      - text/plain
+      Content-Length:
+      - '54'
+      Server:
+      - AmazonS3
+    body:
+      encoding: UTF-8
+      string: |-
+        this is a txt csv, with, three columns
+        1, 2, 3
+        4, 5, 6
+    http_version: 
+  recorded_at: Thu, 20 Aug 2015 19:26:51 GMT
+recorded_with: VCR 2.9.3
