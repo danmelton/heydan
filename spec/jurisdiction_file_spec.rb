@@ -21,11 +21,6 @@ describe HeyDan::JurisdictionFile do
     expect(jf.file_name).to eq "country:us::state:ca.json"
   end
 
-  it 'folder_path' do
-    
-    expect(@jf.folder_path.include?('spec/tmp/jurisdictions')).to eq true
-  end
-
   it 'file_path' do
     expect(@jf.file_path.include?('spec/tmp/jurisdictions/country:us.json')).to eq true
   end

@@ -17,7 +17,7 @@ class HeyDan::HelpText
   end
 
   def build(opts={})
-    type = opts[:type] || all
+    type = opts[:type] || 'all'
     %Q(
       Woot, building files for type #{type} jurisdictions/. You will see a progress bar below. If you didn't specify a type, it might take a while. 
 

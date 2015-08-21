@@ -27,6 +27,10 @@ class HeyDan::Helper
       end
     end
 
+    def get_data(name)
+      CSV.read(File.join(HeyDan.folders[:datasets], "#{name}.csv"))
+    end
+
     def dataset_exists?(name)
       File.exist?(File.join(HeyDan.folders[:datasets], "#{name}.csv"))
     end

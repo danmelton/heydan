@@ -35,7 +35,10 @@ class HeyDan::OpenCivicIdentifiers
     end
 
     def build_jurisdiction_files
-      @data[-1..1].each do |row| 
+      if @data.nil?
+        @data = HeyDan::Helper.get_data(name)
+      end
+      @data[1..-1].each do |row| 
         jf = HeyDan::JurisdictionFile.new(name: row[0])
         next if row[0].nil?
         jf.add_identifier('open_civic_id', row[0])

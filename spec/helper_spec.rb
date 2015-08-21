@@ -1,11 +1,7 @@
 require 'spec_helper'
 
 describe HeyDan do
-  before do
-    HeyDan.folders = {:jurisdictions=>"spec/tmp/jurisdictions", 
-        :sources=>"spec/tmp/sources", :downloads=>"spec/tmp/downloads", :datasets=>"spec/tmp/datasets"}
-  end
-
+  
   let(:downloads_folder) {File.join('spec', 'tmp', 'downloads')}
   let(:csv_example) {File.join('spec', 'fixtures', 'example.csv')}
   let(:csv_tab_example) {File.join('spec', 'fixtures', 'example_tab.csv')}
@@ -100,6 +96,13 @@ describe HeyDan do
     HeyDan::Helper.save_data('love', [['column1', 'column2'],[1,2]])
     expect(File.exists?('spec/tmp/datasets/love.csv')).to be true
     expect(CSV.read('spec/tmp/datasets/love.csv')).to eq [["column1", "column2"], ["1", "2"]]
+  end
+
+  it 'get_data' do
+    expect(File.exists?('spec/tmp/datasets/love.csv')).to be false
+    HeyDan::Helper.save_data('love', [['column1', 'column2'],[1,2]])
+    expect(File.exists?('spec/tmp/datasets/love.csv')).to be true
+    expect(HeyDan::Helper.get_data('love')).to eq [["column1", "column2"], ["1", "2"]]
   end
 
   it 'dataset_exists?' do

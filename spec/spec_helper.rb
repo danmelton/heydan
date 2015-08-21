@@ -16,12 +16,6 @@ end
 
 RSpec.configure do |config|
   config.after(:each) do
-    HeyDan.folders = {
-      jurisdictions: 'jurisdictions',
-      sources: 'sources',
-      downloads: 'downloads',
-      datasets: 'datasets'
-    }
     clean_tmp_folder
   end
   config.before(:each) do

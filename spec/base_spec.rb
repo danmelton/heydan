@@ -2,17 +2,15 @@ require 'spec_helper'
 
 describe HeyDan::Base do
 
-  before do
-    HeyDan.folders = {
+  let(:dir) {File.join('spec', 'tmp1')}
+
+  it 'setups_folders' do
+    HeyDan::folders = {
       jurisdictions: 'jurisdictions',
       sources: 'sources',
       downloads: 'downloads' 
     }
-  end
 
-  let(:dir) {File.join('spec', 'tmp')}
-
-  it 'setups_folders' do
     expect(HeyDan::folders).to eq ({:jurisdictions=>"jurisdictions", :sources=>"sources", :downloads=>"downloads"})
     HeyDan::Base.setup_folders(dir)
     expect(HeyDan::folders).to eq ({:jurisdictions=>"#{dir}/jurisdictions", :sources=>"#{dir}/sources", :downloads=>"#{dir}/downloads"})
@@ -29,8 +27,7 @@ describe HeyDan::Base do
     expect(File.exist?(settings_file)).to be false
     HeyDan::Base.create_settings_file(dir)
     expect(File.exist?(settings_file)).to be true
-    expect(YAML.load(File.read(settings_file))).to eq ({:help=>true, :folders=>{:jurisdictions=>"spec/tmp/jurisdictions", :sources=>"spec/tmp/sources", :downloads=>"spec/tmp/downloads"}})
-    FileUtils.rm settings_file
+    expect(YAML.load(File.read(settings_file))).to eq ({:help=>true, :folders=>{:jurisdictions=>"spec/tmp1/spec/tmp/jurisdictions", :sources=>"spec/tmp1/spec/tmp/sources", :downloads=>"spec/tmp1/spec/tmp/downloads", :datasets=>"spec/tmp1/spec/tmp/datasets"}})
   end
 
   it 'load_settings_file' do
@@ -41,11 +38,12 @@ describe HeyDan::Base do
       downloads: 'downloads' 
     }
     expect(HeyDan::folders).to eq ({:jurisdictions=>"jurisdictions", :sources=>"sources", :downloads=>"downloads"})
-    HeyDan::Base.load_settings_file(dir)
-    expect(HeyDan::folders).to eq ({:jurisdictions=>"#{dir}/jurisdictions", :sources=>"#{dir}/sources", :downloads=>"#{dir}/downloads"})
+    HeyDan::Base.load_settings_file(File.join(dir, 'heydan_settings.yml'))
+    expect(HeyDan::folders).to eq ({:jurisdictions=>"spec/tmp1/spec/tmp/jurisdictions", :sources=>"spec/tmp1/spec/tmp/sources", :downloads=>"spec/tmp1/spec/tmp/downloads", :datasets=>"spec/tmp1/spec/tmp/datasets"})
   end
 
   it 'create_folders' do
+
     HeyDan::Base.setup_folders(dir)
     HeyDan::folders.keys.each do |folder|
       expect(Dir.exist?(HeyDan::folders[folder])).to be false
@@ -57,10 +55,8 @@ describe HeyDan::Base do
   end
 
   after do
-    HeyDan::folders.keys.each do |folder|
-      FileUtils.rm_rf dir if Dir.exist?(dir)
-    end
+    dir = File.join('spec', 'tmp1')
+    FileUtils.rm_r dir if Dir.exists?(dir)
   end
-
 
 end
