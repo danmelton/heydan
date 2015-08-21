@@ -89,7 +89,6 @@ describe HeyDan::Sources do
         expect(HeyDan::Sources.source_exist?('heydan_sources', 'census')).to be true
         expect(HeyDan::Sources.variable_exist?('heydan_sources', 'census', 'population')).to be true
       end
-
     end
   end
 

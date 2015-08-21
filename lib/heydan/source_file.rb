@@ -31,8 +31,22 @@ class HeyDan::SourceFile
     File.exist?(@file_path)
   end
 
-  def add_variable(variable_name)
-    @json['variables'][variable_name] = variable_json(variable_name)
+  def add_variable(variable_name)    
+    @json['variables'][variable_name] = variable_json(variable_name) if variable(variable_name).nil?
+    variable(variable_name)
+  end
+
+  def create_variable_scripts
+    if @json['variables'].keys.size > 0
+      @json['variables'].keys.each do |variable|
+        create_script_file(variable)
+      end
+    end
+  end
+
+  def create_script_file(variable_name)
+    file = HeyDan::ScriptFile.new(@folder, @name, variable_name)
+    file.save
   end
 
   def initial_json
@@ -49,6 +63,7 @@ class HeyDan::SourceFile
 
   def save
     create_folder
+    create_variable_scripts
     File.open(@file_path, 'w') do |f|
       f.write(@json.to_json)
     end

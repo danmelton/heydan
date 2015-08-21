@@ -31,6 +31,11 @@ describe HeyDan::SourceFile do
     expect(@source_file.json['variables'].keys).to eq ["population", "housing_units"]
   end
 
+  it 'create_script_file(variable_name)' do
+    expect(HeyDan::ScriptFile).to receive(:new).with("heydan_sources", "census", "population").and_return(double('HeyDan::ScriptFile', {save: true}))
+    @source_file.create_script_file('population')
+  end
+
   it 'create_folder' do
     expect(Dir.exist?(@source_file.folder_path)).to eq false
     @source_file.create_folder
@@ -54,6 +59,7 @@ describe HeyDan::SourceFile do
     it 'loads from file' do
       @source_file = HeyDan::SourceFile.new('heydan_sources', 'census')
       @source_file.add_variable('population')
+      expect(@source_file).to receive(:create_script_file).with('population').and_return true
       @source_file.save
       expect(@source_file.exist?).to eq true
       @source_file1 = HeyDan::SourceFile.new('heydan_sources', 'census')
