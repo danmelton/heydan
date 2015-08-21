@@ -47,6 +47,14 @@ class HeyDan::HelpText
       )
   end
 
+  def git_clone(name)
+    %Q(Cloning #{name} into #{HeyDan.folders[:sources]})
+  end
+
+  def git_update(name)
+    %Q(Updating #{name} in #{HeyDan.folders[:sources]})
+  end
+
 end
 
 end

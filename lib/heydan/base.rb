@@ -18,15 +18,14 @@ class HeyDan::Base
 
     def load_or_create_settings(dir=nil)
       dir ||= Dir.pwd
-      settings_file = if ENV['HEYDAN_SETTINGS']
+      HeyDan.settings_file ||= if ENV['HEYDAN_SETTINGS']
         ENV['HEYDAN_SETTINGS']
       else
         File.join(dir, 'heydan_settings.yml')
       end
-      return load_settings_file(settings_file) if File.exist?(settings_file)
+      return load_settings_file(HeyDan.settings_file) if File.exist?(HeyDan.settings_file)
       create_settings_file(dir)
-      HeyDan.settings_file = settings_file
-      settings_file
+      HeyDan.settings_file
     end
 
     def load_settings_file(settings_file)
@@ -45,6 +44,7 @@ class HeyDan::Base
           folders: HeyDan.folders, 
           sources: HeyDan.sources
         }.to_yaml)
+      end
     end
 
     def create_settings_file(dir)
@@ -52,7 +52,6 @@ class HeyDan::Base
       setup_folders(dir)
       settings_file = File.join(dir, 'heydan_settings.yml')
       save_settings(settings_file)
-      end
     end
 
     def setup_dir(dir)
