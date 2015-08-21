@@ -92,4 +92,41 @@ describe HeyDan::Sources do
     end
   end
 
+  context 'build' do
+    it 'folder, name, variable' do
+      expect(HeyDan::Sources).to receive(:build_variable).with('heydan_sources', 'census', 'population').and_return true
+      HeyDan::Sources.build('heydan_sources', 'census', 'population')
+    end
+
+    it 'folder, name' do
+      expect(HeyDan::Sources).to receive(:build_source).with('heydan_sources', 'census').and_return true
+      HeyDan::Sources.build('heydan_sources', 'census')
+    end
+
+    it 'folder' do
+      expect(HeyDan::Sources).to receive(:build_folder).with('heydan_sources').and_return true
+      HeyDan::Sources.build('heydan_sources')
+    end
+
+    it 'blank' do
+      expect(HeyDan::Sources).to receive(:build_folder).with('heydan_sources').and_return true
+      HeyDan::Sources.build
+    end
+
+    it 'build_folder' do
+      HeyDan::Sources.create_variable('heydan_sources', 'census', 'population')
+      expect(HeyDan::Sources).to receive(:build_source).with('heydan_sources', 'census').and_return true
+      HeyDan::Sources.build_folder('heydan_sources')
+    end
+
+    it 'build_source' do
+      HeyDan::Sources.create_variable('heydan_sources', 'census', 'population')
+      expect(HeyDan::Sources).to receive(:build_variable).with('heydan_sources', 'census', 'population').and_return true
+      HeyDan::Sources.build_source('heydan_sources', 'census')
+    end
+
+
+  end
+
+
 end

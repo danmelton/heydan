@@ -61,6 +61,10 @@ class HeyDan::SourceFile
     @json['variables'][variable_name]
   end
 
+  def variables
+    @json['variables'].keys
+  end
+
   def save
     create_folder
     create_variable_scripts

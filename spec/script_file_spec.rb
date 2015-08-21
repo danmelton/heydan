@@ -10,7 +10,7 @@ describe HeyDan::ScriptFile do
     expect(@script_file.source).to eq 'census'
     expect(@script_file.variable).to eq 'population'
     expect(@script_file.name).to eq 'heydan_source_census_population'
-    expect(@script_file.module_name).to eq 'HeydanSourceCensusPopulation'
+    expect(@script_file.class_name).to eq 'HeydanSourceCensusPopulation'
     expect(@script_file.script_folder_path).to eq 'spec/tmp/sources/heydan_source/scripts'
     expect(@script_file.script_file_path).to eq 'spec/tmp/sources/heydan_source/scripts/heydan_source_census_population.rb'
   end
@@ -29,5 +29,10 @@ describe HeyDan::ScriptFile do
 
   it 'template' do
     expect(@script_file.template.include?("class HeydanSourceCensusPopulation < HeyDan::Helper\n")).to be true
+  end
+
+  it 'eval_class' do
+    @script_file.save
+    expect(@script_file.eval_class.class).to eq HeydanSourceCensusPopulation
   end
 end
