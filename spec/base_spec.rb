@@ -43,7 +43,6 @@ describe HeyDan::Base do
   end
 
   it 'create_folders' do
-
     HeyDan::Base.setup_folders(dir)
     HeyDan::folders.keys.each do |folder|
       expect(Dir.exist?(HeyDan::folders[folder])).to be false

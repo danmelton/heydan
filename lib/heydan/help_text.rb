@@ -26,6 +26,27 @@ class HeyDan::HelpText
       Next, run heydan sources sync
       )
   end
+
+  def sources_add
+    %Q(
+      You can leverage the community of developers out there. Add the github link to a source repo and tap into all that hardwork.
+
+      When you add a new one, it will get stored in your settings file under 'sources'
+      )
+  end
+
+  def sources_sync
+    %Q(
+      Sync all the sources in your settings file.
+      )
+  end
+
+  def sources_update
+    %Q(
+      Update a single source.
+      )
+  end
+
 end
 
 end
