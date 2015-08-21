@@ -54,7 +54,39 @@ class HeyDan::Sources
       git_link.match(/(\w+)\.git$/i)[1]
     end
 
-    def create(folder, name, variable=nil)
+    def create_folder(name)
+      FileUtils.mkdir_p source_folder(name)
+    end
+
+    def create_source(folder, name)
+      file = HeyDan::SourceFile.new(folder, name)
+      file.save
+    end
+
+    def create_variable(folder, name, variable)
+      file = HeyDan::SourceFile.new(folder, name)
+      file.add_variable(variable)
+      file.save
+    end
+
+    def source_exist?(folder, name)
+      file = HeyDan::SourceFile.new(folder, name)
+      file.exist?
+    end
+
+    def variable_exist?(folder, source_name, variable)
+      file = HeyDan::SourceFile.new(folder, name)
+      return file.exist? if !file.exist?
+      file.variable(variable).nil?
+    end
+
+    def only_letters_and_underscores?(text)
+    end
+
+    def create(folder, source_name, variable=nil)
+      create_folder(folder) if !directory_exist?(folder)
+      create_source(folder, source_name) if !source_exist?(folder, source_name)
+      create_variable(folder, source_name, variable) if !variable_exist?(folder, source_name, variable)
     end
 
     def build(folder, name=nil, variable=nil, options={})

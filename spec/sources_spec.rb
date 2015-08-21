@@ -55,4 +55,27 @@ describe HeyDan::Sources do
   end
 
 
+  context 'create' do
+
+    context 'source does not exist' do
+
+      it 'create' do
+        expect(HeyDan::Sources).to receive(:directory_exist?).with('heydan_sources').and_return false
+        expect(HeyDan::Sources).to receive(:source_exist?).with('heydan_sources', 'us_census').and_return false
+        expect(HeyDan::Sources).to receive(:variable_exist?).with('heydan_sources', 'us_census', 'total_population').and_return false
+        expect(HeyDan::Sources).to receive(:create_folder).with('heydan_sources').and_return true
+        expect(HeyDan::Sources).to receive(:create_source).with('heydan_sources', 'us_census').and_return true
+        expect(HeyDan::Sources).to receive(:create_variable).with('heydan_sources', 'us_census', 'total_population').and_return true
+        HeyDan::Sources.create('heydan_sources', 'us_census', 'total_population')
+      end
+
+      it 'create_folder' do
+        expect(HeyDan::Sources.directory_exist?('heydan_sources')).to be false
+        HeyDan::Sources.create_folder('heydan_sources')
+        expect(HeyDan::Sources.directory_exist?('heydan_sources')).to be true
+      end
+
+    end
+  end
+
 end

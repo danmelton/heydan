@@ -47,6 +47,12 @@ class HeyDan::HelpText
       )
   end
 
+  def sources_build
+  end
+
+  def sources_new
+  end
+
   def git_clone(name)
     %Q(Cloning #{name} into #{HeyDan.folders[:sources]})
   end
