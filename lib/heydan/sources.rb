@@ -69,15 +69,15 @@ class HeyDan::Sources
       file.save
     end
 
-    def source_exist?(folder, name)
-      file = HeyDan::SourceFile.new(folder, name)
+    def source_exist?(folder, source_name)
+      file = HeyDan::SourceFile.new(folder, source_name)
       file.exist?
     end
 
     def variable_exist?(folder, source_name, variable)
-      file = HeyDan::SourceFile.new(folder, name)
+      file = HeyDan::SourceFile.new(folder, source_name)
       return file.exist? if !file.exist?
-      file.variable(variable).nil?
+      !file.variable(variable).nil?
     end
 
     def only_letters_and_underscores?(text)
