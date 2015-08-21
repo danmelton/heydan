@@ -1,4 +1,4 @@
-require 'ruby-git'
+require 'git'
 
 class HeyDan::Sources
   class << self
@@ -8,10 +8,11 @@ class HeyDan::Sources
     end
 
     def sync
-      HeyDan.sources.keys.each { |source| update(source)}
+      HeyDan.sources.keys.map(&:to_s).each { |source| update(source)}
     end
 
     def add(link)
+      raise 'Link must be a git link in the format of http(s)://url/*.git' if !correct_link?(link)
       settings_file = HeyDan::Base.load_or_create_settings
       name = extract_name(link)
       if !source_exists?(link)
@@ -21,27 +22,31 @@ class HeyDan::Sources
       update(name)
     end
 
+    def correct_link?(link)
+      !link.match(/(http|https):\/\/\w+\.\w+(\/\w+)+\.git/).nil?
+    end
+
     def update(name)
       if directory_exist?(name)
-        HeyDan::HelperText.git_update(name)
-        g = Git.open(source_folder(name), :log => Logger.new(STDOUT))
+        HeyDan::HelpText.git_update(name)
+        g = Git.open(source_folder(name))
         g.pull
       else
-        HeyDan::HelperText.git_clone(name)
-        g = Git.clone(HeyDan.sources[name], name, :path => HeyDan.sources)
+        HeyDan::HelpText.git_clone(name)
+        g = Git.clone(HeyDan.sources[name.to_sym], name, {:path => HeyDan.folders[:sources]})
       end
     end
 
     def source_folder(name)
-      File.join(HeyDan.folders[:source],name)
+      File.join(HeyDan.folders[:sources],name)
     end
     
     def directory_exist?(name)
-      Dir.exists?(source_folder)
+      Dir.exists?(source_folder(name))
     end    
 
     def extract_name(git_link)
-      git_link.match(/\/(.+)\.git/i)[1]
+      git_link.match(/(\w+)\.git$/i)[1]
     end
 
   end

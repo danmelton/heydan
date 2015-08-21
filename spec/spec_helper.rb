@@ -9,9 +9,10 @@ VCR.configure do |config|
 end
 
 def clean_tmp_folder
-  FileUtils.rm Dir.glob('spec/tmp/downloads/*')
-  FileUtils.rm Dir.glob('spec/tmp/datasets/*')
-  FileUtils.rm Dir.glob('spec/tmp/jurisdictions/*')
+  FileUtils.rm_rf Dir.glob('spec/tmp/downloads/*')
+  FileUtils.rm_rf Dir.glob('spec/tmp/datasets/*')
+  FileUtils.rm_rf Dir.glob('spec/tmp/jurisdictions/*')
+  FileUtils.rm_rf Dir.glob('spec/tmp/sources/*')
 end
 
 RSpec.configure do |config|

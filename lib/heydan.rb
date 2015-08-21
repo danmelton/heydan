@@ -25,7 +25,7 @@ module HeyDan
     }
 
     self.sources = {
-      heydan_sources: 'git@github.com:danmelton/heydan_sources.git'
+      heydan_sources: 'https://github.com/danmelton/heydan_sources.git'
     }
 
 end

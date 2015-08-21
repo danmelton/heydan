@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   #depedencies
   spec.add_dependency "thor", "~> 0.19.1"
   spec.add_dependency "rubyzip"
-  spec.add_dependency "ruby-git"
+  spec.add_dependency "git"
 
   #development/test depedencies
   spec.add_development_dependency "bundler", "~> 1.10"
