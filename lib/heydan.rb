@@ -4,6 +4,8 @@ module HeyDan
   class << self
     attr_accessor :help
     attr_accessor :folders
+    attr_accessor :sources
+    attr_accessor :settings_file
     #calls help text when needed
     def helper_text(method)
       if self.help
@@ -12,12 +14,18 @@ module HeyDan
     end
   end
 
+    self.settings_file = nil
+
     self.help = true
     self.folders ||= {
       jurisdictions: 'jurisdictions',
       sources: 'sources',
       downloads: 'downloads',
       datasets: 'datasets'
+    }
+
+    self.sources = {
+      heydan_sources: 'git@github.com:danmelton/heydan_sources.git'
     }
 
 end

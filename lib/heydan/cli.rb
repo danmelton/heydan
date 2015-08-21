@@ -43,7 +43,5 @@ module HeyDan
     subcommand "sources", Source
   end
 
-  
-
 
 end

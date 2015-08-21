@@ -25,6 +25,8 @@ class HeyDan::Base
       end
       return load_settings_file(settings_file) if File.exist?(settings_file)
       create_settings_file(dir)
+      HeyDan.settings_file = settings_file
+      settings_file
     end
 
     def load_settings_file(settings_file)
@@ -33,14 +35,23 @@ class HeyDan::Base
         method = key.to_s + '='
         HeyDan.send(method, settings[key]) if HeyDan.respond_to?(method)
       end
+      HeyDan.settings_file = settings_file
+    end
+
+    def save_settings(settings_file=nil)
+      settings_file ||= HeyDan.settings_file
+      File.open(settings_file, 'w') do |f|
+        f.write({help: HeyDan.help, 
+          folders: HeyDan.folders, 
+          sources: HeyDan.sources
+        }.to_yaml)
     end
 
     def create_settings_file(dir)
       setup_dir(dir)
       setup_folders(dir)
       settings_file = File.join(dir, 'heydan_settings.yml')
-      File.open(settings_file, 'w') do |f|
-        f.write({help: true, folders: HeyDan::folders}.to_yaml)
+      save_settings(settings_file)
       end
     end
 
