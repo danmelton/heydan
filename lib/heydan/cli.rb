@@ -4,24 +4,36 @@ module HeyDan
 
   class Source < Thor
 
-    desc "sync", "sync your sources in the settings file"
+    desc "sync", "sync your sources folders from the settings file"
     def sync()
       HeyDan::helper_text('sources_sync')
       HeyDan::Sources.sync
     end
 
-    desc "add GITHUB_LINK", "Add a new source directory from github"
+    desc "add GITHUB_LINK", "Add a new folder of sources from github"
     def add(github_link)
       HeyDan::helper_text('sources_add')
       HeyDan::Sources.add(github_link)
     end
 
-    desc "update NAME", "update a source"
+    desc "update NAME", "update a folder of sources"
     def update(name)
       HeyDan::helper_text('sources_update')
       HeyDan::Sources.update(name)
     end
 
+    desc "new FOLDER SOURCE VARIABLE", "adds a new source NAME in the FOLDER, and an optional VARIABLE"
+    def new(folder, name, variable=nil)
+      HeyDan::helper_text('sources_new')
+      HeyDan::Sources.create(folder, name, variable)
+    end
+
+    option :fromsource, type: :boolean
+    desc "build FOLDER NAME VARIABLE", "builds a source's variables in FOLDER, or optional VARIABLE. You can pass --type school_district for a specific jurisdiction type, or --from-source to build original files"
+    def build(folder=nil, name=nil, variable=nil)
+      HeyDan::helper_text('sources_new')
+      HeyDan::Sources.build(folder, name, variable, options)
+    end
   end
 
   class Cli < Thor

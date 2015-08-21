@@ -4,11 +4,15 @@ class HeyDan::Sources
   class << self
     
     def source_exists?(name_or_link)
+      HeyDan.sources ||= {} 
       HeyDan.sources.keys.map(&:to_s).include?(name_or_link) || HeyDan.sources.values.include?(name_or_link)
     end
 
     def sync
-      HeyDan.sources.keys.map(&:to_s).each { |source| update(source)}
+      keys = HeyDan.sources.keys
+      if keys
+        HeyDan.sources.keys.map(&:to_s).each { |source| update(source)}
+      end
     end
 
     def add(link)
@@ -16,6 +20,7 @@ class HeyDan::Sources
       settings_file = HeyDan::Base.load_or_create_settings
       name = extract_name(link)
       if !source_exists?(link)
+        HeyDan.sources ||= {} 
         HeyDan.sources.merge!({"#{name}" => link})
         HeyDan::Base.save_settings
       end
@@ -47,6 +52,12 @@ class HeyDan::Sources
 
     def extract_name(git_link)
       git_link.match(/(\w+)\.git$/i)[1]
+    end
+
+    def create(folder, name, variable=nil)
+    end
+
+    def build(folder, name=nil, variable=nil, options={})
     end
 
   end

@@ -48,5 +48,35 @@ describe HeyDan::Cli do
 
   end
 
+  context 'new' do
+
+    it 'calls Sources.create with just a folder and name' do
+      expect(HeyDan::Sources).to receive(:create).with("heydan_sources", "census",  nil).and_return true
+      HeyDan::Cli.start(['sources', 'new', 'heydan_sources', 'census', nil])
+    end
+
+    it 'calls Sources.create with a name and variable' do
+      expect(HeyDan::Sources).to receive(:create).with("heydan_sources", "census",  "population").and_return true
+      HeyDan::Cli.start(['sources', 'new', 'heydan_sources', 'census', 'population'])
+    end
+  end
+
+  context 'build' do
+    it 'calls Sources.build with just a folder and name' do
+      expect(HeyDan::Sources).to receive(:build).with("heydan_sources", "census",  nil, {}).and_return true
+      HeyDan::Cli.start(['sources', 'build', 'heydan_sources', 'census', nil])
+    end
+
+    it 'calls Sources.build with a name and variable' do
+      expect(HeyDan::Sources).to receive(:build).with("heydan_sources", "census",  "population", {}).and_return true
+      HeyDan::Cli.start(['sources', 'build', 'heydan_sources', 'census', 'population'])
+    end
+
+    it 'calls Sources.build with a name and variable and type/from-source' do
+      expect(HeyDan::Sources).to receive(:build).with("heydan_sources", "census", "population", {"type"=>"school_district", "fromsource"=>true}).and_return true
+      HeyDan::Cli.start(['sources', 'build', 'heydan_sources', 'census', 'population', '--type',  'school_district', '--fromsource'])
+    end
+  end
+
 
 end
