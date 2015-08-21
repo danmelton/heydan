@@ -6,6 +6,7 @@ module HeyDan
     attr_accessor :folders
     attr_accessor :sources
     attr_accessor :settings_file
+    attr_accessor :cdn
     #calls help text when needed
     def helper_text(method)
       if self.help
@@ -28,12 +29,15 @@ module HeyDan
       heydan_sources: 'https://github.com/danmelton/heydan_sources.git'
     }
 
+    self.cdn = 'https://heydan.s3-us-west-1.amazonaws.com'
+
 end
 
 require_relative "heydan/version"
 require_relative "heydan/base"
 require_relative "heydan/help_text"
 require_relative "heydan/helper"
+require_relative "heydan/script"
 require_relative "heydan/script_file"
 require_relative "heydan/source_file"
 require_relative "heydan/jurisdiction_file"

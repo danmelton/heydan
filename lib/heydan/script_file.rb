@@ -25,7 +25,7 @@ class HeyDan::ScriptFile
   end
 
   def template
-    %Q(class #{@class_name} < HeyDan::Helper\nend)
+    %Q(class #{@class_name} < HeyDan::Script\nend)
   end
 
   def save
@@ -37,6 +37,6 @@ class HeyDan::ScriptFile
 
   def eval_class
     load script_file_path
-    return eval("#{@class_name}.new")
+    return eval("#{@class_name}")
   end
 end

@@ -28,11 +28,11 @@ describe HeyDan::ScriptFile do
   end
 
   it 'template' do
-    expect(@script_file.template.include?("class HeydanSourceCensusPopulation < HeyDan::Helper\n")).to be true
+    expect(@script_file.template.include?("class HeydanSourceCensusPopulation < HeyDan::Script\n")).to be true
   end
 
   it 'eval_class' do
     @script_file.save
-    expect(@script_file.eval_class.class).to eq HeydanSourceCensusPopulation
+    expect(@script_file.eval_class).to eq HeydanSourceCensusPopulation
   end
 end

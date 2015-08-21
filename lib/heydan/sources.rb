@@ -120,7 +120,7 @@ class HeyDan::Sources
     
     def build_variable(folder, source, variable)
       script = HeyDan::ScriptFIle.new(folder, source, variable)
-      script.eval_class.send(build)
+      script.eval_class.send(build, {folder: folder, source: source, variable: variable}.merge(HeyDan.options))
     end
 
   end

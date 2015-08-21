@@ -36,8 +36,8 @@ describe HeyDan::JurisdictionFile do
   end
 
   it 'get_json' do
-    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "identifiers"=>{}, "datasets"=>{}})
-    expect(@jf.json).to eq ({"id"=>"country:us", "entityType"=>"country", "identifiers"=>{}, "datasets"=>{}})
+    expect(@jf.get_json).to eq ({"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>{}})
+    expect(@jf.json).to eq ({"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>{}})
   end
 
   it "add_property" do
@@ -57,7 +57,7 @@ describe HeyDan::JurisdictionFile do
 
   it 'save' do
     @jf.add_property('name', 'love')
-    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "identifiers"=>{}, "datasets"=>{}, "name"=>"love"})
+    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>{}, "name"=>"love"})
   end
 
 

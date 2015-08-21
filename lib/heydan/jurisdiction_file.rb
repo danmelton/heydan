@@ -40,7 +40,7 @@ class HeyDan::JurisdictionFile
   end
 
   def initial_json
-    {'id' => @name, 'entityType' => type,'identifiers' => {}, 'datasets' => {}}
+    {'id' => @name, 'entityType' => type, 'attributes'=> {}, 'identifiers' => {}, 'datasets' => {}}
   end
 
   def get_identifier(key)
@@ -62,8 +62,15 @@ class HeyDan::JurisdictionFile
   end
 
   def add_property(key, value)
+    return false if ['datasets', 'identifiers', 'id', 'entityType', 'attributes'].include?(key)
      get_json
     @json[key] = value
+    @json
+  end
+
+  def add_attributes(key, value)
+     get_json
+    @json['attributes'][key] = value
     @json
   end
 
