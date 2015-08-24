@@ -38,7 +38,15 @@ describe HeyDan do
 
   it 'help text' do
     HeyDan.help = true
+    original_stderr = $stderr
+    original_stdout = $stdout
+    $stderr = File.open(File::NULL, "w")
+    $stdout = File.open(File::NULL, "w")
     expect(HeyDan.helper_text('setup')).to eq HeyDan::HelpText.setup
+    $stderr = original_stderr
+    $stdout = original_stdout
+    original_stderr = $stderr
+    original_stdout = $stdout
   end
 
 end

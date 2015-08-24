@@ -14,8 +14,8 @@ class HeyDan::Script
     @folder = opts[:folder]
     @source = opts[:source]
     @variable  = opts[:variable]
-    @jurisdiction_type = opts[:type]
-    @fromsource = opts[:fromsource]
+    @jurisdiction_type = HeyDan.options[:type]
+    @fromsource = HeyDan.options[:fromsource]
     @identifiers = {}
     @source_file = HeyDan::SourceFile.new(@folder, @source, @variable)
   end
@@ -46,22 +46,22 @@ class HeyDan::Script
     @data = HeyDan::Helper.get_data_from_url(HeyDan.cdn + '/' + dataset_file_name)
   end
 
+  def process_from_source
+    build
+    validate_build
+    HeyDan::Helper.save_data(dataset_file_name, @data)
+  end
+
   #runs through download, build and validate
   def process
-    if @fromsource
-      build
-      validate_build
-      HeyDan::Helper.save_data(dataset_file_name, @data)
-    else
-      #if the file isn't present, we should do it from source
-      begin
-        download 
-      rescue
-        @fromsource = true
-        process
-      end
+    process_from_source if @fromsource
 
-    end
+    begin
+      download if !@fromsource 
+    rescue 
+        process_from_source        
+    end      
+
     filter_jurisdiction_type
     update_jurisdiction_files
   end
@@ -95,7 +95,7 @@ class HeyDan::Script
   def update_jurisdiction_files
     get_data
     get_identifiers
-    @progress = ProgressBar.create(:title => "Updating Files for #{@name} #{variable} from #{@folder} for #{@data[1..-1].size} jurisdictions", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
+    @progress = ProgressBar.create(:title => "Updating Files for #{@source} #{@variable} from #{@folder} for #{@data[1..-1].size} jurisdictions", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
     self.send("add_#{type}s")
     @progress.finish if HeyDan.help?
   end
