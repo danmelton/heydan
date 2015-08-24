@@ -14,11 +14,11 @@ class HeyDan::Import
       end
 
       def check_index
-        @client.indices.exists? index: index
+        client.indices.exists? index: index
       end
 
       def create_index
-        @client.indices.create index: index
+        client.indices.create index: index
       end
 
       def process
