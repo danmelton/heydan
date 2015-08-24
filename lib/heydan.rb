@@ -7,6 +7,8 @@ module HeyDan
     attr_accessor :sources
     attr_accessor :settings_file
     attr_accessor :cdn
+    attr_accessor :options
+
     #calls help text when needed
     def helper_text(method)
       if self.help
@@ -18,6 +20,11 @@ module HeyDan
     self.settings_file = nil
 
     self.help = true
+    
+    def self.help?
+      self.help
+    end
+
     self.folders ||= {
       jurisdictions: 'jurisdictions',
       sources: 'sources',
@@ -31,6 +38,7 @@ module HeyDan
 
     self.cdn = 'https://heydan.s3-us-west-1.amazonaws.com'
 
+    self.options = {}
 end
 
 require_relative "heydan/version"

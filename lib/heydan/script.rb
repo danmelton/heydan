@@ -1,3 +1,4 @@
+require 'ruby-progressbar'
 class HeyDan::Script
   attr_accessor :jurisdiction_type
   attr_accessor :fromsource
@@ -42,7 +43,7 @@ class HeyDan::Script
 
   #downloads from the cdn
   def download
-    @data = HeyDan::Helper.get_data_from_url(HeyDan.cdn + dataset_file_name)
+    @data = HeyDan::Helper.get_data_from_url(HeyDan.cdn + '/' + dataset_file_name)
   end
 
   #runs through download, build and validate
@@ -52,7 +53,14 @@ class HeyDan::Script
       validate_build
       HeyDan::Helper.save_data(dataset_file_name, @data)
     else
-      download 
+      #if the file isn't present, we should do it from source
+      begin
+        download 
+      rescue
+        @fromsource = true
+        process
+      end
+
     end
     filter_jurisdiction_type
     update_jurisdiction_files
@@ -61,24 +69,24 @@ class HeyDan::Script
   def build_identifier_hash(identifier)
     identifier_file = File.join(HeyDan.folders[:downloads], "identifiers_file_#{identifier}.json")
     if File.exist?(identifier_file)
-      @identifier_hash = JSON.parse(File.read(identifier_file))
-      return @identifier_hash
+      @identifiers = JSON.parse(File.read(identifier_file))
+      return @identifiers
     end
     HeyDan::HelpText.build_identifier(identifier)
     get_identifiers_from_files
     File.open(identifier_file, 'w') do |file|
-      file.write(@identifier_hash.to_json)
+      file.write(@identifiers.to_json)
     end
-    @identifier_hash
+    @identifiers
   end
 
   def get_identifiers_from_files
-    @identifier_hash = {} 
+    @identifiers = {} 
     Dir.glob(File.join(HeyDan.folders[:jurisdictions], '*.json')).each do |j|
       jf = HeyDan::JurisdictionFile.new(name: j.gsub(HeyDan.folders[:jurisdictions] + '/', ''))
-      @identifier_hash["#{jf.get_identifier('ansi_id')}"] = j.gsub(HeyDan.folders[:jurisdictions] + '/', '')
+      @identifiers["#{jf.get_identifier('ansi_id')}"] = j.gsub(HeyDan.folders[:jurisdictions] + '/', '')
     end
-    @identifier_hash
+    @identifiers
   end
 
   def filter_jurisdiction_type
@@ -87,12 +95,14 @@ class HeyDan::Script
   def update_jurisdiction_files
     get_data
     get_identifiers
+    @progress = ProgressBar.create(:title => "Updating Files for #{@name} #{variable} from #{@folder} for #{@data[1..-1].size} jurisdictions", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
     self.send("add_#{type}s")
+    @progress.finish if HeyDan.help?
   end
 
   def add_datasets
     metadata = @source_file.variable
-    metadata.keep_if { |k| ["id", "name", "short_description"].include?(k)}
+    metadata.keep_if { |k| ['id', 'name', 'short_description', 'tags'].include?(k)}
     metadata["years"] = @data[0][1..-1]
     @data[1..-1].each do |row| 
       next if row[0].nil?
@@ -104,6 +114,7 @@ class HeyDan::Script
       end
       jf.add_dataset(metadata)
       jf.save
+      @progress.increment if HeyDan.help?
     end
   end
 
@@ -117,6 +128,7 @@ class HeyDan::Script
       next if row[0].nil?
       jf.add_identifier(@data[0][1], row[1])
       jf.save
+      @progress.increment  if HeyDan.help?
     end
   end
 
@@ -126,6 +138,7 @@ class HeyDan::Script
         next if row[0].nil?
         jf.add_attribute(@data[0][1], row[1])
         jf.save
+        @progress.increment  if HeyDan.help?
       end
   end
 

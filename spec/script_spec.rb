@@ -26,7 +26,7 @@ describe HeyDan::Script do
   end
 
   it 'download' do
-    expect(HeyDan::Helper).to receive(:get_data_from_url).with('https://heydan.s3-us-west-1.amazonaws.comheydan_sources_census_population.csv').and_return(dataset)
+    expect(HeyDan::Helper).to receive(:get_data_from_url).with('https://heydan.s3-us-west-1.amazonaws.com/heydan_sources_census_population.csv').and_return(dataset)
     @script.download
     expect(@script.data).to eq dataset
   end
@@ -61,7 +61,7 @@ describe HeyDan::Script do
     it 'build_identifiers_hash' do
       expect(File.exist?(File.join(HeyDan.folders[:downloads], "identifiers_file_ansi_id.json"))).to be false
       expect(@script).to receive(:get_identifiers_from_files).and_return({"01"=>"country:us::state:al", "02"=>"country:us::state:ak"})
-      @script.identifier_hash = {'01' => 'country:us::state:al', '02' => 'country:us::state:ak'}
+      @script.identifiers = {'01' => 'country:us::state:al', '02' => 'country:us::state:ak'}
       @script.build_identifier_hash('ansi_id')
       file = File.join(HeyDan.folders[:downloads], "identifiers_file_ansi_id.json")
       expect(File.exist?(file)).to be true
@@ -109,7 +109,7 @@ describe HeyDan::Script do
       @script.source_file.add_variable('population')
       @script.update_jurisdiction_files
       jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
-      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "years"=>[2015, 2014], "data"=>[10, 12]})
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "data"=>[10, 12]})
     end
 
     it 'update_jurisdiction_files for dataset only once' do
@@ -120,7 +120,7 @@ describe HeyDan::Script do
       @script.update_jurisdiction_files
       @script.update_jurisdiction_files
       jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
-      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "years"=>[2015, 2014], "data"=>[10, 12]})
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "data"=>[10, 12]})
     end
 
     context 'updates with identifiers other than open_civic_id' do
@@ -148,7 +148,7 @@ describe HeyDan::Script do
           @script.source_file.add_variable('population')
           @script.update_jurisdiction_files
           jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
-          expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "years"=>[2015, 2014], "data"=>[10, 12]})
+          expect(jf.get_dataset('heydan_sources_census_population')).to eq ( {"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "data"=>[10, 12]})
         end
 
     end

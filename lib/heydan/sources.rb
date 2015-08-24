@@ -89,7 +89,7 @@ class HeyDan::Sources
       create_variable(folder, source_name, variable) if !variable_exist?(folder, source_name, variable)
     end
 
-    def build(folder=nil, name=nil, variable=nil, options={})
+    def build(folder=nil, name=nil, variable=nil)
       if variable && name && folder
         build_variable(folder, name, variable)
       elsif name && folder
@@ -102,7 +102,7 @@ class HeyDan::Sources
     end
 
     def sources(folder)
-      Dir.glob(source_folder(folder) + '/*').select { |x| !x.include?('/scripts')}.map { |x| x.split('/')[-1]}
+      Dir.glob(source_folder(folder) + '/*').select { |x| !x.include?('/scripts') && !x.include?('.')}.map { |x| x.split('/')[-1]}
     end
 
     def build_folder(folder)
@@ -119,8 +119,9 @@ class HeyDan::Sources
     end
     
     def build_variable(folder, source, variable)
-      script = HeyDan::ScriptFIle.new(folder, source, variable)
-      script.eval_class.send(build, {folder: folder, source: source, variable: variable}.merge(HeyDan.options))
+      script = HeyDan::ScriptFile.new(folder, source, variable)
+      var = script.eval_class.send(:new, {folder: folder, source: source, variable: variable}.merge(HeyDan.options))
+      var.process
     end
 
   end

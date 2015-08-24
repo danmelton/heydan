@@ -32,7 +32,8 @@ module HeyDan
     desc "build FOLDER NAME VARIABLE", "builds a source's variables in FOLDER, or optional VARIABLE. You can pass --type school_district for a specific jurisdiction type, or --from-source to build original files"
     def build(folder=nil, name=nil, variable=nil)
       HeyDan::helper_text('sources_build')
-      HeyDan::Sources.build(folder, name, variable, options)
+      HeyDan.options = options
+      HeyDan::Sources.build(folder, name, variable)
     end
   end
 

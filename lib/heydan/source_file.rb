@@ -72,7 +72,7 @@ class HeyDan::SourceFile
     create_folder
     create_variable_scripts
     File.open(@file_path, 'w') do |f|
-      f.write(@json.to_json)
+      f.write(JSON.pretty_generate(@json))
     end
   end
 
