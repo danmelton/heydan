@@ -6,6 +6,7 @@ class HeyDan::Script
   attr_accessor :source
   attr_accessor :variable
   attr_accessor :id
+  attr_accessor :identifier_hash #builds a hash with new_identifier => file_name
 
   def initialize(opts)
     @folder = opts[:folder]
@@ -15,15 +16,15 @@ class HeyDan::Script
     @fromsource = opts[:fromsource]
   end
 
-  #overwritten by the developers
+  #overwritten by the developer
   def build
   end
 
-  #overwritten by the developers
+  #overwritten by the developer
   def validate_build
   end
 
-  #overwritten by the developers, can be dataset, attribute, or identifer
+  #overwritten by the developer, can be dataset, attribute, or identifer
   def type
     'dataset'
   end
@@ -55,7 +56,27 @@ class HeyDan::Script
     validate_update
   end
 
-  def build_identifiers_hash(identifier)
+  def build_identifier_hash(identifier)
+    identifier_file = File.join(HeyDan.folders[:downloads], "identifiers_file_#{identifier}.json")
+    if File.exist?(identifier_file)
+      @identifier_hash = JSON.parse(File.read(identifier_file))
+      return @identifier_hash
+    end
+    HeyDan::HelpText.build_identifier(identifier)
+    get_identifiers_from_files
+    File.open(identifier_file, 'w') do |file|
+      file.write(@identifier_hash.to_json)
+    end
+    @identifier_hash
+  end
+
+  def get_identifiers_from_files
+    @identifier_hash = {} 
+    Dir.glob(File.join(HeyDan.folders[:jurisdictions], '*.json')).each do |j|
+      jf = HeyDan::JurisdictionFile.new(name: j.gsub(HeyDan.folders[:jurisdictions] + '/', ''))
+      @identifier_hash["#{jf.get_identifier('ansi_id')}"] = j.gsub(HeyDan.folders[:jurisdictions] + '/', '')
+    end
+    @identifier_hash
   end
 
   def filter_jurisdiction_type
@@ -85,7 +106,7 @@ class HeyDan::Script
   def get_identifiers
     @id = @data[0][0]
     if @id!='open_civic_id'
-      @identifiers = build_identifiers_hash(@id)
+      @identifiers = build_identifier_hash(@id)
     end
   end
 

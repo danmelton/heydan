@@ -56,7 +56,32 @@ describe HeyDan::Script do
       @script.process
     end
 
-
   end
+
+  context 'identifiers' do
+
+    it 'build_identifiers_hash' do
+      expect(File.exist?(File.join(HeyDan.folders[:downloads], "identifiers_file_ansi_id.json"))).to be false
+      expect(@script).to receive(:get_identifiers_from_files).and_return({"01"=>"country:us::state:al", "02"=>"country:us::state:ak"})
+      @script.identifier_hash = {'01' => 'country:us::state:al', '02' => 'country:us::state:ak'}
+      @script.build_identifier_hash('ansi_id')
+      file = File.join(HeyDan.folders[:downloads], "identifiers_file_ansi_id.json")
+      expect(File.exist?(file)).to be true
+      expect(JSON.parse(File.read(file))).to eq ({"01"=>"country:us::state:al", "02"=>"country:us::state:ak"})
+    end
+
+    it 'get_identifiers with ansi_id or other identifier' do
+      expect(@script).to receive(:build_identifier_hash).with('ansi_id').and_return({'01' => 'country:us::state:al'})
+      @script.data = [['ansi_id', 'data_item'], ['01', 1]]
+      expect(@script.get_identifiers).to eq ({"01"=>"country:us::state:al"})
+    end
+
+    it 'get_identifiers with ansi_id or other identifier' do
+      expect(@script).to_not receive(:build_identifier_hash).with('open_civic_id')
+      @script.data = [['open_civic_id', 'data_item'], ['01', 1]]
+      expect(@script.get_identifiers).to eq nil
+    end
+  end
+
 
 end

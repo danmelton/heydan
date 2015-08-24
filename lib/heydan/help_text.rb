@@ -61,6 +61,10 @@ class HeyDan::HelpText
     %Q(Updating #{name} in #{HeyDan.folders[:sources]})
   end
 
+  def build_identifier(identifier)
+    %Q("building identifiers hash for #{identifier} to filenames, this might take a moment")
+  end
+
 end
 
 end
