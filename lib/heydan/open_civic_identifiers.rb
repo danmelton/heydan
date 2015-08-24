@@ -12,7 +12,7 @@ class HeyDan::OpenCivicIdentifiers
     end
 
     def build(opts={})
-      @jurisdiction_type = opts[:type]
+      @jurisdiction_type = HeyDan.options[:type]
       HeyDan::Base.load_or_create_settings
       HeyDan::Base.create_folders
       @jurisdictions_folder = HeyDan.folders[:jurisdictions]
@@ -40,7 +40,7 @@ class HeyDan::OpenCivicIdentifiers
       end
       @data[1..-1].each do |row| 
         jf = HeyDan::JurisdictionFile.new(name: row[0])
-        next if row[0].nil?
+        next if !jf.match_type?(@jurisdiction_type)
         jf.add_identifier('open_civic_id', row[0])
         jf.add_property('name', row[1])
         jf.save
