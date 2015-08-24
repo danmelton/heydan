@@ -27,7 +27,7 @@ describe HeyDan::Base do
     expect(File.exist?(settings_file)).to be false
     HeyDan::Base.create_settings_file(dir)
     expect(File.exist?(settings_file)).to be true
-    expect(YAML.load(File.read(settings_file))).to eq ({:help=>true, :folders=>{:jurisdictions=>"spec/tmp1/spec/tmp/jurisdictions", :sources=>"spec/tmp1/spec/tmp/sources", :downloads=>"spec/tmp1/spec/tmp/downloads", :datasets=>"spec/tmp1/spec/tmp/datasets"}, :sources=>{:heydan_sources=>"https://github.com/danmelton/heydan_sources.git"}})
+    expect(YAML.load(File.read(settings_file))).to eq ({:help=>true, :folders=>{:jurisdictions=>"spec/tmp1/spec/tmp/jurisdictions", :sources=>"spec/tmp1/spec/tmp/sources", :downloads=>"spec/tmp1/spec/tmp/downloads", :datasets=>"spec/tmp1/spec/tmp/datasets"}, :sources=>{:heydan_sources=>"https://github.com/danmelton/heydan_sources.git"}, :elasticsearch=>{:url=>"http://localhost:9200"}})
   end
 
   it 'load_settings_file' do

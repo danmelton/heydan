@@ -80,5 +80,11 @@ describe HeyDan::Cli do
 
   end
 
+  context 'import' do
+    it 'calls Import.process' do
+      expect(HeyDan::Import).to receive(:process).with(no_args).and_return true
+      HeyDan::Cli.start(['import'])
+    end
+  end
 
 end

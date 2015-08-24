@@ -42,7 +42,8 @@ class HeyDan::Base
       File.open(settings_file, 'w') do |f|
         f.write({help: HeyDan.help, 
           folders: HeyDan.folders, 
-          sources: HeyDan.sources
+          sources: HeyDan.sources,
+          elasticsearch: {url: 'http://localhost:9200'}
         }.to_yaml)
       end
     end

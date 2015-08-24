@@ -8,6 +8,7 @@ module HeyDan
     attr_accessor :settings_file
     attr_accessor :cdn
     attr_accessor :options
+    attr_accessor :elasticsearch
 
     #calls help text when needed
     def helper_text(method)
@@ -39,6 +40,7 @@ module HeyDan
     self.cdn = 'https://heydan.s3-us-west-1.amazonaws.com'
 
     self.options = {}
+    self.elasticsearch = {url: 'http://localhost:9200'}
 end
 
 require_relative "heydan/version"
@@ -51,4 +53,5 @@ require_relative "heydan/source_file"
 require_relative "heydan/jurisdiction_file"
 require_relative "heydan/open_civic_identifiers"
 require_relative "heydan/sources"
+require_relative "heydan/import"
 require_relative "heydan/cli"

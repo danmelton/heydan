@@ -73,6 +73,11 @@ class HeyDan::HelpText
     puts %Q("building identifiers hash for #{identifier} to filenames, this might take a moment")
   end
 
+  def import
+    return if !HeyDan.help?
+    puts "This will import all the files/contents from the jurisdictions folder into ElasticSearch. Make sure it's running!"
+  end
+
 end
 
 end

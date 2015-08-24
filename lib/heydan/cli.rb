@@ -52,7 +52,11 @@ module HeyDan
       HeyDan.options = options
       HeyDan::OpenCivicIdentifiers.build
     end
-
+    desc 'import', "Imports files into elasticsearch"
+    def import()
+      HeyDan::helper_text('import')
+      HeyDan::Import.process
+    end
     desc "sources SUBCOMMAND ...ARGS", "manage sources"
     subcommand "sources", Source
   end
