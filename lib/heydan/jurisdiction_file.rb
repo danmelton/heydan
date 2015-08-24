@@ -21,8 +21,8 @@ class HeyDan::JurisdictionFile
   end
 
   def match_type?(ocd_type)
-    ocd_type.gsub!(':all', '.+')
-    !id.match(/#{ocd_type}/).nil?
+    return true if ocd_type.nil?
+    !id.match(/#{ocd_type.gsub(':all', '.+')}/).nil?
   end
 
   def convert_file_name

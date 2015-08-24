@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe HeyDan::Script do
   before do
-    @script = HeyDan::Script.new({folder: 'heydan_sources', source: 'census', variable: 'population', fromsource: true, type: 'school_district'})
+    HeyDan.options = {}
+    HeyDan.help = false
+    @script = HeyDan::Script.new({folder: 'heydan_sources', source: 'census', variable: 'population'})
   end
   let(:dataset) {[['open_civic_id', 2015, 2014],['country:us', 1,2]]}
   let(:property) {[['open_civic_id', 'name'],['country:us', 'United States of America']]}
@@ -13,8 +15,8 @@ describe HeyDan::Script do
     expect(@script.folder).to eq 'heydan_sources'
     expect(@script.source).to eq 'census'
     expect(@script.variable).to eq 'population'
-    expect(@script.jurisdiction_type).to eq 'school_district'
-    expect(@script.fromsource).to eq true
+    expect(@script.jurisdiction_type).to eq nil
+    expect(@script.fromsource).to eq nil
   end
 
   it 'dataset_file_name' do

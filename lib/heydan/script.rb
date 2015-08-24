@@ -82,7 +82,7 @@ class HeyDan::Script
     @identifiers = {} 
     Dir.glob(File.join(HeyDan.folders[:jurisdictions], '*.json')).each do |j|
       jf = HeyDan::JurisdictionFile.new(name: j.gsub(HeyDan.folders[:jurisdictions] + '/', ''))
-      return if jf.match_type?(@jurisdiction_type)
+      return if !jf.match_type?(@jurisdiction_type)
       @identifiers["#{jf.get_identifier(identifier)}"] = j.gsub(HeyDan.folders[:jurisdictions] + '/', '')
     end
     @identifiers
@@ -91,7 +91,7 @@ class HeyDan::Script
   def update_jurisdiction_files
     get_data
     get_identifiers
-    @progress = ProgressBar.create(:title => "Updating Files for #{@source} #{@variable} from #{@folder} for #{@data[1..-1].size} jurisdictions", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
+    @progress = ProgressBar.create(:title => "Updating Files for #{@source} #{@variable} from #{@folder} for #{@identifiers.keys.size} jurisdictions #{('matching' + @jurisdiction_type) if @jurisdiction_type}", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
     self.send("add_#{type}s")
     @progress.finish if HeyDan.help?
   end
