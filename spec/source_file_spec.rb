@@ -21,7 +21,8 @@ describe HeyDan::SourceFile do
   end
 
   it 'variable_json(variable_name)' do
-    expect(@source_file.variable_json('census').keys).to eq ["name", "short_description", "long_description", "notes", "identifier", "dates", "tags", "sourceUrl", "jurisdiction_types", "coverage"]
+    expect(@source_file.variable_json('population').keys).to eq ["id", "name", "short_description", "long_description", "notes", "identifier", "dates", "tags", "sourceUrl", "jurisdiction_types", "coverage"]
+    expect(@source_file.variable_json('population')['id']).to eq 'heydan_sources_census_population'
   end
 
   it 'add_variable(variable_name)' do

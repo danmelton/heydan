@@ -40,7 +40,7 @@ class HeyDan::JurisdictionFile
   end
 
   def initial_json
-    {'id' => @name, 'entityType' => type, 'attributes'=> {}, 'identifiers' => {}, 'datasets' => {}}
+    {'id' => @name, 'entityType' => type, 'attributes'=> {}, 'identifiers' => {}, 'datasets' => []}
   end
 
   def get_identifier(key)
@@ -54,11 +54,20 @@ class HeyDan::JurisdictionFile
     @json
   end
 
-  def add_dataset(tag, key, value)
+  def add_dataset(value)
     get_json
-    @json['datasets'][tag] = {} if @json['datasets'][key].nil?
-    @json['datasets'][tag][key] = value
+    @json['datasets'] << value 
     @json
+  end
+
+  def get_dataset(key)
+    get_json
+    @json['datasets'].select { |d| d['id']==key}[0]
+  end
+
+  def datasets
+    get_json
+    @json['datasets']
   end
 
   def add_property(key, value)
@@ -68,10 +77,15 @@ class HeyDan::JurisdictionFile
     @json
   end
 
-  def add_attributes(key, value)
+  def add_attribute(key, value)
      get_json
     @json['attributes'][key] = value
     @json
+  end
+
+  def get_attribute(key)
+     get_json
+    @json['attributes'][key]
   end
 
   def get_json

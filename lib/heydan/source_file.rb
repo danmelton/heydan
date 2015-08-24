@@ -6,10 +6,12 @@ class HeyDan::SourceFile
   attr_accessor :folder_path
   attr_accessor :folder
   attr_accessor :name
+  attr_accessor :variable
 
-  def initialize(folder, name)
+  def initialize(folder, name, variable=nil)
     @folder = folder
     @name = name
+    @variable = variable
     @folder_path = File.join(HeyDan.folders[:sources],@folder)
     @file_path = File.join(@folder_path, @name)
     get_json
@@ -54,10 +56,11 @@ class HeyDan::SourceFile
   end
 
   def variable_json(variable_name)
-    {'name' => variable_name, 'short_description' => 'a short description', 'long_description' => 'a description of the variable', 'notes' => 'any notes about this variable', 'identifier' => 'open_civic_id or ansi_id or other', 'dates' => [2015], 'tags' => [], 'sourceUrl' => 'website for variables information if different than source', 'jurisdiction_types' => [], 'coverage' => {} }
+    {'id' => "#{@folder}_#{@name}_#{variable_name}",'name' => variable_name, 'short_description' => 'a short description', 'long_description' => 'a description of the variable', 'notes' => 'any notes about this variable', 'identifier' => 'open_civic_id or ansi_id or other', 'dates' => [2015], 'tags' => [], 'sourceUrl' => 'website for variables information if different than source', 'jurisdiction_types' => [], 'coverage' => {} }
   end
 
-  def variable(variable_name)
+  def variable(variable_name=nil)
+    variable_name ||= @variable 
     @json['variables'][variable_name]
   end
 

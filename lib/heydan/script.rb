@@ -6,7 +6,8 @@ class HeyDan::Script
   attr_accessor :source
   attr_accessor :variable
   attr_accessor :id
-  attr_accessor :identifier_hash #builds a hash with new_identifier => file_name
+  attr_accessor :source_file
+  attr_accessor :identifiers #builds a hash with new_identifier => file_name
 
   def initialize(opts)
     @folder = opts[:folder]
@@ -14,6 +15,8 @@ class HeyDan::Script
     @variable  = opts[:variable]
     @jurisdiction_type = opts[:type]
     @fromsource = opts[:fromsource]
+    @identifiers = {}
+    @source_file = HeyDan::SourceFile.new(@folder, @source, @variable)
   end
 
   #overwritten by the developer
@@ -53,7 +56,6 @@ class HeyDan::Script
     end
     filter_jurisdiction_type
     update_jurisdiction_files
-    validate_update
   end
 
   def build_identifier_hash(identifier)
@@ -88,19 +90,43 @@ class HeyDan::Script
     self.send("add_#{type}s")
   end
 
-  def validate_update
+  def add_datasets
+    metadata = @source_file.variable
+    metadata.keep_if { |k| ["id", "name", "short_description"].include?(k)}
+    metadata["years"] = @data[0][1..-1]
+    @data[1..-1].each do |row| 
+      next if row[0].nil?
+      jf = get_jurisdiction_filename(row[0])
+      metadata["data"] = row[1..-1]
+      index = jf.datasets.index(metadata)
+      if !index.nil? 
+        jf.datasets.delete_at(index)
+      end
+      jf.add_dataset(metadata)
+      jf.save
+    end
   end
 
-  def add_datasets
+  def get_jurisdiction_filename(id)
+    HeyDan::JurisdictionFile.new(name: @identifiers[id] || id)
   end
 
   def add_identifiers
+    @data[1..-1].each do |row| 
+      jf = get_jurisdiction_filename(row[0])
+      next if row[0].nil?
+      jf.add_identifier(@data[0][1], row[1])
+      jf.save
+    end
   end
 
   def add_attributes
-  end
-
-  def add_properties
+    @data[1..-1].each do |row| 
+        jf = get_jurisdiction_filename(row[0])
+        next if row[0].nil?
+        jf.add_attribute(@data[0][1], row[1])
+        jf.save
+      end
   end
 
   def get_identifiers

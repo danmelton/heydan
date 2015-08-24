@@ -1,0 +1,8 @@
+{
+    "id": "country:us/state:al",
+    "entityType": "country",
+    "attributes": {},
+    "identifiers": {"ansi_id":"01", "open_civic_id":"ocd-division/country:us/state:al"},
+    "datasets": [],
+    "name": "Alabama"
+}

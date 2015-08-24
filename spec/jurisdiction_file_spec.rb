@@ -36,8 +36,8 @@ describe HeyDan::JurisdictionFile do
   end
 
   it 'get_json' do
-    expect(@jf.get_json).to eq ({"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>{}})
-    expect(@jf.json).to eq ({"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>{}})
+    expect(@jf.get_json).to eq ({"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>[]})
+    expect(@jf.json).to eq ({"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>[]})
   end
 
   it "add_property" do
@@ -51,13 +51,13 @@ describe HeyDan::JurisdictionFile do
   end
 
   it "add_dataset" do
-    @jf.add_dataset('population', 'decennial_census_population', {years: [2010], data: [1]})
-    expect(@jf.json['datasets']['population']['decennial_census_population']).to eq ({:years=>[2010], :data=>[1]})
+    @jf.add_dataset({years: [2010], data: [1]})
+    expect(@jf.json['datasets']).to eq ([{:years=>[2010], :data=>[1]}])
   end
 
   it 'save' do
     @jf.add_property('name', 'love')
-    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>{}, "name"=>"love"})
+    expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>[], "name"=>"love"})
   end
 
 
