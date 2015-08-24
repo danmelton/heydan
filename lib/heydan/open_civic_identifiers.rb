@@ -24,14 +24,9 @@ class HeyDan::OpenCivicIdentifiers
       if !HeyDan::Helper.dataset_exists?(name)
         @data = HeyDan::Helper.get_data_from_url('https://github.com/opencivicdata/ocd-division-ids/blob/master/identifiers/country-us.csv?raw=true')
         @data = @data[1..-1].map { |c| [c[0], c[1]]}
-        filter_by_type if @jurisdiction_type
         @data.unshift(['id', 'name'])
         HeyDan::Helper.save_data(name, @data)
       end
-    end
-
-    def filter_by_type
-      @data = @data.select { |x| x[0].include? @jurisdiction_type}
     end
 
     def build_jurisdiction_files

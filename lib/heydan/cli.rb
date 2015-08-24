@@ -49,7 +49,8 @@ module HeyDan
     desc "build", "Builds jurisdiction files"
     def build()
       HeyDan::helper_text('build')
-      HeyDan::OpenCivicIdentifiers.build(options)
+      HeyDan.options = options
+      HeyDan::OpenCivicIdentifiers.build
     end
 
     desc "sources SUBCOMMAND ...ARGS", "manage sources"

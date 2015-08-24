@@ -23,7 +23,7 @@ describe HeyDan::Cli do
   context 'build' do
 
     it 'HeyDan calls OpenCivicIdentifiers.build' do
-      expect(HeyDan::OpenCivicIdentifiers).to receive(:build).with({}).and_return true
+      expect(HeyDan::OpenCivicIdentifiers).to receive(:build).and_return true
       HeyDan::Cli.start(['build'])
     end
 
