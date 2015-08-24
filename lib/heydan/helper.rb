@@ -50,7 +50,8 @@ class HeyDan::Helper
           end
         when 'txt'
           get_csv_data(file) if is_csv?(file)
-        when ''
+        else
+          get_csv_data(file) if is_csv?(file)
         end
       @data
     end

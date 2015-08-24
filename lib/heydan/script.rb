@@ -33,6 +33,11 @@ class HeyDan::Script
     'dataset'
   end
 
+  def debug
+    require 'pry'
+    binding.pry
+  end
+
   def dataset_file_name
     "#{@folder}_#{@source}_#{@variable}.csv"
   end
