@@ -15,6 +15,16 @@ class HeyDan::JurisdictionFile
     @name.split('/')[-1].split(':')[0]
   end
 
+  def id
+    get_json
+    @json['id']
+  end
+
+  def match_type?(ocd_type)
+    ocd_type.gsub!(':all', '.+')
+    !id.match(/#{ocd_type}/).nil?
+  end
+
   def convert_file_name
     @name = "#{@name.gsub('::','/').gsub('.json','')}"
   end

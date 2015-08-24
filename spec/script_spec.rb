@@ -37,7 +37,6 @@ describe HeyDan::Script do
       expect(@script).to receive(:build).and_return(true)
       expect(@script).to receive(:validate_build).and_return(true)
       expect(HeyDan::Helper).to receive(:save_data).with(@script.dataset_file_name, dataset)
-      expect(@script).to receive(:filter_jurisdiction_type).and_return(true)
       expect(@script).to receive(:update_jurisdiction_files).and_return(true)
       @script.data = dataset
       @script.process
@@ -49,7 +48,6 @@ describe HeyDan::Script do
       expect(@script).not_to receive(:validate_build)
       expect(HeyDan::Helper).not_to receive(:save_data)
       expect(@script).to receive(:download).and_return(dataset)
-      expect(@script).to receive(:filter_jurisdiction_type).and_return(true)
       expect(@script).to receive(:update_jurisdiction_files).and_return(true)
       @script.process
     end
@@ -75,9 +73,9 @@ describe HeyDan::Script do
     end
 
     it 'get_identifiers with ansi_id or other identifier' do
-      expect(@script).to_not receive(:build_identifier_hash).with('open_civic_id')
+      expect(@script).to receive(:build_identifier_hash).with('open_civic_id').and_return({'country:us/state:al' => 'country:us::state:al'})
       @script.data = [['open_civic_id', 'data_item'], ['01', 1]]
-      expect(@script.get_identifiers).to eq nil
+      expect(@script.get_identifiers).to eq ({"country:us/state:al"=>"country:us::state:al"})
     end
   end
 

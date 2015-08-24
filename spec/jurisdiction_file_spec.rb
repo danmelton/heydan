@@ -60,5 +60,37 @@ describe HeyDan::JurisdictionFile do
     expect(@jf.get_json).to eq ( {"id"=>"country:us", "entityType"=>"country", "attributes"=>{}, "identifiers"=>{}, "datasets"=>[], "name"=>"love"})
   end
 
+  context 'match_type?' do
+
+    it 'matches country:us' do
+      @jf.get_json
+      @jf.json['id'] = 'country:us'
+      expect(@jf.match_type?('country:us')).to be true
+      @jf.json['id'] = 'country:ca'
+      expect(@jf.match_type?('country:us')).to be false
+      @jf.json['id'] = 'country:ca'
+      expect(@jf.match_type?('country:all')).to be true
+    end
+
+    it 'matches country:us/state:al' do
+      @jf.get_json
+      @jf.json['id'] = 'country:us/state:al'
+      expect(@jf.match_type?('state:al')).to be true
+      expect(@jf.match_type?('country:us/state:all')).to be true
+      expect(@jf.match_type?('state:all')).to be true
+      expect(@jf.match_type?('country:us/state:ca')).to be false
+    end
+
+    it 'matches country:us/state:al/school_district:oakland_unified' do
+      @jf.get_json
+      @jf.json['id'] = 'country:us/state:al/school_district:oakland_unified'
+      expect(@jf.match_type?('state:al/school_district:all')).to be true
+      expect(@jf.match_type?('school_district:all')).to be true
+      expect(@jf.match_type?('state:all')).to be true
+      expect(@jf.match_type?('country:us/state:ca')).to be false
+    end
+
+  end
+
 
 end

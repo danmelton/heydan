@@ -61,8 +61,6 @@ class HeyDan::Script
     rescue 
         process_from_source        
     end      
-
-    filter_jurisdiction_type
     update_jurisdiction_files
   end
 
@@ -73,23 +71,21 @@ class HeyDan::Script
       return @identifiers
     end
     HeyDan::HelpText.build_identifier(identifier)
-    get_identifiers_from_files
+    get_identifiers_from_files(identifier)
     File.open(identifier_file, 'w') do |file|
       file.write(@identifiers.to_json)
     end
     @identifiers
   end
 
-  def get_identifiers_from_files
+  def get_identifiers_from_files(identifier)
     @identifiers = {} 
     Dir.glob(File.join(HeyDan.folders[:jurisdictions], '*.json')).each do |j|
       jf = HeyDan::JurisdictionFile.new(name: j.gsub(HeyDan.folders[:jurisdictions] + '/', ''))
-      @identifiers["#{jf.get_identifier('ansi_id')}"] = j.gsub(HeyDan.folders[:jurisdictions] + '/', '')
+      return if jf.match_type?(@jurisdiction_type)
+      @identifiers["#{jf.get_identifier(identifier)}"] = j.gsub(HeyDan.folders[:jurisdictions] + '/', '')
     end
     @identifiers
-  end
-
-  def filter_jurisdiction_type
   end
 
   def update_jurisdiction_files
@@ -144,9 +140,7 @@ class HeyDan::Script
 
   def get_identifiers
     @id = @data[0][0]
-    if @id!='open_civic_id'
-      @identifiers = build_identifier_hash(@id)
-    end
+    @identifiers = build_identifier_hash(@id)
   end
 
   def get_data
