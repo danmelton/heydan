@@ -86,8 +86,6 @@ describe HeyDan::JurisdictionFile do
       @jf.json['id'] = 'country:us/state:al/school_district:oakland_unified'
       expect(@jf.match_type?('state:al/school_district:all')).to be true
       expect(@jf.match_type?('school_district:all')).to be true
-      expect(@jf.match_type?('state:all')).to be true
-      expect(@jf.match_type?('country:us/state:ca')).to be false
     end
 
   end
