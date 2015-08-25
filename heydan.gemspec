@@ -29,14 +29,14 @@ Gem::Specification.new do |spec|
 
   #depedencies
   spec.add_dependency "thor", "~> 0.19.1"
-  spec.add_dependency "rubyzip"
-  spec.add_dependency "git"
-  spec.add_dependency "pry"
-  spec.add_dependency "ruby-progressbar"
-  spec.add_dependency "elasticsearch"
-  spec.add_dependency "sinatra"
-  spec.add_dependency "sinatra-cross_origin"
-  spec.add_dependency "fog"
+  spec.add_dependency "rubyzip", "~>1.1.7"
+  spec.add_dependency "git", "~>1.2.9.1"
+  spec.add_dependency "pry", "~> 0.10.1"
+  spec.add_dependency "ruby-progressbar","~>1.7.5"
+  spec.add_dependency "elasticsearch","~>1.0.12"
+  spec.add_dependency "sinatra","~>1.4.6"
+  spec.add_dependency "sinatra-cross_origin","~>0.3.2"
+  spec.add_dependency "fog","~>1.32.0"
 
   #development/test depedencies
   spec.add_development_dependency "bundler", "~> 1.10"
