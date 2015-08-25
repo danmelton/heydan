@@ -31,15 +31,15 @@ describe HeyDan::Base do
   end
 
   it 'load_settings_file' do
-    HeyDan::Base.create_settings_file(dir)
     HeyDan::folders = {
       jurisdictions: 'jurisdictions',
       sources: 'sources',
       downloads: 'downloads' 
     }
     expect(HeyDan::folders).to eq ({:jurisdictions=>"jurisdictions", :sources=>"sources", :downloads=>"downloads"})
-    HeyDan::Base.load_settings_file(File.join(dir, 'heydan_settings.yml'))
-    expect(HeyDan::folders).to eq ({:jurisdictions=>"spec/tmp1/spec/tmp/jurisdictions", :sources=>"spec/tmp1/spec/tmp/sources", :downloads=>"spec/tmp1/spec/tmp/downloads", :datasets=>"spec/tmp1/spec/tmp/datasets"})
+    HeyDan::Base.load_settings_file(File.join('spec', 'fixtures', 'settings.yml'))
+    expect(HeyDan::folders).to eq ( {:jurisdictions=>"spec/tmp/jurisdictions", :sources=>"spec/tmp/sources", :downloads=>"spec/tmp/downloads", :datasets=>"spec/tmp/datasets"})
+    expect(HeyDan.aws_secret_key).to eq 'something1'
   end
 
   it 'create_folders' do

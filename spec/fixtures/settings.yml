@@ -1,7 +1,14 @@
 ---
 :help: false
+:elasticsearch: 
+  :url: http://localhost:9200
 :folders:
   :jurisdictions: "spec/tmp/jurisdictions"
   :sources: "spec/tmp/sources"
   :downloads: "spec/tmp/downloads"
   :datasets: "spec/tmp/datasets"
+:cdn: https://heydan.s3-us-west-1.amazonaws.com
+:aws_bucket: heydan
+:aws_region: us-west-1
+:aws_access_id: something
+:aws_secret_key: something1
