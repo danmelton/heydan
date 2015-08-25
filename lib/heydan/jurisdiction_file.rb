@@ -43,7 +43,7 @@ class HeyDan::JurisdictionFile
   end
 
   def file_path
-    File.join(HeyDan.folders[:jurisdictions], file_name)
+    File.expand_path(File.join(HeyDan.folders[:jurisdictions], file_name))
   end
 
   def type

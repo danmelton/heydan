@@ -20,7 +20,8 @@ class HeyDan::Helper
     end
 
     def save_data(name, data)
-      CSV.open(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"), 'w') do |csv|
+      full_path = File.expand_path(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"))
+      CSV.open(full_path, 'w') do |csv|
         data.each do |row|
           csv << row
         end
@@ -95,7 +96,7 @@ class HeyDan::Helper
       files = []
       Zip::File.open(file) do |zip_file|
         zip_file.each do |entry|
-          download_path = File.join(path, entry.name)
+          download_path = File.expand_path(File.join(path, entry.name))
           entry.extract(download_path) unless File.exists?(download_path)
           files << download_path
         end

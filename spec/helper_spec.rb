@@ -78,7 +78,7 @@ describe HeyDan do
   context 'zip' do
 
     it 'unzip' do
-      expect(HeyDan::Helper.unzip(zip_example)).to eq ["spec/tmp/downloads/example.csv"]
+      expect(HeyDan::Helper.unzip(zip_example)[0].include?("spec/tmp/downloads/example.csv")).to eq true
     end
 
     it 'get_data_from_url' do
