@@ -57,9 +57,18 @@ module HeyDan
       HeyDan::helper_text('import')
       HeyDan::Import.process
     end
+    
     desc "sources SUBCOMMAND ...ARGS", "manage sources"
     subcommand "sources", Source
+    
+    desc "server", "starts up the webserver for heydan"
+    def server()
+      puts "Serving up some HeyDan Realness"
+      HeyDan::Server.run!
+    end  
+
   end
 
+    
 
 end
