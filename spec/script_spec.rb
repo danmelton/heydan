@@ -109,7 +109,7 @@ describe HeyDan::Script do
       @script.source_file.add_variable('population')
       @script.update_jurisdiction_files
       jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
-      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "data"=>[10, 12]})
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>1, "data"=>[10, 12]})
     end
 
     it 'update_jurisdiction_files for dataset only once' do
@@ -120,7 +120,28 @@ describe HeyDan::Script do
       @script.update_jurisdiction_files
       @script.update_jurisdiction_files
       jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
-      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "data"=>[10, 12]})
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>1, "data"=>[10, 12]})
+    end
+
+    it 'update_jurisdiction_files for dataset  with different versions' do
+      @script.data = [['open_civic_id', 2015, 2014], ["country:us/state:al", 10, 12]]
+      expect(@script).to receive(:type).at_least(:twice).and_return 'dataset'
+      @script.source_file =  HeyDan::SourceFile.new('heydan_sources', 'census', 'population')
+      @script.source_file.add_variable('population')
+      @script.update_jurisdiction_files
+      jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>1, "data"=>[10, 12]})
+      jf.json['datasets'][0]['version'] = 0
+      jf.save
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>0, "data"=>[10, 12]})      
+      @script.update_jurisdiction_files
+      jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>1, "data"=>[10, 12]})
+      jf.json['datasets'][0]['version'] = 2
+      jf.save
+      @script.update_jurisdiction_files
+      jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
+      expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>2, "data"=>[10, 12]})
     end
 
     context 'updates with identifiers other than open_civic_id' do
@@ -131,6 +152,7 @@ describe HeyDan::Script do
           @script.update_jurisdiction_files
           jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
           expect(jf.get_attribute('attribute_item')).to eq 'something'
+
         end
 
         it 'update_jurisdiction_files for identifier' do
@@ -148,7 +170,7 @@ describe HeyDan::Script do
           @script.source_file.add_variable('population')
           @script.update_jurisdiction_files
           jf = HeyDan::JurisdictionFile.new({name: 'country:us/state:al' })
-          expect(jf.get_dataset('heydan_sources_census_population')).to eq ( {"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "data"=>[10, 12]})
+          expect(jf.get_dataset('heydan_sources_census_population')).to eq ({"id"=>"heydan_sources_census_population", "name"=>"population", "short_description"=>"a short description", "tags"=>[], "years"=>[2015, 2014], "version"=>1, "data"=>[10, 12]})
         end
 
     end

@@ -33,6 +33,11 @@ class HeyDan::Script
     'dataset'
   end
 
+  #overwritten by developer
+  def version
+    1
+  end
+
   def debug
     require 'pry'
     binding.pry
@@ -105,15 +110,18 @@ class HeyDan::Script
     metadata = @source_file.variable
     metadata.keep_if { |k| ['id', 'name', 'short_description', 'tags'].include?(k)}
     metadata["years"] = @data[0][1..-1]
+    id = metadata['id']
     @data[1..-1].each do |row| 
       next if row[0].nil? || @identifiers[row[0]].nil?
       jf = get_jurisdiction_filename(@identifiers[row[0]])
       next if !jf.exists?
-      metadata["data"] = row[1..-1]
-      index = jf.datasets.index(metadata)
-      if !index.nil? 
-        jf.datasets.delete_at(index)
+      ds = jf.get_dataset(id)
+      if !ds.nil?
+        next if ds['version'] >= version
       end
+      jf.datasets.delete(ds)
+      metadata["version"] = version
+      metadata["data"] = row[1..-1]
       jf.add_dataset(metadata)
       jf.save
       @progress.increment if HeyDan.help?
