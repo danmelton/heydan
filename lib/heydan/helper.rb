@@ -76,8 +76,9 @@ class HeyDan::Helper
       Digest::MD5.hexdigest(text)
     end
 
-    def download_file(url,full_path)
+    def download_file(url,file_path)
       f = open(url)
+      full_path = File.expand_path(file_path)
       File.open(full_path, 'wb') do |saved_file|
         saved_file.write(f.read)
       end 

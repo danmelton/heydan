@@ -24,19 +24,19 @@ describe HeyDan do
       expect(File.exist?('spec/tmp/downloads/example.txt')).to eq false
       f = HeyDan::Helper.download_file('https://s3-us-west-1.amazonaws.com/heydan/spec/example.txt', File.join(HeyDan.folders[:downloads], 'example.txt'))
       expect(File.exist?('spec/tmp/downloads/example.txt')).to eq true
-      expect(f).to eq "spec/tmp/downloads/example.txt"
+      expect(f.include?("spec/tmp/downloads/example.txt")).to eq true
     end
     VCR.use_cassette('example.csv') do
       expect(File.exist?('spec/tmp/downloads/example.csv')).to eq false
       f= HeyDan::Helper.download_file('https://s3-us-west-1.amazonaws.com/heydan/spec/example.csv', File.join(HeyDan.folders[:downloads], 'example.csv'))
       expect(File.exist?('spec/tmp/downloads/example.csv')).to eq true
-      expect(f).to eq "spec/tmp/downloads/example.csv"
+      expect(f.include?("spec/tmp/downloads/example.csv")).to eq true
     end
     VCR.use_cassette('example.zip') do
       expect(File.exist?('spec/tmp/downloads/example.zip')).to eq false
       f = HeyDan::Helper.download_file('https://s3-us-west-1.amazonaws.com/heydan/spec/example.zip', File.join(HeyDan.folders[:downloads], 'example.zip'))
       expect(File.exist?('spec/tmp/downloads/example.zip')).to eq true
-      expect(f).to eq "spec/tmp/downloads/example.zip"
+      expect(f.include?("spec/tmp/downloads/example.zip")).to eq true
     end    
   end
 
