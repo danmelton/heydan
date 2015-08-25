@@ -9,13 +9,6 @@ class HeyDan::Server < Sinatra::Base
     enable :cross_origin
   end
 
-  get '/entities/types' do
-    content_type 'application/json'
-    file = File.join(HeyDan.folders[:jurisdictions], '*')
-    types = Dir[file].map { |x| x.split('/')[-1]}
-    {types: types}.to_json
-  end
-
   get '/entities/*.json' do
     content_type 'application/json'
     begin

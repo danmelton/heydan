@@ -26,6 +26,7 @@ class HeyDan::JurisdictionFile
   end
 
   def convert_file_name
+    @name = @name.split('/')[-1]
     @name = "#{@name.gsub('::','/').gsub('.json','')}"
   end
 
