@@ -12,7 +12,7 @@ describe HeyDan do
 
   context 'default settings' do
     it 'help' do
-      expect(HeyDan.help).to be true
+      expect(HeyDan.help).to be false
     end
 
     it 'folders' do

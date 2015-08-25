@@ -20,13 +20,8 @@ RSpec.configure do |config|
     clean_tmp_folder
   end
   config.before(:each) do
-    HeyDan.settings_file = 'spec/heydan_settings.yml'
-    HeyDan.folders = {
-      jurisdictions: 'spec/tmp/jurisdictions',
-      sources: 'spec/tmp/sources',
-      downloads: 'spec/tmp/downloads',
-      datasets: 'spec/tmp/datasets'
-    }
+    HeyDan.settings_file = 'spec/fixtures/settings.yml'
+    HeyDan::Base.load_settings_file(HeyDan.settings_file)
     clean_tmp_folder
   end
 end
