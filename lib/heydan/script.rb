@@ -106,8 +106,9 @@ class HeyDan::Script
     metadata.keep_if { |k| ['id', 'name', 'short_description', 'tags'].include?(k)}
     metadata["years"] = @data[0][1..-1]
     @data[1..-1].each do |row| 
-      next if row[0].nil?
-      jf = get_jurisdiction_filename(row[0])
+      next if row[0].nil? || @identifiers[row[0]].nil?
+      jf = get_jurisdiction_filename(@identifiers[row[0]])
+      next if !jf.exists?
       metadata["data"] = row[1..-1]
       index = jf.datasets.index(metadata)
       if !index.nil? 

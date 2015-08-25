@@ -38,7 +38,7 @@ class HeyDan::OpenCivicIdentifiers
       @data[1..-1].each do |row| 
         jf = HeyDan::JurisdictionFile.new(name: row[0])
         next if !jf.match_type?(@jurisdiction_type)
-        jf.add_identifier('open_civic_id', row[0])
+        jf.add_identifier('open_civic_id', row[0].gsub('ocd-division/',''))
         jf.add_property('name', row[1])
         jf.save
         @progress.increment if HeyDan.help?
