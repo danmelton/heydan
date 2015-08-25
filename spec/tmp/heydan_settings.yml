@@ -1,9 +1,0 @@
----
-:help: true
-:folders:
-  :jurisdictions: spec/tmp/spec/tmp/jurisdictions
-  :sources: spec/tmp/spec/tmp/sources
-  :downloads: spec/tmp/spec/tmp/downloads
-  :datasets: spec/tmp/spec/tmp/datasets
-:sources:
-  :heydan_sources: https://github.com/danmelton/heydan_sources.git
