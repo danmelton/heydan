@@ -36,7 +36,7 @@ class HeyDan::OpenCivicIdentifiers
       end
       @progress = ProgressBar.create(:title => "Building Files in #{HeyDan.folders[:jurisdictions]} for jurisdictions #{('matching ' + @jurisdiction_type) if @jurisdiction_type}", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
       @data[1..-1].each_index do |i| 
-        row = @data[i]
+        row = @data[i+1]
         jf = HeyDan::JurisdictionFile.new(name: row[0])
         next if !jf.match_type?(@jurisdiction_type)
         jf.add_identifier('open_civic_id', row[0].gsub('ocd-division/',''))

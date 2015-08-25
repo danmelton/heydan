@@ -101,7 +101,7 @@ class HeyDan::Script
   def update_jurisdiction_files
     get_data
     get_identifiers
-    @progress = ProgressBar.create(:title => "Updating Files for #{@source} #{@variable} from #{@folder} for #{@identifiers.keys.size} jurisdictions #{(' matching ' + @jurisdiction_type) if @jurisdiction_type}", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
+    @progress = ProgressBar.create(:title => "Updating Files for #{@source} #{@variable} from #{@folder} for jurisdictions #{(' matching ' + @jurisdiction_type) if @jurisdiction_type}", :starting_at => 0, :total => @data[1..-1].size) if HeyDan.help?
     self.send("add_#{type}s")
     @progress.finish if HeyDan.help?
   end
@@ -111,7 +111,8 @@ class HeyDan::Script
     metadata.keep_if { |k| ['id', 'name', 'short_description', 'tags'].include?(k)}
     metadata["years"] = @data[0][1..-1]
     id = metadata['id']
-    @data[1..-1].each do |row| 
+    @data[1..-1].each_index do |i| 
+      row = @data[i+1]
       next if row[0].nil? || @identifiers[row[0]].nil?
       jf = get_jurisdiction_filename(@identifiers[row[0]])
       next if !jf.exists?
@@ -124,7 +125,7 @@ class HeyDan::Script
       metadata["data"] = row[1..-1]
       jf.add_dataset(metadata)
       jf.save
-      @progress.increment if HeyDan.help?
+      @progress = i if HeyDan.help?
     end
   end
 
@@ -133,22 +134,24 @@ class HeyDan::Script
   end
 
   def add_identifiers
-    @data[1..-1].each do |row| 
+    @data[1..-1].each_index do |i| 
+      row = @data[i+1]
       jf = get_jurisdiction_filename(row[0])
       next if row[0].nil?
       jf.add_identifier(@data[0][1], row[1])
       jf.save
-      @progress.increment  if HeyDan.help?
+      @progress = i  if HeyDan.help?
     end
   end
 
   def add_attributes
-    @data[1..-1].each do |row| 
+    @data[1..-1].each_index do |i| 
+        row = @data[i+1]
         jf = get_jurisdiction_filename(row[0])
         next if row[0].nil?
         jf.add_attribute(@data[0][1], row[1])
         jf.save
-        @progress.increment  if HeyDan.help?
+        @progress = i  if HeyDan.help?
       end
   end
 
