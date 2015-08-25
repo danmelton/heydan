@@ -15,7 +15,7 @@ describe HeyDan::Sources do
     HeyDan.settings_file = File.join('spec','tmp', 'heydan_settings.yml')
     expect(HeyDan::Sources.source_exists?('love')).to eq false
     expect(HeyDan::Sources.source_exists?('https://github.com/love/love.git')).to eq false
-    expect(HeyDan::Base).to receive(:save_settings).and_return true
+    expect(HeyDan::Base).to receive(:save_settings).at_least(:once).and_return true
     expect(HeyDan::Sources).to receive(:update).with('love').and_return true
     HeyDan::Sources.add('https://github.com/love/love.git')
     expect(HeyDan::Sources.source_exists?('love')).to eq true

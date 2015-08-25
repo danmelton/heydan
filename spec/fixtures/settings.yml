@@ -7,6 +7,8 @@
   :sources: "spec/tmp/sources"
   :downloads: "spec/tmp/downloads"
   :datasets: "spec/tmp/datasets"
+:sources:
+  :heydan_sources: https://github.com/danmelton/heydan_sources.git
 :cdn: https://heydan.s3-us-west-1.amazonaws.com
 :aws_bucket: heydan
 :aws_region: us-west-1
