@@ -9,6 +9,10 @@ module HeyDan
     attr_accessor :cdn
     attr_accessor :options
     attr_accessor :elasticsearch
+    attr_accessor :aws_access_id
+    attr_accessor :aws_secret_key
+    attr_accessor :aws_bucket
+    attr_accessor :aws_region
 
     #calls help text when needed
     def helper_text(method)
