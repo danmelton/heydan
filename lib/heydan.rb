@@ -59,6 +59,7 @@ require_relative "heydan/open_civic_identifiers"
 require_relative "heydan/sources"
 require_relative "heydan/import"
 require_relative "heydan/server"
+require_relative "heydan/cdn"
 require_relative "heydan/cli"
 
 HeyDan::Base.load_or_create_settings

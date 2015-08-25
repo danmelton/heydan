@@ -1,4 +1,4 @@
-class HeyDan::CDN < HeyDan
+class HeyDan::Cdn
 
   #Upload files from the Downloads folder
   def upload(names=[])
