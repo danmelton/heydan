@@ -67,6 +67,12 @@ module HeyDan
       HeyDan::Server.run!
     end  
 
+    desc "upload", "starts up the webserver for heydan"
+    def upload()
+      puts "Serving up some HeyDan Realness"
+      HeyDan::Cdn.upload
+    end  
+
   end
 
     
