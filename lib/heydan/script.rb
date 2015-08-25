@@ -38,12 +38,11 @@ class HeyDan::Script
     1
   end
 
-  def debug
-    require 'pry'
-    binding.pry
+  def dataset_file_name
+    "#{@folder}_#{@source}_#{@variable}.csv"
   end
 
-  def dataset_file_name
+  def name
     "#{@folder}_#{@source}_#{@variable}.csv"
   end
 
@@ -64,11 +63,19 @@ class HeyDan::Script
 
   #runs through download, build and validate
   def process
-    process_from_source if @fromsource
+    if @fromsource
+      puts "From Source is specified, processing from source for #{name}"
+      process_from_source 
+    end
 
     begin
-      download if !@fromsource && !HeyDan::Helper.dataset_exists?(dataset_file_name)
+      if HeyDan::Helper.dataset_exists?(dataset_file_name)
+        puts "Dataset for #{name} exists"
+      else
+        download 
+      end
     rescue 
+        puts "Had trouble downloading #{name}, processing from source instead"
         process_from_source        
     end      
     update_jurisdiction_files
