@@ -31,6 +31,7 @@ describe HeyDan::ScriptFile do
     expect(@script_file.template.include?("class HeydanSourceCensusPopulation < HeyDan::Script\n")).to be true
     expect(@script_file.template.include?("def type\n")).to be true
     expect(@script_file.template.include?("def build\n")).to be true
+    expect(@script_file.template.include?("def version\n")).to be true
   end
 
   it 'eval_class' do
