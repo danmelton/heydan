@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "elasticsearch","~>1.0"
   spec.add_dependency "sinatra","~>1.4"
   spec.add_dependency "sinatra-cross_origin","~>0.3"
-  spec.add_dependency "fog","~>1.32"
+  spec.add_dependency "fog-aws", "~>0.7.5"
 
   #development/test depedencies
   spec.add_development_dependency "bundler", "~> 1.10"

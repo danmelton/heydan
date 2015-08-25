@@ -2,7 +2,7 @@ class HeyDan::Cdn
 
   #Upload files from the Downloads folder
   def self.upload(names=[])
-    require 'fog'
+    require 'fog/aws'
     @connection = Fog::Storage.new({
       provider: 'AWS',
       region: HeyDan.aws_region,
