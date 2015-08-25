@@ -64,18 +64,18 @@ class HeyDan::Script
   #runs through download, build and validate
   def process
     if @fromsource
-      puts "From Source is specified, processing from source for #{name}"
+      puts "From Source is specified, processing from source for #{name}" if HeyDan.help?
       process_from_source 
     end
 
     begin
       if HeyDan::Helper.dataset_exists?(dataset_file_name)
-        puts "Dataset for #{name} exists"
+        puts "Dataset for #{name} exists" if HeyDan.help?
       else
         download 
       end
     rescue 
-        puts "Had trouble downloading #{name}, processing from source instead"
+        puts "Had trouble downloading #{name}, processing from source instead" if HeyDan.help?
         process_from_source        
     end      
     update_jurisdiction_files
