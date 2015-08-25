@@ -20,6 +20,9 @@ class HeyDan::Helper
     end
 
     def save_data(name, data)
+      puts "Directory exists? #{HeyDan.folders[:datasets]} #{Dir.exists? HeyDan.folders[:datasets]}"
+      puts "Directory exists? #{File.expand_path HeyDan.folders[:datasets]} #{Dir.exists? File.expand_path(HeyDan.folders[:datasets])}"
+
       full_path = File.expand_path(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"))
       CSV.open(full_path, 'w') do |csv|
         data.each do |row|
