@@ -115,7 +115,7 @@ class HeyDan::Script
       row = @data[i+1]
       next if row[0].nil? || @identifiers[row[0]].nil?
       jf = get_jurisdiction_filename(@identifiers[row[0]])
-      next if !jf.exists?
+      next if row[0].nil? || !jf.exists?
       ds = jf.get_dataset(id)
       if !ds.nil?
         next if ds['version'] >= version
@@ -125,7 +125,7 @@ class HeyDan::Script
       metadata["data"] = row[1..-1]
       jf.add_dataset(metadata)
       jf.save
-      @progress = i if HeyDan.help?
+      @progress.progress = i if HeyDan.help?
     end
   end
 
@@ -137,10 +137,10 @@ class HeyDan::Script
     @data[1..-1].each_index do |i| 
       row = @data[i+1]
       jf = get_jurisdiction_filename(row[0])
-      next if row[0].nil?
+      next if row[0].nil? || !jf.exists?
       jf.add_identifier(@data[0][1], row[1])
       jf.save
-      @progress = i  if HeyDan.help?
+      @progress.progress = i  if HeyDan.help?
     end
   end
 
@@ -148,10 +148,10 @@ class HeyDan::Script
     @data[1..-1].each_index do |i| 
         row = @data[i+1]
         jf = get_jurisdiction_filename(row[0])
-        next if row[0].nil?
+        next if row[0].nil? || !jf.exists?
         jf.add_attribute(@data[0][1], row[1])
         jf.save
-        @progress = i  if HeyDan.help?
+        @progress.progress = i  if HeyDan.help?
       end
   end
 
