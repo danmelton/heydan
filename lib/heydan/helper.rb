@@ -20,7 +20,7 @@ class HeyDan::Helper
     end
 
     def save_data(name, data)
-      CSV.open(File.join(HeyDan.folders[:datasets], "#{name}.csv"), 'w') do |csv|
+      CSV.open(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"), 'w') do |csv|
         data.each do |row|
           csv << row
         end
@@ -28,11 +28,11 @@ class HeyDan::Helper
     end
 
     def get_data(name)
-      CSV.read(File.join(HeyDan.folders[:datasets], "#{name}.csv"))
+      CSV.read(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"))
     end
 
     def dataset_exists?(name)
-      File.exist?(File.join(HeyDan.folders[:datasets], "#{name}.csv"))
+      File.exist?(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"))
     end
 
     def get_data_from_url(url)

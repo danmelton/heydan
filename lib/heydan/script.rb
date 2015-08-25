@@ -67,7 +67,7 @@ class HeyDan::Script
     process_from_source if @fromsource
 
     begin
-      download if !@fromsource 
+      download if !@fromsource && !HeyDan::Helper.dataset_exists?(dataset_file_name)
     rescue 
         process_from_source        
     end      
@@ -118,7 +118,10 @@ class HeyDan::Script
       next if row[0].nil? || !jf.exists?
       ds = jf.get_dataset(id)
       if !ds.nil?
-        next if ds['version'] >= version
+        if ds['version'] >= version
+          @progress.progress = i if HeyDan.help?
+          next
+        end
       end
       jf.datasets.delete(ds)
       metadata["version"] = version
@@ -162,7 +165,7 @@ class HeyDan::Script
 
   def get_data
     if @data.nil?
-      @data = HeyDan::Helper.get_data(name)
+      @data = HeyDan::Helper.get_data(dataset_file_name)
     end
   end
 
