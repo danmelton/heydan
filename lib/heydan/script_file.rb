@@ -25,7 +25,8 @@ class HeyDan::ScriptFile
   end
 
   def template
-    template_path = File.join('lib', 'heydan', 'templates', 'script.rb.erb')
+
+    template_path = File.join(File.dirname(__FILE__), 'templates', 'script.rb.erb')
     require 'erb'
     ERB.new(File.read(template_path)).result binding
   end
