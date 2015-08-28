@@ -75,6 +75,29 @@ describe HeyDan do
 
   end
 
+  context 'shp' do
+
+    it 'get_shapefile' do
+      expect(HeyDan::Helper.get_shapefile(['tmp/spec/downloads/shapefile/something.shp'])).to eq "tmp/spec/downloads/shapefile/something.shp"
+      expect(HeyDan::Helper.get_shapefile(['tmp/spec/downloads/shapefile/something.csv'])).to eq nil
+    end
+
+    it 'is_shapefile?' do
+      expect(HeyDan::Helper.is_shapefile?(['tmp/spec/downloads/shapefile/something.shp'])).to be true
+      expect(HeyDan::Helper.is_shapefile?(['tmp/spec/downloads/shapefile/something.csv'])).to be false
+    end
+
+    it 'get_shapefile_data' do
+      shp_file_path = File.join('spec', 'tmp', 'downloads', HeyDan::Helper.md5_name('tl_2015_32_unsd.zip'))
+      FileUtils.cp(File.join('spec', 'fixtures', 'tl_2015_32_unsd.zip'), shp_file_path)
+      expect(HeyDan::Helper).to receive(:download).with('ftp://ftp2.census.gov/geo/tiger/TIGER2015/UNSD/tl_2015_32_unsd.zip').and_return shp_file_path
+      data = HeyDan::Helper.get_data_from_url('ftp://ftp2.census.gov/geo/tiger/TIGER2015/UNSD/tl_2015_32_unsd.zip')
+      expect(data.size).to eq 18
+      expect(data[1][-1].keys).to eq [:type, :coordinates]
+    end
+
+  end
+
   context 'zip' do
 
     it 'unzip' do

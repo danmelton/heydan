@@ -12,9 +12,13 @@ The goal is to create an easy versino controlled data import and processing tool
 
 ## Installation
 
-You will need git, ruby and elastic search
+You will need git & ruby for the core library
 
     $ gem install heydan
+
+If you would like to leverage the server & search functionality, you will need elasticsearch
+
+    http://elastic.co/downloads
 
 ## Command Line Usage
 
@@ -50,6 +54,7 @@ HeyDan is meant to be used in a shell:
 
     $ heydan upload
     #uploads contents of the datasets folder to aws as specified in the settings file.
+
 
 ## Adding Data
 

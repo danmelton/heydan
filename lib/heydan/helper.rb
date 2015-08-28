@@ -44,6 +44,7 @@ class HeyDan::Helper
           get_csv_data(file)        
         when 'zip'
           files = unzip(file)
+          return get_shapefile_data(files) if is_shapefile?(files)
           if files.size == 1
             get_csv_data(files[0]) if is_csv?(files[0])
           else
@@ -51,6 +52,8 @@ class HeyDan::Helper
           end
         when 'txt'
           get_csv_data(file) if is_csv?(file)
+        when 'shp'
+          get_shapefile_data(file)
         else
           get_csv_data(file) if is_csv?(file)
         end
@@ -60,6 +63,27 @@ class HeyDan::Helper
     def is_csv?(file_path)
       contents = File.open(file_path, &:readline)
       contents.match(/\b\t/).nil? || contents.match(/\b,/).nil? #not perfect
+    end
+
+    def is_shapefile?(shapefile_array)
+      !get_shapefile(shapefile_array).nil?
+    end
+
+    def get_shapefile(shapefile_array)
+      shapefile_array.select { |file| file.to_s.include?('.shp')}[0]
+    end
+
+    def get_shapefile_data(shapefile_array)
+      file = get_shapefile(shapefile_array)
+      require 'geo_ruby'
+      require 'geo_ruby/shp'
+      
+      shp = GeoRuby::Shp4r::ShpFile.open(file)
+      data = [shp.fields.map(&:name) + ['geojson']]
+      shp.records.each do |record|
+        data << (record.data.attributes.values + [record.geometry.as_json])
+      end
+      data
     end
 
     def get_csv_data(file)

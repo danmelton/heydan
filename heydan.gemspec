@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "sinatra","~>1.4"
   spec.add_dependency "sinatra-cross_origin","~>0.3"
   spec.add_dependency "fog-aws", "~>0.7.5"
+  spec.add_dependency "georuby"
 
   #development/test depedencies
   spec.add_development_dependency "bundler", "~> 1.10"
