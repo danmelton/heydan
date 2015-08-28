@@ -41,12 +41,17 @@ class HeyDan::Helper
       file = download(url)
       @data = case ext
         when 'csv'
-          get_csv_data(file)        
+          get_csv_data(file)
+        when 'xls'
+          get_excel_data(file)
+        when 'xlsx'
+          get_excel_data(file, 'xlsx')
         when 'zip'
           files = unzip(file)
           return get_shapefile_data(files) if is_shapefile?(files)
           if files.size == 1
-            get_csv_data(files[0]) if is_csv?(files[0])
+            return get_csv_data(files[0]) if is_csv?(files[0])
+            return get_excel_data(files[0]) if is_excel?(files)
           else
             files.map { |f| get_csv_data(f) if is_csv?(f)} 
           end
@@ -83,6 +88,32 @@ class HeyDan::Helper
       shp.records.each do |record|
         data << (record.data.attributes.values + [record.geometry.as_json])
       end
+      data
+    end
+
+    def get_excel_file(files)
+      files.select { |file| file.to_s.include?('.xls') || file.to_s.include?('.xlsx')}[0]
+    end
+
+    def is_excel?(files)
+      !get_excel_file(files).nil?
+    end
+
+    def get_excel_data(file, type='xls')
+      if type == 'xls'
+        require 'spreadsheet'
+        book = Spreadsheet.open file
+        data = book.worksheets.map(&:rows)
+      else
+        require 'rubyXL'
+        book = RubyXL::Parser.parse(file)
+        data = book.worksheets.map do |w| 
+          w.sheet_data.rows.map { |row|
+            row.cells.map { |c| c.value } unless row.nil?
+          }
+        end
+      end
+      return data[0] if data.size == 1
       data
     end
 

@@ -98,6 +98,40 @@ describe HeyDan do
 
   end
 
+  context 'excel' do
+
+    it 'get_excel_file' do
+      expect(HeyDan::Helper.get_excel_file(['tmp/spec/downloads/excelfile/something.xls'])).to eq "tmp/spec/downloads/excelfile/something.xls"
+      expect(HeyDan::Helper.get_excel_file(['tmp/spec/downloads/excelfile/something.xlsx'])).to eq "tmp/spec/downloads/excelfile/something.xlsx"
+      expect(HeyDan::Helper.get_excel_file(['tmp/spec/downloads/excelfile/something.csv'])).to eq nil
+    end
+
+    it 'is_excel?(files)' do
+      expect(HeyDan::Helper.is_excel?(['tmp/spec/downloads/shapefile/something.xls'])).to be true
+      expect(HeyDan::Helper.is_excel?(['tmp/spec/downloads/shapefile/something.xlsx'])).to be true
+      expect(HeyDan::Helper.is_excel?(['tmp/spec/downloads/shapefile/something.shp'])).to be false
+      expect(HeyDan::Helper.is_excel?(['tmp/spec/downloads/shapefile/something.csv'])).to be false
+    end
+
+    it 'get_excel_data xls' do
+      file_path = File.join('spec', 'tmp', 'downloads', HeyDan::Helper.md5_name('example.xls'))
+      FileUtils.cp(File.join('spec', 'fixtures', 'example.xls'), file_path)
+      expect(HeyDan::Helper).to receive(:download).with('http://love.com/example.xls').and_return file_path
+      data = HeyDan::Helper.get_data_from_url('http://love.com/example.xls')
+      expect(data).to eq [["header1", "header2", "header3"], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]
+    end
+
+    it 'get_excel_data xlsx' do
+      file_path = File.join('spec', 'tmp', 'downloads', HeyDan::Helper.md5_name('example.xlsx'))
+      FileUtils.cp(File.join('spec', 'fixtures', 'example.xlsx'), file_path)
+      expect(HeyDan::Helper).to receive(:download).with('http://love.com/example.xlsx').and_return file_path
+      data = HeyDan::Helper.get_data_from_url('http://love.com/example.xlsx')
+      expect(data).to eq [["header1", "header2", "header3"], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]
+    end
+
+
+  end
+
   context 'zip' do
 
     it 'unzip' do
