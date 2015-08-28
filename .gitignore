@@ -9,3 +9,4 @@
 /tmp/
 heydan_settings.yml
 *.gem
+.DS_STORE

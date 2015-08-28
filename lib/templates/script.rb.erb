@@ -15,7 +15,7 @@ class <%=@class_name%> < HeyDan::Script
   def build
     #this block builds a csv file from the @data variable
     @data = HeyDan::Helper::get_data_from_url('your_url')
-    #you can grab a file on the web (zip, csv, txt) which will load into the @data variable
+    #you can grab a file on the web (zip, csv, txt, xls, xls, .shp) which will load into the @data variable
     #next, you will need to format the @data variable. This 
     @data = @data.map { |c| [c[1], c[0]]}
     
