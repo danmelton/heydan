@@ -39,7 +39,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-aws", "~>0.7.5"
   spec.add_dependency "georuby", "~>2.5"
   spec.add_dependency "spreadsheet", "~>1.0"
+  spec.add_dependency "dbf", "~> 2.0"
   spec.add_dependency "rubyXL", "~> 3.3"
+
 
   #development/test depedencies
   spec.add_development_dependency "bundler", "~> 1.10"
