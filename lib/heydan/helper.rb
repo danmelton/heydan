@@ -22,7 +22,9 @@ class HeyDan::Helper
     end
 
     def save_data(name, data)
-      full_path = File.expand_path(File.join(HeyDan.folders[:datasets], "#{name.gsub('.csv', '')}.csv"))
+      path = HeyDan.folders[:datasets]
+      FileUtils.mkdir_p path if !Dir.exists?(path)
+      full_path = File.expand_path(File.join(path, "#{name.gsub('.csv', '')}.csv"))
       CSV.open(full_path, 'w') do |csv|
         data.each do |row|
           csv << row
