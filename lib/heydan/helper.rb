@@ -2,6 +2,7 @@ require 'digest'
 require 'uri'
 require 'open-uri'
 require 'csv'
+require 'fileutils'
 
 class HeyDan::Helper
 
@@ -13,6 +14,7 @@ class HeyDan::Helper
 
     def download(url)
       path = HeyDan.folders[:downloads]
+      FileUtils.mkdir_p path if !Dir.exists?(path)
       new_file = File.join(path, md5_name(url))
       return new_file if File.exist?(new_file)
       download_file(url, new_file)
