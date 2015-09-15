@@ -22,7 +22,14 @@ class HeyDan::JurisdictionFile
 
   def match_type?(ocd_type)
     return true if ocd_type.nil?
-    !id.match(/#{ocd_type.gsub(':all', '.+')}/).nil?
+    if ocd_type.include?(':')
+      id_type = id
+    else
+      id_type = id.split('/').last
+      return false if id_type.nil?
+      id_type = id_type.split(':')[0]
+    end
+    !id_type.match(/#{ocd_type.gsub(':all', '.+')}/).nil?
   end
 
   def convert_file_name
@@ -89,7 +96,7 @@ class HeyDan::JurisdictionFile
   end
 
   def add_attribute(key, value)
-     get_json
+    get_json
     @json['attributes'][key] = value
     @json
   end
