@@ -26,11 +26,11 @@ class HeyDan::Import
         total = Dir.glob("#{HeyDan.folders[:jurisdictions]}/*").size
         files= Dir.glob("#{HeyDan.folders[:jurisdictions]}/*")
         a=0
-        b=10000
+        b=1000
         progress = ProgressBar.create(:title => "Importing #{files.size} jurisdictions into Elastic Search", :starting_at => a, :total => files.size)
         while true do
           @bulk = []
-          b=( files.size - b < 10000 ? -1 : a + 10000)
+          b=( files.size - b < 1000 ? -1 : a + 1000)
           files[a..b].each do |file|
             jf = HeyDan::JurisdictionFile.new(name: file)
             @bulk << { index:  { _index: 'jurisdictions', _type: jf.type, _id: jf.hash_id, data: jf.get_json } } 
