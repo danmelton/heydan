@@ -82,9 +82,20 @@ describe HeyDan::Cli do
 
   context 'import' do
     it 'calls Import.process' do
-      expect(HeyDan::Import).to receive(:process).with(no_args).and_return true
+      expect(HeyDan::Import).to receive(:process).with(100).and_return true
       HeyDan::Cli.start(['import'])
     end
+
+    it 'calls Import.process with 1000' do
+      expect(HeyDan::Import).to receive(:process).with("1000").and_return true
+      HeyDan::Cli.start(['import', '1000'])
+    end
+
+    it 'calls Import.process with 1000 --parallel' do
+      expect(HeyDan::Import).to receive(:process_in_parallel).with("1000").and_return true
+      HeyDan::Cli.start(['import', '1000', '--parallel'])
+    end
+
   end
 
 end

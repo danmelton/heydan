@@ -10,7 +10,7 @@ describe HeyDan::Import do
     end
 
     it 'sets the host' do
-      expect(import.client.transport.hosts).to eq  [{:scheme=>"http", :user=>nil, :password=>nil, :host=>"localhost", :path=>"", :port=>"9200", :protocol=>"http"}]
+      expect(import.client.transport.hosts).to eq  [{:scheme=>"http", :user=>nil, :password=>nil, :host=>"localhost", :path=>"", :port=>9200, :protocol=>"http"}]
     end
 
     it 'sets the index' do

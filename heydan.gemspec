@@ -41,6 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "spreadsheet", "~>1.0"
   spec.add_dependency "dbf", "~> 2.0"
   spec.add_dependency "rubyXL", "~> 3.3"
+  spec.add_dependency "parallel"
 
 
   #development/test depedencies

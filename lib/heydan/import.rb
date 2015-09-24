@@ -1,5 +1,6 @@
 require 'ruby-progressbar'
 require 'elasticsearch'
+require 'parallel'
 
 class HeyDan::Import
     attr_accessor :client
@@ -21,16 +22,16 @@ class HeyDan::Import
         client.indices.create index: index
       end
 
-      def process
+      def process(number=100)
         create_index unless check_index
         total = Dir.glob("#{HeyDan.folders[:jurisdictions]}/*").size
         files= Dir.glob("#{HeyDan.folders[:jurisdictions]}/*")
         a=0
-        b=1000
+        b=number
         progress = ProgressBar.create(:title => "Importing #{files.size} jurisdictions into Elastic Search", :starting_at => a, :total => files.size)
         while true do
           @bulk = []
-          b=( files.size - b < 1000 ? -1 : a + 1000)
+          b=( files.size - b < number ? -1 : a + number)
           files[a..b].each do |file|
             jf = HeyDan::JurisdictionFile.new(name: file)
             @bulk << { index:  { _index: 'jurisdictions', _type: jf.type, _id: jf.hash_id, data: jf.get_json } } 
@@ -42,6 +43,18 @@ class HeyDan::Import
             break 
           else
             progress.progress = a 
+          end
+        end
+      end
+
+      def process_in_parallel(number=100)
+        create_index unless check_index
+        total = Dir.glob("#{HeyDan.folders[:jurisdictions]}/*").size
+        files= Dir.glob("#{HeyDan.folders[:jurisdictions]}/*")
+        results = Parallel.map(files.each_slice(number).to_a) do |chunk|
+          chunk.each do |file|
+            jf = HeyDan::JurisdictionFile.new(name: file)
+            @client.index index: 'jurisdictions', type: jf.type, id: jf.hash_id, body: jf.get_json
           end
         end
       end

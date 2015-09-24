@@ -52,10 +52,13 @@ module HeyDan
       HeyDan.options = options
       HeyDan::OpenCivicIdentifiers.build
     end
-    desc 'import', "Imports files into elasticsearch"
-    def import()
+
+    desc 'import NUMBER', "Imports files into elasticsearch, set the number to lower than 100 if the files are large"
+    option :parallel, type: :boolean
+    def import(number=100)
       HeyDan::helper_text('import')
-      HeyDan::Import.process
+      options[:parallel] ? HeyDan::Import.process_in_parallel(number) : HeyDan::Import.process(number)
+      
     end
     
     desc "sources SUBCOMMAND ...ARGS", "manage sources"
