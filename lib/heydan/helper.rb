@@ -113,7 +113,7 @@ class HeyDan::Helper
         book = RubyXL::Parser.parse(file)
         data = book.worksheets.map do |w| 
           w.sheet_data.rows.map { |row|
-            row.cells.map { |c| c.value } unless row.nil?
+            row.cells.map { |c| c.nil? ? nil : c.value } unless row.nil?
           }
         end
       end
