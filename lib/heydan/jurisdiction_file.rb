@@ -107,10 +107,10 @@ class HeyDan::JurisdictionFile
   end
 
   def get_json
-    if !exists?  
-      @json ||= initial_json 
+    if !exists?
+      @json ||= initial_json
     else
-      file = File.read(file_path)
+      file = File.read(file_path).force_encoding('UTF-8')
       @json ||= initial_json if file == ""
     end
     return @json if @json
