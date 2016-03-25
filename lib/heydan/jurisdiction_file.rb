@@ -3,7 +3,7 @@ require 'json'
 class HeyDan::JurisdictionFile
   attr_accessor :name
   attr_accessor :json
-  
+
   def initialize(opts={})
     @name = opts[:name]
     convert_file_name if @name.include?('.json')
@@ -74,7 +74,7 @@ class HeyDan::JurisdictionFile
 
   def add_dataset(value)
     get_json
-    @json['datasets'] << value 
+    @json['datasets'] << value
     @json
   end
 
@@ -119,7 +119,7 @@ class HeyDan::JurisdictionFile
 
   def save
     File.open(file_path, 'w') do |f|
-      f.write(@json.to_json)
+      f.write(JSON.pretty_generate(@json))
     end
   end
 
